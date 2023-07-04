@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "907307276923",
+    "project_id": "amo-cabs",
+    "storage_bucket": "amo-cabs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907307276923:android:10cd6dcda920bac20520de",
+        "android_client_info": {
+          "package_name": "com.example.amo_cabs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907307276923-lctmk2qt04k1nf947ilsqg8e8ipg3ec7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.amo_cabs",
+            "certificate_hash": "df3bf811c76d0e1727153a8a8b9679157a8ff433"
+          }
+        },
+        {
+          "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHmQujVyUD7fJQiuqhrMuqzy78ly1Sf4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
