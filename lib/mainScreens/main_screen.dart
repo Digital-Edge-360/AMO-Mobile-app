@@ -688,7 +688,7 @@ class _MainScreenState extends State<MainScreen> {
                           print("this happens..");
                           print(Provider.of<AppInfo>(context,listen: false).userDropOffLocation.toString);
                           if(Provider.of<AppInfo>(context, listen: false).userDropOffLocation != null){
-                            Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount, bagsCount: bagsCount,),), );
+                            Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount, bagsCount: bagsCount,distanceInMeters: distance,),), );
                           }
                         },
                         child: Text('Request a Ride'),
@@ -880,7 +880,7 @@ class _MainScreenState extends State<MainScreen> {
                                         color: Color(0xff019EE3)),
                                     width: 80,
                                     height: 20,
-                                    child: DropdownButtonExample()),
+                                     child: null),
                               ),
                             ],
                           )),
@@ -919,7 +919,7 @@ class _MainScreenState extends State<MainScreen> {
                                       color: Color(0xff019EE3)),
                                   width: 80,
                                   height: 20,
-                                  child: DropdownButtonExample()),
+                                  child: null),
                             ),
                           ],
                         ),
@@ -934,7 +934,7 @@ class _MainScreenState extends State<MainScreen> {
 
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount,bagsCount: bagsCount,),), );
+                  Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount,bagsCount: bagsCount,distanceInMeters: (distance * 2),),), );
                 },
                 child: Text('Request a Ride'),
                 style: ElevatedButton.styleFrom(
@@ -953,6 +953,8 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  int distance = 0;
+
   Future<void> drawPolyLineFromOriginToDestination() async {
     var originPosition = Provider.of<AppInfo>(context, listen: false).userPickUpLocation;
     var destinationPosition = Provider.of<AppInfo>(context, listen: false).userDropOffLocation;
@@ -970,6 +972,7 @@ class _MainScreenState extends State<MainScreen> {
     var directionDetailsInfo = await AssistantMethods.obtainOriginToDestinationDirectionDetails(originLatLng, destinationLatLng);
 
     Navigator.pop(context);
+    distance = directionDetailsInfo!.distance_value!;
     
     log("these are points = ");
     log(directionDetailsInfo!.e_points!.toString());
