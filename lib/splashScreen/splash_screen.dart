@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:amo_cabs/onboardingScreens/onboarding_screen1.dart';
 import 'package:flutter/material.dart';
 
 import '../assistants/assistant_methods.dart';
@@ -28,13 +28,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
           context,
           MaterialPageRoute(
             builder: (c) => MainScreen(),
+
           ),
         );
       } else {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (c) => LoginScreen(),
+            builder: (c) => OnboardingScreen(),
           ),
         );
       }

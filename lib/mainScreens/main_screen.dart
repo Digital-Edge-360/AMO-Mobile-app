@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:amo_cabs/mainScreens/prices_page.dart';
 import 'package:amo_cabs/mainScreens/search_places_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -236,7 +237,7 @@ class _MainScreenState extends State<MainScreen> {
     String humanReadableAddress = await AssistantMethods.searchAddressForGeographicCoOrdinates(userCurrentPosition!, context);
     print('This is your address $humanReadableAddress');
 
-    userName = userModelCurrentInfo!.name!;
+    userName = userModelCurrentInfo!.firstName!;
     userEmail =  userModelCurrentInfo!.email!;
 
   }
@@ -278,7 +279,7 @@ class _MainScreenState extends State<MainScreen> {
             onMapCreated: (GoogleMapController controller) {
               _controllerGoogleMap.complete(controller);
               newGoogleMapController = controller;
-              blackThemeGoogleMap();
+              // blackThemeGoogleMap();
 
               setState(() {
                 bottomPaddingOfMap = 240;
@@ -323,7 +324,7 @@ class _MainScreenState extends State<MainScreen> {
               child: Container(
                 height: searchLocationContainerHeight,
                 decoration: const BoxDecoration(
-                  color: Colors.black54,
+                  color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(20),
                     topLeft: Radius.circular(20),
@@ -446,7 +447,9 @@ class _MainScreenState extends State<MainScreen> {
                       ),
 
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(),), );
+                        },
                         child: Text('Request a Ride'),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.green,

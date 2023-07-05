@@ -1,210 +1,282 @@
-import 'package:amo_cabs/authentication/signup_screen.dart';
+import 'package:amo_cabs/authentication/otp_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
 
-import '../global/global.dart';
-import '../splashScreen/splash_screen.dart';
-import '../widgets/progress_dialog.dart';
+import '../widgets/amo_toast.dart';
+
+
 
 class LoginScreen extends StatefulWidget {
+  LoginScreen({Key? key}) : super(key: key);
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController emailTextEditingController = TextEditingController();
-  TextEditingController passwordTextEditingController = TextEditingController();
+  //phone number Screen
+  TextEditingController txtCountryCodeTextEditingController = TextEditingController();
+  TextEditingController txtPhoneTextEditingController = TextEditingController();
 
-  FToast toast = FToast();
-  validateForms() {
-    //print(emailTextEditingController.text.contains("@"));
+  final ButtonStyle style = ElevatedButton.styleFrom(
+      elevation: 6,
+      primary: const Color(0xff009B4E),
+      // Background color
+      textStyle: const TextStyle(
+        fontSize: 16,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ));
 
-    if (!emailTextEditingController.text.contains("@")) {
-      toast.showToast(
-        child: Text(
-          'Email id is invalid',
-          style: TextStyle(color: Colors.white54),
-        ),
-      );
-    } else if (passwordTextEditingController.text.isEmpty) {
-      toast.showToast(
-        child: Text(
-          'Password can\'t be empty.',
-          style: TextStyle(color: Colors.white54),
-        ),
-      );
-    } else {
-      loginUserNow();
-    }
+
+
+
+  Future<void> signInWithPhoneNumber(String phoneNumber) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    await auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        final UserCredential firebaseUser = await auth.signInWithCredential(credential);
+        User? user = firebaseUser.user;
+
+        // authentication successful, do something
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        // authentication failed, do something
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        // code sent to phone number, save verificationId for later use
+        String smsCode = ''; // get sms code from user
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId,
+          smsCode: smsCode,
+        );
+        Navigator.push(context, MaterialPageRoute(builder: (c) => OtpPage(verificationId: verificationId, phoneNumber: phoneNumber)));
+        await auth.signInWithCredential(credential);
+        // authentication successful, do something
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    txtCountryCodeTextEditingController.text = "+91";
+    super.initState();
   }
 
-  loginUserNow() async {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext c) {
-          return ProgressDialog(message: 'Logging in, please wait..');
-        });
+  bool checkNumber(){
+    if(txtPhoneTextEditingController.text.isEmpty){
 
-    final User? firebaseUser = (await fAuth
-            .signInWithEmailAndPassword(
-                email: emailTextEditingController.text.trim(),
-                password: passwordTextEditingController.text.trim())
-            .catchError((msg) {
-      Navigator.pop(context);
-      Fluttertoast.showToast(msg: 'Error: ' + msg.toString());
-    }))
-        .user;
-    if (firebaseUser != null) {
-      DatabaseReference driverRef =
-          FirebaseDatabase.instance.ref().child('users');
-      driverRef.child(firebaseUser.uid).once().then((driverKey) {
-        final snap = driverKey.snapshot;
-        if (snap.value != null) {
-          currentFirebaseUser = firebaseUser;
-          Fluttertoast.showToast(msg: 'Logged in.');
+      AmoToast.showAmoToast('Phone number can\'t be empty.', context);
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (c) => const MySplashScreen(),
-            ),
-          );
-        } else {
-          Fluttertoast.showToast(msg: 'No record exist with this email');
-          fAuth.signOut();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (c) => const MySplashScreen(),
-            ),
-          );
-        }
-      });
-    } else {
-      Navigator.pop(context);
-      Fluttertoast.showToast(msg: 'Error occured during sign in.');
     }
+    else if(txtPhoneTextEditingController.text.length < 10){
+      AmoToast.showAmoToast('Invalid Phone number.', context);
+    }
+    else if(txtPhoneTextEditingController.text.length == 10){
+      return true;
+    }
+    else{
+      AmoToast.showAmoToast('Something went wrong.', context);
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 30.0,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 120, left: 10),
+              child: Row(
+                children: [
+                  const Text(
+                    "Welcome to",
+                    style: TextStyle(
+                        fontFamily: "Poppins", fontSize:30, color: Colors.black),
+                  ),
+
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Image.asset(
+                      "images/img_7.png",
+                      height: 50,
+                      width: 50,
+                    ),
+                  )
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Image.asset('images/logo.png'),
+            ),
+
+
+            Padding(
+              padding: const EdgeInsets.only(left: 10,top: 20),
+              child: Row(
+                children: const [
+                  Text(
+
+                    "Enter your phone number to continue..",
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 14,
+                        color: Color(0xff739AF0)),
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                'Login as a User',
-                style: TextStyle(
-                    fontSize: 26,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold),
-              ),
-              TextField(
-                controller: emailTextEditingController,
-                keyboardType: TextInputType.emailAddress,
-                style: const TextStyle(color: Colors.grey),
-                decoration: const InputDecoration(
-                  label: Text('Email'),
-                  hintText: "Email",
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
+            ),
+
+            //phone text
+            Padding(
+
+
+              padding: const EdgeInsets.only(top: 60, left: 26),
+              child: Row(
+                children: [
+                  RichText(
+                    text: const TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: "Phone Number:",
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 16,
+                              color: Colors.black),
+                        ),
+                        TextSpan(
+                            text: "*",
+                            style: TextStyle(
+
+                                fontFamily: "Poppins",
+                                fontSize: 20,
+                                color: Color(0xff86DD8A))),
+                      ],
                     ),
                   ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                    ),
+                ],
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: SizedBox(
+                height: 60,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
                   ),
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 10,
-                  ),
-                  labelStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
+                  elevation: 5,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:  [
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      SizedBox(
+                        width: 40,
+                        child: TextField(
+                          controller: txtCountryCodeTextEditingController,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(4),
+
+                          ],
+                          style: const TextStyle(
+                              fontFamily: "Poppins", fontSize:16, color: Colors.black),
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      const Text(
+                        "|",
+                        style: TextStyle(fontSize: 33, color: Colors.grey),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                          child: TextField(
+                            maxLength: 10,
+                            autofocus: true,
+                            enableSuggestions: true,
+                            controller: txtPhoneTextEditingController,
+                            keyboardType: TextInputType.phone,
+                            style: const TextStyle(
+                                fontFamily: "Poppins", fontSize:18, color: Colors.black),
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(10),
+
+                            ],
+                            decoration: const InputDecoration(
+
+                              border: InputBorder.none,
+                              hintText: "Phone",
+                              counterText: "",
+                              hintStyle: TextStyle(
+                                  fontFamily: "Poppins", fontSize:18, color: Colors.grey),
+                            ),
+                          ))
+                    ],
                   ),
                 ),
               ),
-              TextField(
-                controller: passwordTextEditingController,
-                obscureText: true,
-                keyboardType: TextInputType.text,
-                style: const TextStyle(color: Colors.grey),
-                decoration: const InputDecoration(
-                  label: Text('Password'),
-                  hintText: "Password",
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 10,
-                  ),
-                  labelStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
+            ),
+
+
+
+            //todo---button
+
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Card(
+                elevation: 6.0,
+                clipBehavior: Clip.hardEdge,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                child: Container(
+                  height: 45,
+                  width: 210,
+                  decoration: const BoxDecoration(
+
+                      color: Color(0xff009B4E),
+                      borderRadius: BorderRadius.horizontal()),
+                  child: ElevatedButton(
+                    style: style,
+                    onPressed: () async{
+                      if(checkNumber()){
+
+
+                        signInWithPhoneNumber(txtCountryCodeTextEditingController.text+txtPhoneTextEditingController.text);
+
+
+                        // Navigator.push(
+                        //   context,
+                        //   PageTransition(
+                        //     type: PageTransitionType.theme,
+                        //     duration: Duration(milliseconds: 500),
+                        //     child: OtpScreen(),
+                        //     isIos: true,
+                        //   ),
+                        // );
+                      }
+
+                    },
+                    child: const Text("Login"),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(primary: Colors.lightGreenAccent),
-                onPressed: () {
-                  validateForms();
-                },
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 18.0,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SignUpScreen(),
-                    ),
-                  );
-                },
-                child: Text(
-                  'Don\'t have an account. Register here',
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+
+          ],
         ),
       ),
     );

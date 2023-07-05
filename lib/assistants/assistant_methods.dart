@@ -1,4 +1,5 @@
 import 'package:amo_cabs/assistants/request_assistant.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -38,14 +39,14 @@ class AssistantMethods {
     currentFirebaseUser = fAuth.currentUser;
     DatabaseReference userRef = FirebaseDatabase.instance
         .ref()
-        .child('users')
+        .child('userDetails')
         .child(currentFirebaseUser!.uid);
 
     userRef.once().then((snap) {
       if (snap.snapshot.value != null) {
-        userModelCurrentInfo = UserModel.fromSnapshot(snap.snapshot);
-        print('name : ' + userModelCurrentInfo!.name.toString());
-        print('email : ' + userModelCurrentInfo!.email.toString());
+        userModelCurrentInfo = UserModel.fromSnapshot(snap.snapshot as DocumentSnapshot<Map<String, dynamic>>);
+        print('firstName : ' + userModelCurrentInfo!.firstName.toString());
+        print('phone : ' + userModelCurrentInfo!.phoneNumber.toString());
       }
     });
   }
