@@ -29,6 +29,8 @@ class PlacePredictionTileDesign extends StatelessWidget {
       return;
     }
 
+
+
     if(responseApi["status"] == "OK"){
       Directions directions = Directions();
       directions.locationId = placeId;

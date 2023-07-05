@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 import '../infoHandler/app_info.dart';
 
 class PricesPage extends StatefulWidget {
-  const PricesPage({Key? key}) : super(key: key);
+  int seatsCount, bagsCount;
+  PricesPage({required this.seatsCount,required this.bagsCount});
 
   @override
   State<PricesPage> createState() => _PricesPageState();
@@ -29,25 +30,29 @@ class _PricesPageState extends State<PricesPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Card(
-                    elevation: 6.0,
-                    clipBehavior: Clip.hardEdge,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    child: Container(
-                      height: 29,
-                      width: 94,
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.horizontal()),
-                      child: const Center(
-                          child: Text( "One Way",
-                            style: TextStyle(
-                                color: Color(0xff739AEF),
-                                fontSize: 14,
-                                fontFamily: "Poppins"),
-                          )),
+                  GestureDetector(
+                    
+
+                    child: Card(
+                      elevation: 5.0,
+                      clipBehavior: Clip.hardEdge,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Container(
+                        height: 29,
+                        width: 94,
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.horizontal()),
+                        child: const Center(
+                            child: Text( "One Way",
+                              style: TextStyle(
+                                  color: Color(0xff739AEF),
+                                  fontSize: 14,
+                                  fontFamily: "Poppins"),
+                            )),
+                      ),
                     ),
                   ),
                   Card(
@@ -295,7 +300,7 @@ class DropdownButtonExample extends StatefulWidget {
 }
 
 class _DropdownButtonExampleState extends State<DropdownButtonExample> {
-  static List<int> list = <int>[ 0,1, 2, 3, 4, 5];
+  static List<int> list = <int>[ 1, 2, 3, 4, 5];
   static List<String> countries = [
     "1",
     "2",

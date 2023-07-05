@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:amo_cabs/mainScreens/prices_page.dart';
 import 'package:amo_cabs/mainScreens/search_places_screen.dart';
@@ -32,7 +33,7 @@ class _MainScreenState extends State<MainScreen> {
   Position? userCurrentPosition;
   var geoLocator = Geolocator();
   LocationPermission? _locationPermission;
-  double bottomPaddingOfMap = 0;
+  double bottomPaddingOfMap = 360;
 
   List<LatLng> pLineCoordinatesList = [];
   Set<Polyline> polyLineSet = {};
@@ -224,6 +225,15 @@ class _MainScreenState extends State<MainScreen> {
                 ''');
   }
 
+
+  //0 for ride by destination
+  //1 for ride by kilometer
+  int currentSelectedCard = 0;
+  int km = 0;
+
+  int seatsCount = 1;
+  int bagsCount = 1;
+
   locateUserPosition() async{
     Position cPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     userCurrentPosition = cPosition;
@@ -235,14 +245,14 @@ class _MainScreenState extends State<MainScreen> {
     newGoogleMapController!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition),);
     
     String humanReadableAddress = await AssistantMethods.searchAddressForGeographicCoOrdinates(userCurrentPosition!, context);
-    print('This is your address $humanReadableAddress');
+    log('This is your address $humanReadableAddress');
 
     userName = userModelCurrentInfo!.firstName!;
     userEmail =  userModelCurrentInfo!.email!;
 
   }
 
-  double searchLocationContainerHeight = 220.0;
+  double searchLocationContainerHeight = 350.0;
 
   @override
   void initState() {
@@ -263,7 +273,7 @@ class _MainScreenState extends State<MainScreen> {
           email: userEmail,
         ),
       ),
-      body: Stack(
+      body: currentSelectedCard == 0 ?Stack(
         children: [
           GoogleMap(
             mapType: MapType.normal,
@@ -282,7 +292,7 @@ class _MainScreenState extends State<MainScreen> {
               // blackThemeGoogleMap();
 
               setState(() {
-                bottomPaddingOfMap = 240;
+                bottomPaddingOfMap = 360;
               });
 
               locateUserPosition();
@@ -303,12 +313,9 @@ class _MainScreenState extends State<MainScreen> {
                   SystemNavigator.pop();
                 }
               },
-              child: CircleAvatar(
-                backgroundColor: Colors.grey,
-                child: Icon(
-                  openNavigationDrawer ? Icons.menu : Icons.close,
-                  color: Colors.black54,
-                ),
+              child: Icon(
+                openNavigationDrawer ? Icons.menu : Icons.close,
+                color: Colors.black54,
               ),
             ),
           ),
@@ -335,6 +342,236 @@ class _MainScreenState extends State<MainScreen> {
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
                   child: Column(
                     children: [
+
+                      //ride by destination or ride by km
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    currentSelectedCard = 0;
+                                  });
+                                },
+                                child: Card(
+                                  //  elevation: 6.0,
+                                  color: currentSelectedCard == 0 ?  const Color(0xff739AEF) : Colors.white,
+                                  clipBehavior: Clip.hardEdge,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                        height: 50,
+                                        width: 180,
+                                        child: Column(
+                                          children: [
+                                             Text(
+                                              "Ride by destination",
+                                              style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  color: currentSelectedCard == 0 ? Colors.white : const Color(0xff739AEF),),
+                                            ),
+                                            //image
+                                            Expanded(
+                                                child: Image.asset(
+                                                  currentSelectedCard == 0 ? "images/img_23.png" : "images/img_24.png",
+                                                  height: 30,
+                                                  width: 40,
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+
+
+                            Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    currentSelectedCard = 1;
+                                  });
+                                },
+                                child: Card(
+                                  //  elevation: 6.0,
+                                  color: currentSelectedCard == 1 ?  const Color(0xff739AEF): Colors.white ,
+                                  clipBehavior: Clip.hardEdge,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                        height: 50,
+                                        width: 180,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Ride by kilometer",
+                                              style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  color: currentSelectedCard ==1 ?  Colors.white: Color(0xff739AEF) ),
+                                            ),
+                                            //image
+                                            Expanded(
+                                                child: Image.asset(
+                                                  currentSelectedCard == 1 ?   "images/img_23.png" : "images/img_24.png",
+                                                  height: 30,
+                                                  width: 40,
+                                                ),),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10,),
+                        child: Card(
+                          elevation: 8.0,
+                          color: Colors.white,
+                          clipBehavior: Clip.hardEdge,
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Color(0xffD0D0D0)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      //text1
+                                      Row(
+
+                                        children:  [
+                                          const Text("Seats Count",style: TextStyle(color: Color(0xff019EE3)),),
+                                          Image.asset('images/seats.png',height: 15,)
+                                        ],
+                                      ),
+                                      // todo -- dropdown1
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(3),
+                                                color: Color(0xff019EE3)),
+                                            // width: 80,
+                                            height: 20,
+                                            child: DropdownButton<int>(
+                                              icon: Row(
+                                                // mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  Text(seatsCount.toString(), style: TextStyle(color: Colors.white),),
+                                                  
+                                                  Icon(Icons.arrow_drop_down_sharp, color: Colors.white,),
+                                                ],
+                                              ),
+
+                                              items: <int>[1, 2, 3, 4, 5, 6].map((int value) {
+                                                return DropdownMenuItem<int>(
+                                                  value: value,
+                                                  child: Text(value.toString(),),
+                                                );
+                                              }).toList(),
+                                              onChanged: (newVal) {
+                                                setState(() {
+                                                  seatsCount = newVal!;
+                                                });
+                                              },
+                                            ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+
+                              //
+                              // todo -- line
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10, left: 80),
+                                child: Container(
+
+                                  height: 70,
+                                  width: 1,
+                                  color: Color(0xffD0D0D0),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children:  [
+                                        Text("Bags Count",style: TextStyle(color: Color(0xff019EE3)),),
+                                        Image.asset('images/bags.png',height: 15,)
+                                      ],
+                                    ),
+
+
+                                    // todo -- dropdown2
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(3),
+                                              color: Color(0xff019EE3)),
+                                          // width: 80,
+                                          height: 20,
+                                          child: DropdownButton<int>(
+                                            icon: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(bagsCount.toString(), style: TextStyle(color: Colors.white),),
+
+                                                Icon(Icons.arrow_drop_down_sharp, color: Colors.white,),
+                                              ],
+                                            ),
+
+                                            items: <int>[1, 2, 3, 4, 5].map((int value) {
+                                              return DropdownMenuItem<int>(
+                                                value: value,
+                                                child: Text(value.toString(),),
+                                              );
+                                            }).toList(),
+                                            onChanged: (newVal) {
+                                              setState(() {
+                                                bagsCount = newVal!;
+                                              });
+                                            },
+                                          ),
+
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10,),
                       //from
                       Row(
                         children: [
@@ -448,7 +685,11 @@ class _MainScreenState extends State<MainScreen> {
 
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(),), );
+                          print("this happens..");
+                          print(Provider.of<AppInfo>(context,listen: false).userDropOffLocation.toString);
+                          if(Provider.of<AppInfo>(context, listen: false).userDropOffLocation != null){
+                            Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount, bagsCount: bagsCount,),), );
+                          }
                         },
                         child: Text('Request a Ride'),
                         style: ElevatedButton.styleFrom(
@@ -466,6 +707,248 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
         ],
+      ) : SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          currentSelectedCard = 0;
+                        });
+                      },
+                      child: Card(
+                        //  elevation: 6.0,
+                        color: currentSelectedCard == 0 ?  const Color(0xff739AEF) : Colors.white,
+                        clipBehavior: Clip.hardEdge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 180,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Ride by destination",
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      color: currentSelectedCard == 0 ? Colors.white : const Color(0xff739AEF),),
+                                  ),
+                                  //image
+                                  Expanded(
+                                      child: Image.asset(
+                                        currentSelectedCard == 0 ? "images/img_23.png" : "images/img_24.png",
+                                        height: 30,
+                                        width: 40,
+                                      )),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          currentSelectedCard = 1;
+                        });
+                      },
+                      child: Card(
+                        //  elevation: 6.0,
+                        color: currentSelectedCard == 1 ?  const Color(0xff739AEF): Colors.white ,
+                        clipBehavior: Clip.hardEdge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 180,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Ride by kilometer",
+                                    style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        color: currentSelectedCard ==1 ?  Colors.white: Color(0xff739AEF) ),
+                                  ),
+                                  //image
+                                  Expanded(
+                                    child: Image.asset(
+                                      currentSelectedCard == 1 ?   "images/img_23.png" : "images/img_24.png",
+                                      height: 30,
+                                      width: 40,
+                                    ),),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+// Drop Location --
+
+              Container(
+                alignment: Alignment.topLeft,
+                child: const Text("Kilometer Range",
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 12,
+                        color: Colors.black)),
+              ),
+
+
+              Slider(
+                  value: km.toDouble()/200.0,
+                  divisions: 100,
+                  onChanged: (val){
+                    setState(() {
+                    km = (val*200).toInt();
+                });
+              }),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Card(
+
+                    elevation: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("$km kilometers", style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 10,
+                          color: Colors.black),),
+                    ),
+                  ),
+                ],
+              ),
+
+
+              // todo-- Seats Count & bags count
+              Padding(
+                padding: const EdgeInsets.only(top: 10,),
+                child: Card(
+                  elevation: 8.0,
+                  color: Colors.white,
+                  clipBehavior: Clip.hardEdge,
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(color: Color(0xffD0D0D0)),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Column(
+                            children: [
+                              //text1
+                              Row(
+                                children:  [
+                                  const Text("Seats Count",style: TextStyle(color: Color(0xff019EE3)),),
+                                  Image.asset('images/seats.png',height: 15,)
+                                ],
+                              ),
+                              // todo -- dropdown1
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(3),
+                                        color: Color(0xff019EE3)),
+                                    width: 80,
+                                    height: 20,
+                                    child: DropdownButtonExample()),
+                              ),
+                            ],
+                          )),
+
+                      //
+                      // todo -- line
+                      Padding(
+                        padding: const EdgeInsets.only(right: 30, left: 80),
+                        child: Container(
+
+                          height: 70,
+                          width: 1,
+                          color: Color(0xffD0D0D0),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children:  [
+                                Text("Bags Count",style: TextStyle(color: Color(0xff019EE3)),),
+                                Image.asset('images/bags.png',height: 15,)
+                              ],
+                            ),
+
+
+                            // todo -- dropdown2
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(3),
+                                      color: Color(0xff019EE3)),
+                                  width: 80,
+                                  height: 20,
+                                  child: DropdownButtonExample()),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+
+              const SizedBox(height: 14,),
+
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount,bagsCount: bagsCount,),), );
+                },
+                child: Text('Request a Ride'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  textStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -488,8 +971,8 @@ class _MainScreenState extends State<MainScreen> {
 
     Navigator.pop(context);
     
-    print("these are points = ");
-    print(directionDetailsInfo!.e_points!.toString());
+    log("these are points = ");
+    log(directionDetailsInfo!.e_points!.toString());
 
     PolylinePoints pPoints = PolylinePoints();
     List<PointLatLng> decodedPolylinePointsResultList = pPoints.decodePolyline(directionDetailsInfo!.e_points!);
