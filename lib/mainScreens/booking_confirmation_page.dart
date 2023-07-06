@@ -1,11 +1,14 @@
+import 'package:amo_cabs/global/global.dart';
+import 'package:amo_cabs/models/ride_request.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../infoHandler/app_info.dart';
 
 class BookingConfirmation extends StatefulWidget {
-  int price;
-  BookingConfirmation({required this.price});
+  int price, distanceInMeters, bagsCount, seatsCount;
+  BookingConfirmation({required this.price, required this.distanceInMeters, required this.bagsCount, required this.seatsCount});
 
   @override
   State<BookingConfirmation> createState() => _BookingConfirmationState();
@@ -14,6 +17,44 @@ class BookingConfirmation extends StatefulWidget {
 class _BookingConfirmationState extends State<BookingConfirmation> {
   DateTime? _selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+
+
+  sendRideRequest() async {
+    var origin = Provider.of<AppInfo>(context, listen: false).userPickUpLocation;
+    var destination = Provider.of<AppInfo>(context, listen: false).userDropOffLocation;
+
+    //var pickUpMap = {'sourceName' : origin!.locationName, 'userPickupLatitude': origin!.locationLatitude, 'use' }
+    var currentRideDetails = {
+        "pickUp": {"pickUpName": origin!.locationName!,
+                    "pickUpId": origin.locationId,
+                    "pickUpLatitude":origin.locationLatitude,
+                      "pickUpLongitude": origin.locationLatitude,
+                      "pickUpHumanReadableAddress": origin.humanReadableAddress },
+        "dropOff": {"dropOffName": destination!.locationName!,
+                    "dropOffId": destination.locationId,
+                  "dropOffLatitude":destination.locationLatitude,
+                    "dropOffLongitude": destination.locationLatitude,
+                    "dropOffHumanReadableAddress": destination.humanReadableAddress },
+        "distanceInMeters": widget.distanceInMeters,
+        "customerName": userModelCurrentInfo!.firstName! + " " + userModelCurrentInfo!.lastName!,
+        "pickUpDate": _selectedDate,
+        "pickUpTime": selectedTime.hour.toString() + ":" + selectedTime.minute.toString(),
+        "noOfBagsRequest": widget.bagsCount,
+        "noOfSeatsRequest": widget.seatsCount,
+        "price": widget.price.toDouble(),
+        "carType": "Hatchback",
+        "rideByKm": false,
+        "status": "Pending",
+        "customerId": userModelCurrentInfo!.id!,
+        "specialNotes": txtSpecialNotesTextEditingController.text};
+
+    // _firestore.collection("rideRequest").doc(userModelCurrentInfo!.id!).set(currentRideDetails, SetOptions(merge: true));
+
+    await _firestore.collection("rideRequest").add(currentRideDetails).then((documentSnapshot) =>
+        print("Added Data with ID: ${documentSnapshot.id}"));
+  }
 
   TextEditingController txtSpecialNotesTextEditingController = TextEditingController();
   TextEditingController txtCouponTextEditingController = TextEditingController();
@@ -443,6 +484,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                         borderRadius: BorderRadius.circular(10),
                       ),),
                   onPressed: () {
+
+                    sendRideRequest();
                     //    Navigator.push(context,MaterialPageRoute(builder: (context) =>OtpScreen()),);
                   },
                   child: const Text("Confirm"),

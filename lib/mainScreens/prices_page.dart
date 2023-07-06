@@ -185,7 +185,7 @@ class _PricesPageState extends State<PricesPage> {
                         color: Colors.black)),
               ),
 
-// todo ---- location bar
+
 
               Padding(
                 padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -358,7 +358,7 @@ class _PricesPageState extends State<PricesPage> {
 
                 child: ListTile(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c) => BookingConfirmation(price: ((widget.distanceInMeters * perKmMultiplierHatchBack).toInt()),),),);
+                    Navigator.push(context, MaterialPageRoute(builder: (c) => BookingConfirmation(price: ((widget.distanceInMeters * perKmMultiplierHatchBack).toInt()), distanceInMeters: widget.distanceInMeters, bagsCount: widget.bagsCount, seatsCount: widget.seatsCount,),),);
                   },
                   leading: Image.asset("images/hatchback.png", height: 20,),
                   title: Row(
@@ -420,7 +420,7 @@ class _PricesPageState extends State<PricesPage> {
 
                 child: ListTile(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c) => BookingConfirmation(price: ((widget.distanceInMeters * perKmMultiplierSedan).toInt()),),),);
+                    Navigator.push(context, MaterialPageRoute(builder: (c) => BookingConfirmation(price: ((widget.distanceInMeters * perKmMultiplierSedan).toInt()),distanceInMeters: widget.distanceInMeters,bagsCount: widget.bagsCount, seatsCount: widget.seatsCount,),),);
 
                   },
                   leading: Image.asset("images/img_24.png", height: 20),
@@ -483,7 +483,7 @@ class _PricesPageState extends State<PricesPage> {
 
                 child: ListTile(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c) => BookingConfirmation(price: ((widget.distanceInMeters * perKmMultiplierSuv).toInt()),),),);
+                    Navigator.push(context, MaterialPageRoute(builder: (c) => BookingConfirmation(price: ((widget.distanceInMeters * perKmMultiplierSuv).toInt()),distanceInMeters: widget.distanceInMeters,bagsCount: widget.bagsCount, seatsCount: widget.seatsCount),),);
 
                   },
                   leading: Image.asset("images/suv.png", height: 20),

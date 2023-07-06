@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../assistants/assistant_methods.dart';
 import '../global/global.dart';
 import '../infoHandler/app_info.dart';
+import '../widgets/amo_toast.dart';
 import '../widgets/my_drawer.dart';
 import '../widgets/progress_dialog.dart';
 
@@ -689,6 +690,9 @@ class _MainScreenState extends State<MainScreen> {
                           print(Provider.of<AppInfo>(context,listen: false).userDropOffLocation.toString);
                           if(Provider.of<AppInfo>(context, listen: false).userDropOffLocation != null){
                             Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount, bagsCount: bagsCount,distanceInMeters: distance,),), );
+                          }
+                          else{
+                            AmoToast.showAmoToast("Please select the destination..", context);
                           }
                         },
                         child: Text('Request a Ride'),
