@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:amo_cabs/mainScreens/booking_confirmation_page.dart';
+import 'package:amo_cabs/widgets/car_type_widget.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -11,7 +12,10 @@ import '../infoHandler/app_info.dart';
 class PricesPage extends StatefulWidget {
   int seatsCount, bagsCount, distanceInMeters;
 
-  PricesPage({required this.seatsCount, required this.bagsCount, required this.distanceInMeters});
+  PricesPage(
+      {required this.seatsCount,
+      required this.bagsCount,
+      required this.distanceInMeters});
 
   @override
   State<PricesPage> createState() => _PricesPageState();
@@ -20,12 +24,22 @@ class PricesPage extends StatefulWidget {
 class _PricesPageState extends State<PricesPage> {
   bool oneWay = true;
 
+
+
   double perKmMultiplierHatchBack = 0.01;
   double perKmMultiplierSedan = 0.012;
   double perKmMultiplierSuv = 0.015;
 
+  var carTypes = ['Hatchback', 'Sedan', 'SUV'];
 
+  var carTypesImages = [
+    'images/hatchback.png',
+    'images/img_24.png',
+    'images/suv.png'
+  ];
 
+  var noOfSeatsAvailableByCarType = [3, 3, 6];
+  var noOfBagStorageAvailableByCarType = [2, 4, 5];
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +74,8 @@ class _PricesPageState extends State<PricesPage> {
                               child: Text(
                             "One Way",
                             style: TextStyle(
-                                color: oneWay ? Colors.white : Color(0xff019EE3),
+                                color:
+                                    oneWay ? Colors.white : Color(0xff019EE3),
                                 fontSize: 14,
                                 fontFamily: "Poppins"),
                           )),
@@ -119,59 +134,56 @@ class _PricesPageState extends State<PricesPage> {
                         color: Colors.black)),
               ),
 
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                    child: Card(
-                      elevation: 6.0,
-                      color: const Color(0xff009B4E),
-                      clipBehavior: Clip.hardEdge,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 40,
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 1),
-                                  child: Icon(
-                                    Icons.location_on,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Center(
-                                    child: Text(
-                                      (Provider.of<AppInfo>(context)
-                                                      .userPickUpLocation!
-                                                      .locationName!)
-                                                  .length >
-                                              30
-                                          ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
-                                          : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          overflow: TextOverflow.ellipsis),
-                                      //like app --
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 10, left: 10, right: 10),
+                child: Card(
+                  elevation: 6.0,
+                  color: const Color(0xff009B4E),
+                  clipBehavior: Clip.hardEdge,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0),
                   ),
-                ],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 40,
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 1),
+                              child: Icon(
+                                Icons.location_on,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Center(
+                                child: Text(
+                                  (Provider.of<AppInfo>(context)
+                                                  .userPickUpLocation!
+                                                  .locationName!)
+                                              .length >
+                                          30
+                                      ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
+                                      : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      overflow: TextOverflow.ellipsis),
+                                  //like app --
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
 
 // Drop Location --
@@ -184,8 +196,6 @@ class _PricesPageState extends State<PricesPage> {
                         fontSize: 12,
                         color: Colors.black)),
               ),
-
-
 
               Padding(
                 padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -205,8 +215,8 @@ class _PricesPageState extends State<PricesPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 1),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 1),
                               child: Icon(
                                 Icons.location_on,
                                 color: Colors.white,
@@ -236,7 +246,7 @@ class _PricesPageState extends State<PricesPage> {
                 ),
               ),
 
-              // todo-- Seats Count & bags count
+
 
               Padding(
                 padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -251,75 +261,88 @@ class _PricesPageState extends State<PricesPage> {
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                      Expanded(
+                        flex: 4,
+                        child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //text1
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Seats Count",
+                                      style: TextStyle(
+                                        color: Color(0xff019EE3),
+                                      ),
+                                    ),
+                                    Image.asset(
+                                      'images/seats.png',
+                                      height: 15,
+                                    )
+                                  ],
+                                ),
+                                // todo -- dropdown1
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    widget.seatsCount.toString(),
+                                    style: const TextStyle(
+                                        color: Color(0xff019EE3),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ),
+
+                      //
+                      // todo -- line
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 30, left: 80),
+                          child: Container(
+                            height: 70,
+                            width: 3,
+                            color: Color(0xffD0D0D0),
+                          ),
+                        ),
+                      ),
+
+                      Expanded(
+                        flex: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              //text1
                               Row(
                                 children: [
                                   const Text(
-                                    "Seats Count",
+                                    "Bags Count",
                                     style: TextStyle(color: Color(0xff019EE3)),
                                   ),
                                   Image.asset(
-                                    'images/seats.png',
+                                    'images/bags.png',
                                     height: 15,
                                   )
                                 ],
                               ),
-                              // todo -- dropdown1
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  widget.seatsCount.toString(),
-                                  style: TextStyle(
-                                      color: Color(0xff019EE3), fontSize: 16),
+                                  widget.bagsCount.toString(),
+                                  style: const TextStyle(
+                                      color: Color(0xff019EE3),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ],
-                          )),
-
-                      //
-                      // todo -- line
-                      Padding(
-                        padding: const EdgeInsets.only(right: 30, left: 80),
-                        child: Container(
-                          height: 70,
-                          width: 1,
-                          color: Color(0xffD0D0D0),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "Bags Count",
-                                  style: TextStyle(color: Color(0xff019EE3)),
-                                ),
-                                Image.asset(
-                                  'images/bags.png',
-                                  height: 15,
-                                )
-                              ],
-                            ),
-
-                            // todo -- dropdown2
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                widget.bagsCount.toString(),
-                                style: TextStyle(
-                                    color: Color(0xff019EE3), fontSize: 16),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ],
@@ -327,220 +350,58 @@ class _PricesPageState extends State<PricesPage> {
                 ),
               ),
 
-
-              const SizedBox(height: 12,),
-
+              const SizedBox(
+                height: 18,
+              ),
 
               //total distance
               Container(
                 alignment: Alignment.topLeft,
-                child:  Text("Total Distance: ${(widget.distanceInMeters/1000).toString()} km",
+                child: Text(
+                    "Total Distance: ${(widget.distanceInMeters / 1000).toString()} km",
                     style: TextStyle(
                         fontFamily: "Poppins",
                         fontSize: 16,
-                        color: Colors.black)),
+                        color: Colors.black),),
+              ),
+
+              const SizedBox(
+                height: 18,
               ),
 
 
-              const SizedBox(height: 12,),
               //Expected prices
               Container(
                 alignment: Alignment.topLeft,
-                child: const Text("Expected Prices:",
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 16,
-                        color: Colors.black)),
-              ),
-
-              Card(
-                elevation: 5,
-
-                child: ListTile(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c) => BookingConfirmation(price: ((widget.distanceInMeters * perKmMultiplierHatchBack).toInt()), distanceInMeters: widget.distanceInMeters, bagsCount: widget.bagsCount, seatsCount: widget.seatsCount,),),);
-                  },
-                  leading: Image.asset("images/hatchback.png", height: 20,),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Hatchback',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 16,
-                            color: Colors.black),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Image.asset(
-                        'images/seats.png',
-                        height: 12,
-                      ),
-                      const Text(
-                        '3',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 12,
-                            color: Colors.black),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Image.asset(
-                        'images/bags.png',
-                        height: 12,
-                      ),
-                      const Text(
-                        '3',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 12,
-                            color: Colors.black),
-                      ),
-
-                      const SizedBox(width: 10,),
-
-
-
-                    ],
-                  ),
-                  trailing:  Text(
-                    '₹${(widget.distanceInMeters * perKmMultiplierHatchBack).toString().split('.')[0]}.',
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 18,
-                        color: Colors.black),
-                  ),
+                child: const Text(
+                  "Expected Prices:",
+                  style: TextStyle(
+                      fontFamily: "Poppins", fontSize: 16, color: Colors.black),
                 ),
               ),
-              Card(
-                elevation: 5,
-
-                child: ListTile(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c) => BookingConfirmation(price: ((widget.distanceInMeters * perKmMultiplierSedan).toInt()),distanceInMeters: widget.distanceInMeters,bagsCount: widget.bagsCount, seatsCount: widget.seatsCount,),),);
-
-                  },
-                  leading: Image.asset("images/img_24.png", height: 20),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Sedan',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 16,
-                            color: Colors.black),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Image.asset(
-                        'images/seats.png',
-                        height: 12,
-                      ),
-                      const Text(
-                        '3',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 12,
-                            color: Colors.black),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Image.asset(
-                        'images/bags.png',
-                        height: 12,
-                      ),
-                      const Text(
-                        '5',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 12,
-                            color: Colors.black),
-                      ),
-
-                      const SizedBox(width: 10,),
 
 
 
-                    ],
-                  ),
-                  trailing:  Text(
-                    '₹${(widget.distanceInMeters * perKmMultiplierSedan).toInt().toString()}.',
-                    style: const TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 18,
-                        color: Colors.black),
-                  ),
-                ),
+              SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  itemCount: 3,
+
+                    itemBuilder: (BuildContext context, int i){
+                    log("index $i");
+                    log("expected = " + widget.seatsCount.toString() + "| available =" + noOfSeatsAvailableByCarType[i].toString());
+                    log("expected = " + widget.bagsCount.toString() + "| available =" + noOfBagStorageAvailableByCarType[i].toString());
+                      // if(widget.seatsCount <= noOfSeatsAvailableByCarType[i] && widget.bagsCount <= noOfBagStorageAvailableByCarType[i]){
+                      //   return null;
+                      // }
+
+                    return CarTypeWidget(distanceInMeters: widget.distanceInMeters, seatsCount: widget.seatsCount, bagsCount: widget.seatsCount, index: i, isOneWay: oneWay,);
+
+
+
+                    }),
               ),
-              Card(
-                elevation: 5,
 
-                child: ListTile(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c) => BookingConfirmation(price: ((widget.distanceInMeters * perKmMultiplierSuv).toInt()),distanceInMeters: widget.distanceInMeters,bagsCount: widget.bagsCount, seatsCount: widget.seatsCount),),);
-
-                  },
-                  leading: Image.asset("images/suv.png", height: 20),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'SUV',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 16,
-                            color: Colors.black),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Image.asset(
-                        'images/seats.png',
-                        height: 12,
-                      ),
-                      const Text(
-                        '6',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 12,
-                            color: Colors.black),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Image.asset(
-                        'images/bags.png',
-                        height: 12,
-                      ),
-                      const Text(
-                        '5',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 12,
-                            color: Colors.black),
-                      ),
-
-                      const SizedBox(width: 10,),
-
-
-
-                    ],
-                  ),
-                  trailing:  Text(
-                    '₹${(widget.distanceInMeters * perKmMultiplierSuv).toString().split('.')[0]}.',
-                    style: const TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 18,
-                        color: Colors.black),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -548,4 +409,5 @@ class _PricesPageState extends State<PricesPage> {
     );
   }
 }
+
 

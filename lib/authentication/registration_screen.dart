@@ -1,16 +1,21 @@
 import 'package:amo_cabs/mainScreens/main_screen.dart';
+import 'package:amo_cabs/splashScreen/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 import '../../global/global.dart';
 import '../../widgets/amo_toast.dart';
 import '../models/user_model.dart';
+import '../widgets/progress_dialog.dart';
 
 
 class RegistrationScreen extends StatefulWidget {
   String phoneNumber;
-  RegistrationScreen({required this.phoneNumber});
+  User firebaseUser;
+  RegistrationScreen({required this.phoneNumber, required this.firebaseUser});
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -50,14 +55,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       String email = txtEmailTextEditingController.text.isEmpty ? "" : txtEmailTextEditingController.text;
 
 
-      var collectionRef = await FirebaseFirestore.instance.collection("userDetails");
-
+      var collectionRef = await FirebaseFirestore.instance.collection("users");
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
       try{
         await  collectionRef.add({
+          "active": true,
           "email": email,
           "firstName":firstName,
           "lastName": lastName,
+          "fullName": firstName + " " +lastName,
+          "rideIds": [],
           "phoneNumber": phoneNumber,
+          "role": "Customer",
+          "totalRides": 0,
 
 
 
@@ -70,6 +80,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   (e) => UserModel.fromSnapshot(e)).single;
 
           userModelCurrentInfo = userData;
+          currentFirebaseUser = widget.firebaseUser;
+          await prefs.setStringList("userCurrentInfo", [userModelCurrentInfo!.id!, userModelCurrentInfo!.phoneNumber!, userModelCurrentInfo!.firstName!, userModelCurrentInfo!.lastName!,userModelCurrentInfo!.email!]);
+
+
 
           debugPrint("take to login page");
           AmoToast.showAmoToast('Loggin in..', context);
@@ -77,7 +91,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (c) => MainScreen(),
+              builder: (c) => MySplashScreen(),
             ),
           );
         }).catchError((e){
@@ -90,6 +104,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
 
   }
+
+
 
   final ButtonStyle style = ElevatedButton.styleFrom(
       primary: const Color(0xff009B4E),
