@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:amo_cabs/onboardingScreens/onboarding_screen1.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../assistants/assistant_methods.dart';
-import '../authentication/login_screen.dart';
 import '../global/global.dart';
 import '../mainScreens/main_screen.dart';
 
@@ -16,33 +14,14 @@ class MySplashScreen extends StatefulWidget {
 
 class _MySplashScreenState extends State<MySplashScreen> {
 
-  // Future<Widget> getLandingPage() async {
-  //   return StreamBuilder<User?>(
-  //     stream: fAuth.userChanges(),
-  //     builder: (BuildContext context, snapshot) {
-  //       if (snapshot.hasData && (!snapshot.data!.isAnonymous)) {
-  //         return MainScreen();
-  //       }
-  //
-  //       return OnboardingScreen();
-  //     },
-  //   );
-  // }
+  
 
   void startTimer() {
     fAuth.currentUser != null
         ? AssistantMethods.readCurrentOnlineUserInfo()
         : null;
     Timer(const Duration(seconds: 3), () async {
-      //take the user to a main screen
-
-      // var nextPage = await getLandingPage();
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (c) => nextPage,
-      //   ),
-      // );
+    
       if (await fAuth.currentUser != null) {
         currentFirebaseUser = fAuth.currentUser;
 

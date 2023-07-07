@@ -7,7 +7,7 @@ class OnboardingScreen2 extends StatelessWidget {
   OnboardingScreen2({Key? key}) : super(key: key);
 
   final ButtonStyle style = ElevatedButton.styleFrom(
-      primary: Color(0xff009B4E),
+      backgroundColor: const Color(0xff009B4E),
       // Background color
       textStyle: const TextStyle(
         fontSize: 20,
@@ -23,30 +23,27 @@ class OnboardingScreen2 extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Container(
 
-
         alignment: Alignment.center,
 
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
+            const Padding(
+              padding: EdgeInsets.only(top: 100, left: 20, right: 20),
               child: Center(
-                child: Container(
-                  child: Row(
-                    children: const [
-                      Text(" Select Your",
-                          style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 30,
-                              color: Colors.black)),
-                      Text(" Route",
-                          style: TextStyle(
+                child: Row(
+                  children: [
+                    Text(" Select Your",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 30,
+                            color: Colors.black)),
+                    Text(" Route",
+                        style: TextStyle(
 
-                              fontFamily: "Poppins",
-                              fontSize: 30,
-                              color: Color(0xff009B4E))),
-                    ],
-                  ),
+                            fontFamily: "Poppins",
+                            fontSize: 30,
+                            color: Color(0xff009B4E))),
+                  ],
                 ),
               ),
             ),
@@ -106,17 +103,17 @@ class OnboardingScreen2 extends StatelessWidget {
                             Navigator.pushReplacement(context,
                               PageTransition(
                                 type: PageTransitionType.rightToLeft,
-                                duration: Duration(milliseconds: 100),
+                                duration: const Duration(milliseconds: 100),
                                 child:  OnboardingScreen3(),
                               ),
                               // MaterialPageRoute(builder: (context) =>OnboardingScreen3(),),
 
                             );
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_back,size: 20,
                           ),
-                          label: Text("Next"),
+                          label: const Text("Next"),
                           //.........
                         ))
                 ),

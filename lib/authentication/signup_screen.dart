@@ -27,28 +27,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
       //   msg: 'Name must be atleast 3 characters',
       // );
       toast.showToast(
-        child: Text(
+        child: const Text(
           'Name must be atleast 3 characters',
           style: TextStyle(color: Colors.white54),
         ),
       );
     } else if (!emailTextEditingController.text.contains("@")) {
       toast.showToast(
-        child: Text(
+        child: const Text(
           'Email id is invalid',
           style: TextStyle(color: Colors.white54),
         ),
       );
     } else if (phoneTextEditingController.text.length < 10) {
       toast.showToast(
-        child: Text(
+        child: const Text(
           'Phone Number invalid',
           style: TextStyle(color: Colors.white54),
         ),
       );
     } else if (passwordTextEditingController.text.length < 6) {
       toast.showToast(
-        child: Text(
+        child: const Text(
           'Password must be atleast 6 characters',
           style: TextStyle(color: Colors.white54),
         ),
@@ -252,7 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onPressed: () {
                     validateForms();
                   },
-                  child: Text(
+                  child: const Text(
                     'Create Account',
                     style: TextStyle(
                       color: Colors.black54,
@@ -268,7 +268,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   );
                 },
-                child: Text(
+                child: const Text(
                   'Already have an account. Login here',
                   style: TextStyle(
                     color: Colors.grey,

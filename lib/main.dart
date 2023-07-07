@@ -18,7 +18,7 @@ void main() async {
             primarySwatch: Colors.blue,
           ),
           debugShowCheckedModeBanner: false,
-          home: const MySplashScreen(),
+          home:  const MySplashScreen(),
         ),
       ),
     ),
@@ -35,8 +35,8 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
-}
 
+}
 class _MyAppState extends State<MyApp> {
   Key key = UniqueKey();
   void restartApp() {
@@ -48,8 +48,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return KeyedSubtree(
-      child: widget.child!,
       key: key,
+      child: widget.child!,
     );
   }
 }
