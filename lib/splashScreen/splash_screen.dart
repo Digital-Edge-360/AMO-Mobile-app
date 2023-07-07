@@ -1,92 +1,111 @@
 import 'dart:async';
+import 'package:amo_cabs/onboardingScreens/onboarding_screen1.dart';
 import 'package:flutter/material.dart';
+import '../assistants/assistant_methods.dart';
+import '../global/global.dart';
+import '../mainScreens/main_screen.dart';
 
-import '../onboardingScreens/onboarding_screen1.dart';
-
-class MySplashScreen extends StatelessWidget {
-  const MySplashScreen({super.key});
+class MySplashScreen extends StatefulWidget {
+  const MySplashScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Splash Screen',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const MyHomePage(),
-      debugShowCheckedModeBanner: false,
-    );
+  State<MySplashScreen> createState() => _MySplashScreenState();
+}
+
+class _MySplashScreenState extends State<MySplashScreen> {
+
+  
+
+  void startTimer() {
+    fAuth.currentUser != null
+        ? AssistantMethods.readCurrentOnlineUserInfo()
+        : null;
+    Timer(const Duration(seconds: 3), () async {
+    
+      if (await fAuth.currentUser != null) {
+        currentFirebaseUser = fAuth.currentUser;
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (c) => MainScreen(),
+
+          ),
+        );
+      }
+
+      else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (c) => OnboardingScreen(),
+          ),
+        );
+      }
+    });
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  MyHomePageState createState() => MyHomePageState();
-}
-class MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    Timer( const Duration(seconds: 2),
-            ()=>Navigator.pushReplacement(context,
-            MaterialPageRoute(builder:
-                (context) =>
-                    const OnboardingScreen()
-            )
-        )
-    );
+    startTimer();
   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 70, left: 10),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: const Column(
-                  children:  [
-                    Text(
-                      "Let's ",
-                      style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 54,
-                          color: Color(0xff73D477)),
-                    ),
-                    Text(
-                      "Ride",
-                      style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 54,
-                          color: Colors.white),
-                    ),
-                  ],
+    return Material(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 70, left: 10),
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    children: const [
+                      Text(
+                        "Let's ",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 64,
+                            color: Color(0xff73D477)),
+                      ),
+                      Text(
+                        "Ride",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 64,
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 51),
-              child: Center(
-                  child: Image.asset(
-                    "images/img.png",
-                    height: 200,
-                    width: 215,
-                  )),
+              Padding(
+                padding: const EdgeInsets.only(top: 81),
+                child: Center(
+                    child: Container(
+                        child: Image.asset(
+                          "images/img.png",
+                          height: 215,
+                          width: 215,
+                        ))),
               ),
-            Image.asset(
-              "images/img_1.png",
-              alignment: Alignment.bottomLeft,
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.only(top: 72, bottom: 5.0, left: 50),
+                child: Container(
+                  child: Image.asset(
+                    "images/img_1.png",
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-
     );
-
   }
 }

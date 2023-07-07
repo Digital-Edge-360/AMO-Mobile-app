@@ -1,19 +1,22 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:amo_cabs/authentication/registration_screen.dart';
 import 'package:amo_cabs/mainScreens/main_screen.dart';
+import 'package:amo_cabs/splashScreen/splash_screen.dart';
 import 'package:amo_cabs/widgets/amo_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:pinput/pinput.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../global/global.dart';
 import '../models/user_model.dart';
+import '../widgets/progress_dialog.dart';
 
 
 
@@ -31,35 +34,59 @@ class _OtpPageState extends State<OtpPage> {
   String? otpCode;
   String? phoneNumber;
 
+  // final box = GetStorage('userDetails');
+
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  
 
   // verify otp
   void verifyOtp(
       String verificationId,
       String userOtp,
       ) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => ProgressDialog(
+        message: "Verifying OTP, please wait..",
+      ),
+    );
+
     try {
+      final SharedPreferences perfs = await SharedPreferences.getInstance();
       PhoneAuthCredential creds = PhoneAuthProvider.credential(
           verificationId: verificationId, smsCode: userOtp);
       User? firebaseUser = (await auth.signInWithCredential(creds)).user;
+      // box.write('id', firebaseUser);
+      // print(box.read('id'));
       if (firebaseUser != null) {
         
-        final snapshot = await _db.collection("userDetails").where("phoneNumber", isEqualTo: phoneNumber).get();
+        final snapshot = await _db.collection("users").where("phoneNumber", isEqualTo: phoneNumber).get();
 
         try{
           final userData = snapshot.docs.map(
                   (e) => UserModel.fromSnapshot(e)).single;
-          print(userData.toString());
+          log("User Data : " + userData.toString());
+          
+
 
           userModelCurrentInfo = userData;
+          currentFirebaseUser = firebaseUser;
+          log(userModelCurrentInfo!.id!);
+          await perfs.setStringList("userCurrentInfo", [userModelCurrentInfo!.id!, userModelCurrentInfo!.phoneNumber!, userModelCurrentInfo!.firstName!, userModelCurrentInfo!.lastName!,userModelCurrentInfo!.email!]);
+
+
+
+
+
+
           debugPrint("take to login page");
           Fluttertoast.showToast(msg: 'Logging in..');
 
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (c) => MainScreen(),
+              builder: (c) => MySplashScreen(),
             ),
           );
         }
@@ -69,7 +96,7 @@ class _OtpPageState extends State<OtpPage> {
           debugPrint("taking to registration page");
           Fluttertoast.showToast(msg: 'Taking to registration page..');
 
-          Navigator.push(context, MaterialPageRoute(builder: (c) => RegistrationScreen(phoneNumber: phoneNumber!,)));
+          Navigator.push(context, MaterialPageRoute(builder: (c) => RegistrationScreen(phoneNumber: phoneNumber!, firebaseUser: firebaseUser,),),);
 
           // Get.to(RegistrationScreen(), arguments: [phoneNumber]);
 

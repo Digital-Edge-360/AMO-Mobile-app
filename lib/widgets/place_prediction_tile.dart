@@ -52,7 +52,7 @@ class PlacePredictionTileDesign extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: Colors.white10
+        primary: Colors.white
       ),
       onPressed: () {
         getPlaceDirectionDetails(predictedPlaces!.place_id, context);
@@ -63,7 +63,7 @@ class PlacePredictionTileDesign extends StatelessWidget {
           children: [
             const Icon(
               Icons.add_location,
-              color: Colors.grey,
+              color: Colors.black,
             ),
             const SizedBox(
               width: 14,
@@ -77,7 +77,7 @@ class PlacePredictionTileDesign extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Colors.white54,
+                      color: Colors.black,
                     ),
 
                   ),
@@ -89,7 +89,7 @@ class PlacePredictionTileDesign extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 12,
-                      color: Colors.white54,
+                      color: Colors.black,
                     ),
 
                   ),

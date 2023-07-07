@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:amo_cabs/authentication/otp_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../widgets/amo_toast.dart';
+import '../widgets/progress_dialog.dart';
 
 
 
@@ -34,6 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
   Future<void> signInWithPhoneNumber(String phoneNumber) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => ProgressDialog(
+        message: "Sending OTP, please wait..",
+      ),
+    );
+
     FirebaseAuth auth = FirebaseAuth.instance;
 
     await auth.verifyPhoneNumber(
@@ -45,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // authentication successful, do something
       },
       verificationFailed: (FirebaseAuthException e) {
-        // authentication failed, do something
+        log("Something went wrong. " + e.toString());
       },
       codeSent: (String verificationId, int? resendToken) async {
         // code sent to phone number, save verificationId for later use

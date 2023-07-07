@@ -38,7 +38,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      //backgroundColor: Colors.black,
       body: Column(
         children: [
 
@@ -47,7 +47,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
             height: 180,
             decoration: const BoxDecoration(color: Colors.black54, boxShadow: [
               BoxShadow(
-                color: Colors.white54,
+                color: Color(0xff029EE2),
                 blurRadius: 8,
                 spreadRadius: 0.5,
                 offset: Offset(
@@ -69,7 +69,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                           },
                           child: const Icon(
                             Icons.arrow_back,
-                            color: Colors.grey,
+                            color: Colors.white,
                           ),
                         ),
                         const Center(
@@ -77,7 +77,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                             'Search and select drop off location',
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.grey,
+                              color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -91,7 +91,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                       children: [
                         const Icon(
                           Icons.adjust_sharp,
-                          color: Colors.grey,
+                          color: Colors.white,
                         ),
 
                         const SizedBox(width: 18,),

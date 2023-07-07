@@ -7,11 +7,11 @@ class ProgressDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.white70,
       child: Container(
         margin: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          // color: Colors.white,
           borderRadius: BorderRadius.circular(6),
         ),
         child: Padding(
@@ -27,11 +27,14 @@ class ProgressDialog extends StatelessWidget {
               const SizedBox(
                 width: 26,
               ),
-              Text(
-                message!,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.black,
+              Expanded(
+                child: Text(
+                  message!,
+                  style: const TextStyle(
+                    overflow: TextOverflow.visible,
+                    fontSize: 12,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ],

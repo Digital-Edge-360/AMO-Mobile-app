@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../global/global.dart';
 import '../splashScreen/splash_screen.dart';
 
 class MyDrawer extends StatefulWidget {
   String? name;
-  String? email;
+  String? phone;
 
-  MyDrawer({this.name, this.email});
+  MyDrawer({this.name, this.phone});
   @override
   State<MyDrawer> createState() => _MyDrawerState();
 }
@@ -67,8 +68,10 @@ class _MyDrawerState extends State<MyDrawer> {
                                   fontSize: 20,
                                   fontFamily: ("Poppins")),
                             ),
-                            Text(widget.email.toString(),
-                                style: const TextStyle(
+
+                            Text(widget.phone.toString(),
+                                style: TextStyle(
+
                                     fontFamily: ("Poppins"),
                                     color: Color(0xff019EE3)))
                           ],
@@ -129,8 +132,11 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
 
           GestureDetector(
-            onTap: (){
-              fAuth.signOut();
+            onTap: () async{
+              await fAuth.signOut();
+              final SharedPreferences prefs =  await SharedPreferences.getInstance();
+              await prefs.remove("userCurrentInfo");
+
               Navigator.push(context, MaterialPageRoute(builder: (c) => MySplashScreen()),);
             },
             child: const ListTile(
