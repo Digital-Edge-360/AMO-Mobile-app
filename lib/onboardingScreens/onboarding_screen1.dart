@@ -13,16 +13,17 @@ class OnboardingScreen extends StatefulWidget {
 }
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final ButtonStyle style = ElevatedButton.styleFrom(
-      primary: Color(0xff009B4E),
+      backgroundColor: const Color(0xff009B4E),
       // Background color
       textStyle: const TextStyle(
         fontSize: 20,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
+
       ));
 
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,24 +34,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
+              const Padding(
+                padding: EdgeInsets.only(top: 100, left: 20, right: 20),
                 child: Center(
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Text("Locate the ",
-                            style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: 28,
-                                color: Colors.black)),
-                        Text("Destination",
-                            style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: 28,
-                                color: Color(0xff009B4E))),
-                      ],
-                    ),
+                  child: Row(
+                    children: [
+                      Text("Locate the ",
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 28,
+                              color: Colors.black)),
+                      Text("Destination",
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 28,
+                              color: Color(0xff009B4E))),
+                    ],
                   ),
                 ),
               ),
@@ -59,7 +58,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Container(
                   alignment: Alignment.center,
 
-                  child: Text(
+                  child: const Text(
                       "Your destination is at your fingertips. Open app & enter where you want to go",
                       style: TextStyle(
                           fontFamily: "Poppins",
@@ -109,17 +108,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 context,
                                 PageTransition(
                                   type: PageTransitionType.rightToLeft,
-                                  duration: Duration(milliseconds: 100),
+                                  duration: const Duration(milliseconds: 100),
                                   child:  OnboardingScreen2(),
                                 ),
                                 // MaterialPageRoute(builder: (context) =>OnboardingScreen2())
                               );
 
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.arrow_back,size: 20,
                             ),
-                            label: Text("Next"),
+                            label: const Text("Next"),
                             //.........
                           ))
                   ),

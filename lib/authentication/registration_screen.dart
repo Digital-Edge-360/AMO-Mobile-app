@@ -133,10 +133,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10,top: 20),
+            const Padding(
+              padding: EdgeInsets.only(left: 10,top: 20),
               child: Row(
-                children: const [
+                children: [
                   Text(
                     "Register to AMO account to continue.",
                     style: TextStyle(
@@ -204,7 +204,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 child: TextField(
                                   controller: txtFirstNameTextEditingController,
                                   maxLength: 20,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: "Enter your first name",
                                     hintStyle: TextStyle(fontSize: 14,color: Color(0xffC1C1C1)),
                                     border: InputBorder.none,
@@ -272,7 +272,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 child: TextField(
                                   controller: txtLastNameTextEditingController,
                                   maxLength: 20,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: "Enter your last name ",
                                     hintStyle: TextStyle(fontSize: 14,color: Color(0xffC1C1C1)),
                                     border: InputBorder.none,
@@ -338,10 +338,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsets.only(top: 10,left: 18),
+                                padding: const EdgeInsets.only(top: 10,left: 18),
                                 child: TextField(
                                   controller: txtEmailTextEditingController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: "Enter your Email address",
                                     hintStyle: TextStyle(fontSize: 14,color: Color(0xffC1C1C1)),
                                     border: InputBorder.none,

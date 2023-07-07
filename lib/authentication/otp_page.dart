@@ -6,6 +6,7 @@ import 'package:amo_cabs/widgets/amo_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -104,7 +105,7 @@ class _OtpPageState extends State<OtpPage> {
   }
 
   final ButtonStyle style = ElevatedButton.styleFrom(
-      minimumSize: Size(188, 48),
+      minimumSize: const Size(188, 48),
       backgroundColor: const Color(0xff009B4E),
       elevation: 6,
       textStyle: const TextStyle(fontSize: 16),
@@ -131,7 +132,7 @@ class _OtpPageState extends State<OtpPage> {
       // backgroundColor: Color(0xff215D5F),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

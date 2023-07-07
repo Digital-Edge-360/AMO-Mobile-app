@@ -11,7 +11,7 @@ import '../models/predicted_places.dart';
 class PlacePredictionTileDesign extends StatelessWidget {
   final PredictedPlaces? predictedPlaces;
 
-  PlacePredictionTileDesign({this.predictedPlaces});
+  const PlacePredictionTileDesign({super.key, this.predictedPlaces});
 
   getPlaceDirectionDetails(String? placeId, context) async {
     showDialog(

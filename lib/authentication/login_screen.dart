@@ -116,10 +116,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
 
 
-            Padding(
-              padding: const EdgeInsets.only(left: 10,top: 20),
+            const Padding(
+              padding: EdgeInsets.only(left: 10,top: 20),
               child: Row(
-                children: const [
+                children: [
                   Text(
 
                     "Enter your phone number to continue..",

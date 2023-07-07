@@ -1,13 +1,13 @@
+import 'package:amo_cabs/authentication/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
-import 'onboarding_screen4.dart';
 class OnboardingScreen3 extends StatelessWidget {
 
   OnboardingScreen3({Key? key}) : super(key: key);
 
   final ButtonStyle style = ElevatedButton.styleFrom(
-      primary: Color(0xff009B4E),
+      backgroundColor: const Color(0xff009B4E),
       // Background color
       textStyle: const TextStyle(
         fontSize: 20,
@@ -26,24 +26,22 @@ class OnboardingScreen3 extends StatelessWidget {
 
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
+            const Padding(
+              padding: EdgeInsets.only(top: 100, left: 20, right: 20),
               child: Center(
-                child: Container(
-                  child: Row(
-                    children: [
-                      Text(" Select",
-                          style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 30,
-                              color: Colors.black)),
-                      Text(" Journey Date",
-                          style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 30,
-                              color: Color(0xff009B4E))),
-                    ],
-                  ),
+                child: Row(
+                  children: [
+                    Text(" Select",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 30,
+                            color: Colors.black)),
+                    Text(" Journey Date",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 30,
+                            color: Color(0xff009B4E))),
+                  ],
                 ),
               ),
             ),
@@ -52,7 +50,7 @@ class OnboardingScreen3 extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
 
-                child: Text(
+                child: const Text(
                     "Your destination is at your fingertips. Open app & enter where you want to go",
                     style: TextStyle(
                         fontFamily: "Poppins",
@@ -103,17 +101,17 @@ class OnboardingScreen3 extends StatelessWidget {
 
                               PageTransition(
                                 type: PageTransitionType.rightToLeft,
-                                duration: Duration(milliseconds: 100),
-                                child:  OnboardingScreen4(),
+                                duration: const Duration(milliseconds: 100),
+                                child:  LoginScreen(),
                               ),
                               // MaterialPageRoute(builder: (context) =>OnboardingScreen4(),),
                             );
 
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_back,size: 20,
                           ),
-                          label: Text("Next"),
+                          label: const Text("Next"),
                           //.........
                         ))
                 ),

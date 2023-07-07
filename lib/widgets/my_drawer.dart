@@ -46,12 +46,10 @@ class _MyDrawerState extends State<MyDrawer> {
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   top: 30, left: 30),
-                              child: Container(
-                                child: Image.asset(
-                                  "images/img_12.png",
-                                  height: 120,
-                                  width: 120,
-                                ),
+                              child: Image.asset(
+                                "images/img_12.png",
+                                height: 120,
+                                width: 120,
                               ),
                             ),
                           ),
@@ -65,12 +63,12 @@ class _MyDrawerState extends State<MyDrawer> {
                           children:  [
                             Text(
                               widget.name.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 20,
                                   fontFamily: ("Poppins")),
                             ),
                             Text(widget.email.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontFamily: ("Poppins"),
                                     color: Color(0xff019EE3)))
                           ],
