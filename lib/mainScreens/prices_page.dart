@@ -11,11 +11,14 @@ import '../infoHandler/app_info.dart';
 
 class PricesPage extends StatefulWidget {
   int seatsCount, bagsCount, distanceInMeters;
+  bool rideByKm;
 
   PricesPage(
       {required this.seatsCount,
       required this.bagsCount,
-      required this.distanceInMeters});
+      required this.distanceInMeters,
+      required this.rideByKm,
+      });
 
   @override
   State<PricesPage> createState() => _PricesPageState();
@@ -188,16 +191,16 @@ class _PricesPageState extends State<PricesPage> {
 
 // Drop Location --
 
-              Container(
+              !widget.rideByKm ? Container(
                 alignment: Alignment.topLeft,
                 child: const Text("Drop Location",
                     style: TextStyle(
                         fontFamily: "Poppins",
                         fontSize: 12,
                         color: Colors.black)),
-              ),
+              ) : Container(),
 
-              Padding(
+              !widget.rideByKm ? Padding(
                 padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
                 child: Card(
                   elevation: 6.0,
@@ -244,7 +247,7 @@ class _PricesPageState extends State<PricesPage> {
                     ],
                   ),
                 ),
-              ),
+              ) : Container(),
 
 
 
@@ -395,7 +398,7 @@ class _PricesPageState extends State<PricesPage> {
                       //   return null;
                       // }
 
-                    return CarTypeWidget(distanceInMeters: widget.distanceInMeters, seatsCount: widget.seatsCount, bagsCount: widget.seatsCount, index: i, isOneWay: oneWay,);
+                    return CarTypeWidget(distanceInMeters: widget.distanceInMeters, seatsCount: widget.seatsCount, bagsCount: widget.seatsCount, index: i, isOneWay: oneWay,rideByKm: widget.rideByKm,);
 
 
 

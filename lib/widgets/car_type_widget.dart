@@ -4,8 +4,8 @@ import '../global/global.dart';
 import '../mainScreens/booking_confirmation_page.dart';
 class CarTypeWidget extends StatelessWidget {
   final int distanceInMeters, bagsCount, seatsCount, index;
-  final bool isOneWay;
-  const CarTypeWidget({super.key, required this.distanceInMeters, required this.seatsCount, required this.bagsCount, required this.index, required this.isOneWay});
+  final bool isOneWay, rideByKm;
+  const CarTypeWidget({super.key, required this.distanceInMeters, required this.seatsCount, required this.bagsCount, required this.index, required this.isOneWay, required this.rideByKm});
 
   int calculatePrices(){
     double price = distanceInMeters *
@@ -39,6 +39,7 @@ class CarTypeWidget extends StatelessWidget {
                 distanceInMeters: distanceInMeters,
                 bagsCount: bagsCount,
                 seatsCount: seatsCount,
+                rideByKm: rideByKm,
               ),
             ),
           );

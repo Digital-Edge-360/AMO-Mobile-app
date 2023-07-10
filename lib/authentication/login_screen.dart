@@ -64,11 +64,14 @@ class _LoginScreenState extends State<LoginScreen> {
           verificationId: verificationId,
           smsCode: smsCode,
         );
+        Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (c) => OtpPage(verificationId: verificationId, phoneNumber: phoneNumber)));
         await auth.signInWithCredential(credential);
         // authentication successful, do something
       },
-      codeAutoRetrievalTimeout: (String verificationId) {},
+      codeAutoRetrievalTimeout: (String verificationId) {
+
+      },
     );
   }
   @override

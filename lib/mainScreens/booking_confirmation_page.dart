@@ -12,8 +12,8 @@ import '../widgets/progress_dialog.dart';
 
 class BookingConfirmation extends StatefulWidget {
   int price, distanceInMeters, bagsCount, seatsCount, index;
-  bool isOneWay;
-  BookingConfirmation({required this.price, required this.distanceInMeters, required this.bagsCount, required this.seatsCount, required this.index, required this.isOneWay});
+  bool isOneWay, rideByKm;
+  BookingConfirmation({required this.price, required this.distanceInMeters, required this.bagsCount, required this.seatsCount, required this.index, required this.isOneWay, required this.rideByKm});
 
   @override
   State<BookingConfirmation> createState() => _BookingConfirmationState();
@@ -54,7 +54,11 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                     "pickUpLatitude":origin.locationLatitude,
                       "pickUpLongitude": origin.locationLatitude,
                       "pickUpHumanReadableAddress": origin.humanReadableAddress },
-        "dropOff": {"dropOffName": destination!.locationName!,
+        "dropOff": widget.rideByKm ? {"dropOffName": '',
+          "dropOffId": '',
+          "dropOffLatitude":'',
+          "dropOffLongitude": '',
+          "dropOffHumanReadableAddress": '' }: {"dropOffName": destination!.locationName!,
                     "dropOffId": destination.locationId,
                   "dropOffLatitude":destination.locationLatitude,
                     "dropOffLongitude": destination.locationLatitude,
@@ -70,7 +74,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
         "noOfSeatsRequest": widget.seatsCount,
         "price": widget.price.toDouble(),
         "carType": carTypes[widget.index],
-        "rideByKm": "km",
+        "rideByKm": widget.rideByKm ? "Ride by km" : "Ride by destination",
         "isOneWay": widget.isOneWay,
         "status": "Pending",
         "customerId": userDetails!=null ? userDetails[0] : '',
@@ -267,61 +271,57 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                 Text("Pickup Location", style: TextStyle(fontFamily: "Poppins")),
               ),
 
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only( bottom: 10),
-                    child: Card(
-                      elevation: 6.0,
-                      color: const Color(0xff009B4E),
-                      clipBehavior: Clip.hardEdge,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 40,
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Image.asset("images/img_34.png"),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: Center(
-                                    child: Text(
-                                      Provider.of<AppInfo>(context)
-                                          .userPickUpLocation!
-                                          .locationName!
-                                          .length >
-                                          30
-                                          ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
-                                          : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
-                                      style: TextStyle(color: Colors.white),
-                                      //like app --
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+              Padding(
+                padding: const EdgeInsets.only( bottom: 10),
+                child: Card(
+                  elevation: 6.0,
+                  color: const Color(0xff009B4E),
+                  clipBehavior: Clip.hardEdge,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0),
                   ),
-                ],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 40,
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset("images/img_34.png"),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Center(
+                                child: Text(
+                                  Provider.of<AppInfo>(context)
+                                      .userPickUpLocation!
+                                      .locationName!
+                                      .length >
+                                      30
+                                      ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
+                                      : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
+                                  style: TextStyle(color: Colors.white),
+                                  //like app --
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
 
               //Drop Location
-              Container(
+              !widget.rideByKm ? Container(
                 alignment: Alignment.centerLeft,
                 child:
                 Text("Drop Location", style: TextStyle(fontFamily: "Poppins")),
-              ),
+              ) : Container(),
 
-              Padding(
+              !widget.rideByKm ?Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Card(
                   elevation: 6.0,
@@ -357,7 +357,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                     ),
                   ),
                 ),
-              ),
+              ) : Container(),
 
               //  pick-- date and time
               Container(

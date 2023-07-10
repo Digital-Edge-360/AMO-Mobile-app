@@ -207,7 +207,10 @@ class _OtpPageState extends State<OtpPage> {
               ),
               const SizedBox(height: 10),
               GestureDetector(
-                onTap: _login,
+                onTap: (){
+                  AmoToast.showAmoToast('Resending OTP, Please wait..', context);
+                  _login();
+                },
                 child: const Text(
                   "Resend new code",
                   style: TextStyle(

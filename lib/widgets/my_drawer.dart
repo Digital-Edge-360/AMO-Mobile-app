@@ -54,7 +54,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                 foregroundColor: Colors.black54,
                                 child: Text(
                                   '${widget.name!.substring(0,1)}${widget.lastName!.substring(0,1)}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 44,
                                     fontWeight: FontWeight.bold
@@ -79,7 +79,7 @@ class _MyDrawerState extends State<MyDrawer> {
                             ),
 
                             Text(widget.phone.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
 
                                     fontFamily: ("Poppins"),
                                     color: Color(0xff019EE3)))
