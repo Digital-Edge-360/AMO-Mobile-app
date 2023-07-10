@@ -123,6 +123,45 @@ class _OtpPageState extends State<OtpPage> {
   }
 
 
+  Future<void> signInWithPhoneNumber(String phoneNumber) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => ProgressDialog(
+        message: "Resending OTP, please wait..",
+      ),
+    );
+
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    await auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        final UserCredential firebaseUser = await auth.signInWithCredential(credential);
+        User? user = firebaseUser.user;
+
+        // authentication successful, do something
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        log("Something went wrong. " + e.toString());
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        // code sent to phone number, save verificationId for later use
+        String smsCode = ''; // get sms code from user
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId,
+          smsCode: smsCode,
+        );
+        Navigator.pop(context);
+        // Navigator.push(context, MaterialPageRoute(builder: (c) => OtpPage(verificationId: verificationId, phoneNumber: phoneNumber)));
+        await auth.signInWithCredential(credential);
+        // authentication successful, do something
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+
+      },
+    );
+  }
+
   void _login() {
     if (otpCode != null) {
       verifyOtp(widget.verificationId, otpCode!);
@@ -209,7 +248,7 @@ class _OtpPageState extends State<OtpPage> {
               GestureDetector(
                 onTap: (){
                   AmoToast.showAmoToast('Resending OTP, Please wait..', context);
-                  _login();
+                  signInWithPhoneNumber(widget.phoneNumber);
                 },
                 child: const Text(
                   "Resend new code",

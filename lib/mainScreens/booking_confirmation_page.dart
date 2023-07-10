@@ -11,7 +11,8 @@ import '../infoHandler/app_info.dart';
 import '../widgets/progress_dialog.dart';
 
 class BookingConfirmation extends StatefulWidget {
-  int price, distanceInMeters, bagsCount, seatsCount, index;
+  int  distanceInMeters, bagsCount, seatsCount, index;
+  String price;
   bool isOneWay, rideByKm;
   BookingConfirmation({required this.price, required this.distanceInMeters, required this.bagsCount, required this.seatsCount, required this.index, required this.isOneWay, required this.rideByKm});
 
@@ -72,9 +73,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
         "waitingTime" : widget.isOneWay ? 0 : 'Yet to implement',
         "noOfBagsRequest": widget.bagsCount,
         "noOfSeatsRequest": widget.seatsCount,
-        "price": widget.price.toDouble(),
+        "price": widget.price,
         "carType": carTypes[widget.index],
-        "rideByKm": widget.rideByKm ? "Ride by km" : "Ride by destination",
+        "rideByKm": widget.rideByKm ? "km" : "destination",
         "isOneWay": widget.isOneWay,
         "status": "Pending",
         "customerId": userDetails!=null ? userDetails[0] : '',
@@ -435,7 +436,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
 
-                                  Text("${_selectedTimePickUp.hour}:${_selectedTimePickUp.minute}", style: TextStyle(color: Colors.white),),
+                                  Text(_selectedTimePickUp.hour <10 ? "0${_selectedTimePickUp.hour}" : "${_selectedTimePickUp.hour}", style: TextStyle(color: Colors.white),),
+                                  Text(":", style: TextStyle(color: Colors.white),),
+                                  Text(_selectedTimePickUp.minute <10 ? "0${_selectedTimePickUp.minute}":"${_selectedTimePickUp.minute}", style: TextStyle(color: Colors.white),),
 
                                   const SizedBox(width: 10,),
                                   const Icon(Icons.access_time_filled_sharp,

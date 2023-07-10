@@ -286,9 +286,10 @@ class _MainScreenState extends State<MainScreen> {
 
 
     super.initState();
+    checkIfLocationPermissionAllowed();
     locateUserPosition();
 
-    checkIfLocationPermissionAllowed();
+
   }
 
 

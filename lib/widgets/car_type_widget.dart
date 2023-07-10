@@ -2,24 +2,33 @@ import 'package:flutter/material.dart';
 
 import '../global/global.dart';
 import '../mainScreens/booking_confirmation_page.dart';
+import 'package:intl/intl.dart';
 class CarTypeWidget extends StatelessWidget {
   final int distanceInMeters, bagsCount, seatsCount, index;
   final bool isOneWay, rideByKm;
   const CarTypeWidget({super.key, required this.distanceInMeters, required this.seatsCount, required this.bagsCount, required this.index, required this.isOneWay, required this.rideByKm});
 
-  int calculatePrices(){
+  String formatPrice(double price) {
+    final formatter = NumberFormat('#,##0.00', 'en_US');
+    return formatter.format(price);
+  }
+
+  String calculatePrices(){
     double price = distanceInMeters *
         perKmMultiplier[index] * 2;
     if(price < 500){
       price += basePrice;
     }
-    return price.toInt();
-    if(isOneWay){
-      //TODO:
-    }
-    else{
-      //TODO: return ui need to be done
-    }
+
+
+
+    return formatPrice(price);
+    // if(isOneWay){
+    //   //TODO:
+    // }
+    // else{
+    //   //TODO: return ui need to be done
+    // }
 
   }
 
@@ -57,7 +66,7 @@ class CarTypeWidget extends StatelessWidget {
                 carTypes[index],
                 style: const TextStyle(
                     fontFamily: "Poppins",
-                    fontSize: 16,
+                    fontSize: 12,
                     color: Colors.black),
               ),
             ),
@@ -104,7 +113,7 @@ class CarTypeWidget extends StatelessWidget {
         ),
         trailing: Text(
           '₹${calculatePrices()}',
-          style: TextStyle(
+          style: const TextStyle(
               fontFamily: "Poppins",
               fontSize: 18,
               color: Colors.black),

@@ -26,6 +26,7 @@ dependencies:
   pinput: ^2.2.12
   cloud_firestore: ^4.8.1
   shared_preferences: ^2.2.0
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

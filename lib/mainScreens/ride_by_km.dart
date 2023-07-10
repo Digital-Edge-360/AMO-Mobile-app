@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amo_cabs/mainScreens/main_screen.dart';
 import 'package:amo_cabs/mainScreens/prices_page.dart';
 import 'package:amo_cabs/widgets/my_drawer.dart';
@@ -23,10 +25,15 @@ class _RideByKmState extends State<RideByKm> {
   String? userLastName;
   String? userPhone;
 
-  assignUserName(){
-    userName = userModelCurrentInfo!.firstName!;
-    userLastName = userModelCurrentInfo!.lastName!;
-    userPhone =  userModelCurrentInfo!.phoneNumber!;
+  assignUserName() async{
+    try{
+      userName = await userModelCurrentInfo!.firstName!;
+      userLastName = await userModelCurrentInfo!.lastName!;
+      userPhone =  await userModelCurrentInfo!.phoneNumber!;
+    }
+    catch(e){
+      log(e.toString());
+    }
 }
 
 
