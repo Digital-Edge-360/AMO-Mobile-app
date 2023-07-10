@@ -104,12 +104,14 @@ class _OtpPageState extends State<OtpPage> {
 
 
       } else {
-        Navigator.pop(context);
+
         Fluttertoast.showToast(msg: 'Error occured during sign in.');
+        Navigator.pop(context);
       }
 
     } on FirebaseAuthException catch (e) {
-      Fluttertoast.showToast(msg: e.message.toString());
+      Fluttertoast.showToast(msg: e.message.toString().substring(0, 60) + "..");
+      Navigator.pop(context);
 
     }
   }

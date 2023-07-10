@@ -44,7 +44,8 @@ class _MainScreenState extends State<MainScreen> {
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
 
-  String userName = "Name";
+  String userName = "First Name";
+  String userLastName = "Last name";
   String userPhone = "Phone";
 
   bool openNavigationDrawer = true;
@@ -235,6 +236,8 @@ class _MainScreenState extends State<MainScreen> {
   int currentSelectedCard = 0;
   int km = 0;
 
+  int _index = 0;
+
   int seatsCount = 1;
   int bagsCount = 1;
 
@@ -267,6 +270,7 @@ class _MainScreenState extends State<MainScreen> {
     String humanReadableAddress = await AssistantMethods.searchAddressForGeographicCoOrdinates(userCurrentPosition!, context);
     log('This is your address $humanReadableAddress');
     userName = userModelCurrentInfo!.firstName!;
+    userLastName = userModelCurrentInfo!.lastName!;
     userPhone =  userModelCurrentInfo!.phoneNumber!;
 
 
@@ -302,8 +306,27 @@ class _MainScreenState extends State<MainScreen> {
           ),
           child: MyDrawer(
             name: userName,
+            lastName : userLastName,
             phone: userPhone,
           ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          elevation: 5,
+          currentIndex: _index,
+          onTap: (val){
+            setState(() {
+              _index = val;
+            });
+          },
+
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.location_on),
+              label: 'Ride by destination',
+            ),
+            BottomNavigationBarItem(icon: Icon(Icons.social_distance_sharp), label: 'Ride by km'),
+          ],
+
         ),
         body: currentSelectedCard == 0 ?
         Stack(

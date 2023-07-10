@@ -27,6 +27,11 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   TimeOfDay _selectedTimeReturnPickUp = TimeOfDay.now();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  final successSnackBar = SnackBar(
+    content: const Text('Request sent sucessfully!'),
+
+  );
+
 
 
   sendRideRequest() async {
@@ -65,7 +70,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
         "noOfSeatsRequest": widget.seatsCount,
         "price": widget.price.toDouble(),
         "carType": carTypes[widget.index],
-        "rideByKm": false,
+        "rideByKm": "km",
         "isOneWay": widget.isOneWay,
         "status": "Pending",
         "customerId": userDetails!=null ? userDetails[0] : '',
@@ -78,7 +83,14 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
     var id = await _firestore.collection("rideRequests").add(currentRideDetails).then((documentSnapshot) {
       debugPrint("Added Data with ID: ${documentSnapshot.id}");
-      AmoToast.showAmoToast("Request sent sucessfully!", context);
+
+
+
+
+
+      // Find the ScaffoldMessenger in the widget tree
+      // and use it to show a SnackBar.
+      ScaffoldMessenger.of(context).showSnackBar(successSnackBar);
       Provider.of<AppInfo>(context, listen: false).userDropOffLocation = null;
 
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) => MainScreen()));

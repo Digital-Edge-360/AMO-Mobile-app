@@ -7,8 +7,9 @@ import '../splashScreen/splash_screen.dart';
 class MyDrawer extends StatefulWidget {
   String? name;
   String? phone;
+  String? lastName;
 
-  MyDrawer({this.name, this.phone});
+  MyDrawer({this.name, this.phone, this.lastName});
   @override
   State<MyDrawer> createState() => _MyDrawerState();
 }
@@ -47,11 +48,19 @@ class _MyDrawerState extends State<MyDrawer> {
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   top: 30, left: 30),
-                              child: Image.asset(
-                                "images/img_12.png",
-                                height: 120,
-                                width: 120,
-                              ),
+                              child: CircleAvatar(
+                                radius: 60,
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.black54,
+                                child: Text(
+                                  '${widget.name!.substring(0,1)}${widget.lastName!.substring(0,1)}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 44,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              )
                             ),
                           ),
                         ]),
@@ -63,7 +72,7 @@ class _MyDrawerState extends State<MyDrawer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children:  [
                             Text(
-                              widget.name.toString(),
+                              '${widget.name} ${widget.lastName}',
                               style: const TextStyle(
                                   fontSize: 20,
                                   fontFamily: ("Poppins")),

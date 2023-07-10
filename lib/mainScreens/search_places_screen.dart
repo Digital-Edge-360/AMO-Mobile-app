@@ -38,7 +38,6 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.black,
       body: Column(
         children: [
 
@@ -77,7 +76,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                             'Search and select drop off location',
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.black,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
