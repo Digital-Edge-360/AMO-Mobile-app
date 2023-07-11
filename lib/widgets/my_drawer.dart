@@ -146,7 +146,12 @@ class _MyDrawerState extends State<MyDrawer> {
               final SharedPreferences prefs =  await SharedPreferences.getInstance();
               await prefs.remove("userCurrentInfo");
 
-              Navigator.push(context, MaterialPageRoute(builder: (c) => MySplashScreen()),);
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => MySplashScreen()),
+                  ModalRoute.withName('/')
+              );
+
             },
             child: const ListTile(
               leading: Icon(Icons.logout, color: Colors.white,),

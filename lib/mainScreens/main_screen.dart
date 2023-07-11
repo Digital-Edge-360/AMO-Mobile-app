@@ -239,6 +239,7 @@ class _MainScreenState extends State<MainScreen> {
 
   int seatsCount = 1;
   int bagsCount = 1;
+  bool isLoading = false;
 
   locateUserPosition() async{
     Position cPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -281,13 +282,25 @@ class _MainScreenState extends State<MainScreen> {
 
   double searchLocationContainerHeight = 320.0;
 
+  void initialTask() async{
+    await checkIfLocationPermissionAllowed();
+
+    setState(() {
+      setState(() {
+        isLoading = false;
+      });
+    });
+    await locateUserPosition();
+  }
+
   @override
   void initState() {
 
 
+    isLoading = true;
     super.initState();
-    checkIfLocationPermissionAllowed();
-    locateUserPosition();
+    initialTask();
+
 
 
   }
@@ -322,16 +335,22 @@ class _MainScreenState extends State<MainScreen> {
 
           },
 
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.location_on),
               label: 'Ride by destination',
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.social_distance_sharp), label: 'Ride by km'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.social_distance_sharp),
+                label: 'Ride by km'
+            ),
           ],
 
         ),
-        body: IndexedStack(
+        body: isLoading ? ProgressDialog(
+            message: "Loading..",
+
+        ):IndexedStack(
           index: _index,
           children: [
             Stack(
