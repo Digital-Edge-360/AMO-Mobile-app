@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amo_cabs/assistants/request_assistant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -54,18 +56,27 @@ class AssistantMethods {
     String urlOriginToDestinationDirectionDetails = "https://maps.googleapis.com/maps/api/directions/json?origin=${originPosition.latitude},${originPosition.longitude}&destination=${destinationPosition.latitude},${destinationPosition.longitude}&key=$mapKey";
     var responseDirectionApi = await RequestAssistant.receiveRequest(urlOriginToDestinationDirectionDetails);
 
+    log("Response for polyline:");
+    log(responseDirectionApi.toString());
+
     if(responseDirectionApi == "Error Occured."){
       return null;
     }
-    DirectionDetailsInfo directionDetailsInfo = DirectionDetailsInfo();
-    directionDetailsInfo.e_points = responseDirectionApi["routes"][0]["overview_polyline"]["points"];
-    directionDetailsInfo.distance_text = responseDirectionApi["routes"][0]["legs"][0]["distance"]["text"];
-    directionDetailsInfo.distance_value = responseDirectionApi["routes"][0]["legs"][0]["distance"]["value"];
+    try{
+      DirectionDetailsInfo directionDetailsInfo = DirectionDetailsInfo();
+      directionDetailsInfo.e_points = responseDirectionApi["routes"][0]["overview_polyline"]["points"];
+      directionDetailsInfo.distance_text = responseDirectionApi["routes"][0]["legs"][0]["distance"]["text"];
+      directionDetailsInfo.distance_value = responseDirectionApi["routes"][0]["legs"][0]["distance"]["value"];
 
-    directionDetailsInfo.duration_text = responseDirectionApi["routes"][0]["legs"][0]["duration"]["text"];
-    directionDetailsInfo.duration_value = responseDirectionApi["routes"][0]["legs"][0]["duration"]["value"];
+      directionDetailsInfo.duration_text = responseDirectionApi["routes"][0]["legs"][0]["duration"]["text"];
+      directionDetailsInfo.duration_value = responseDirectionApi["routes"][0]["legs"][0]["duration"]["value"];
+      return directionDetailsInfo;
+    }
+    catch(e){
+      log("Error occured in polyline:" + e.toString());
+    }
 
-    return directionDetailsInfo;
+
   }
 
 }
