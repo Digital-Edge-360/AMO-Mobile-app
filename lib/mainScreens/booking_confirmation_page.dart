@@ -1,6 +1,7 @@
 import 'package:amo_cabs/global/global.dart';
 import 'package:amo_cabs/mainScreens/main_screen.dart';
 import 'package:amo_cabs/widgets/amo_toast.dart';
+import 'package:amo_cabs/widgets/car_type_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -731,7 +732,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                         style: TextStyle(fontSize: 18),
                       ),
                       TextSpan(
-                        text: '₹${widget.price}',
+                        text: '₹${CarTypeWidget.formatPrice(widget.price)}',
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),

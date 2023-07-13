@@ -28,7 +28,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final Completer<GoogleMapController> _controllerGoogleMap =
-      Completer<GoogleMapController>();
+  Completer<GoogleMapController>();
 
   GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
   GoogleMapController? newGoogleMapController;
@@ -255,19 +255,19 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     LatLng latLngPosition =
-        LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
+    LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
 
     CameraPosition cameraPosition =
-        CameraPosition(target: latLngPosition, zoom: 14);
+    CameraPosition(target: latLngPosition, zoom: 14);
     newGoogleMapController!.animateCamera(
       CameraUpdate.newCameraPosition(cameraPosition),
     );
 
     // ignore: use_build_context_synchronously
     String humanReadableAddress =
-        // ignore: use_build_context_synchronously
-        await AssistantMethods.searchAddressForGeographicCoOrdinates(
-            userCurrentPosition!, context);
+    // ignore: use_build_context_synchronously
+    await AssistantMethods.searchAddressForGeographicCoOrdinates(
+        userCurrentPosition!, context);
     log('This is your address $humanReadableAddress');
     userName = userModelCurrentInfo!.firstName!;
     userLastName = userModelCurrentInfo!.lastName!;
@@ -329,448 +329,375 @@ class _MainScreenState extends State<MainScreen> {
           ),
           body: isLoading
               ? ProgressDialog(
-                  message: "Loading..",
-                )
+            message: "Loading..",
+          )
               : IndexedStack(
-                  index: _index,
-                  children: [
-                    Stack(
-                      children: [
-                        GoogleMap(
-                          mapType: MapType.normal,
-                          myLocationButtonEnabled: true,
-                          myLocationEnabled: true,
-                          zoomControlsEnabled: true,
-                          markers: markersSet,
-                          circles: circlesSet,
-                          padding: EdgeInsets.only(
-                              bottom: bottomPaddingOfMap, top: 20),
-                          zoomGesturesEnabled: true,
-                          initialCameraPosition: _kGooglePlex,
-                          polylines: polyLineSet,
-                          onMapCreated: (GoogleMapController controller) {
-                            _controllerGoogleMap.complete(controller);
-                            newGoogleMapController = controller;
-                            // blackThemeGoogleMap();
+            index: _index,
+            children: [
+              Stack(
+                children: [
+                  GoogleMap(
+                    mapType: MapType.normal,
+                    myLocationButtonEnabled: true,
+                    myLocationEnabled: true,
+                    zoomControlsEnabled: true,
+                    markers: markersSet,
+                    circles: circlesSet,
+                    padding: EdgeInsets.only(
+                        bottom: bottomPaddingOfMap, top: 20),
+                    zoomGesturesEnabled: true,
+                    initialCameraPosition: _kGooglePlex,
+                    polylines: polyLineSet,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controllerGoogleMap.complete(controller);
+                      newGoogleMapController = controller;
+                      // blackThemeGoogleMap();
 
-                            setState(() {
-                              bottomPaddingOfMap = 330;
-                            });
+                      setState(() {
+                        bottomPaddingOfMap = 330;
+                      });
 
-                            locateUserPosition();
-                          },
-                        ),
+                      locateUserPosition();
+                    },
+                  ),
 
-                        //custom hamburger button for drawer
-                        Positioned(
-                          top: 30,
-                          left: 14,
-                          child: GestureDetector(
-                            onTap: () {
-                              if (openNavigationDrawer) {
-                                sKey.currentState!.openDrawer();
-                              } else {
-                                //restart- refresh- minimize app progamitacally
-                                // SystemNavigator.pop();
-                                setState(() {
-                                  openNavigationDrawer = true;
-                                  pLineCoordinatesList = [];
-                                  Provider.of<AppInfo>(context, listen: false)
-                                      .userDropOffLocation = null;
+                  //custom hamburger button for drawer
+                  Positioned(
+                    top: 30,
+                    left: 14,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (openNavigationDrawer) {
+                          sKey.currentState!.openDrawer();
+                        } else {
+                          //restart- refresh- minimize app progamitacally
+                          // SystemNavigator.pop();
+                          setState(() {
+                            openNavigationDrawer = true;
+                            pLineCoordinatesList = [];
+                            Provider.of<AppInfo>(context, listen: false)
+                                .userDropOffLocation = null;
 
-                                  polyLineSet = {};
+                            polyLineSet = {};
 
-                                  markersSet = {};
-                                  circlesSet = {};
-                                });
-                              }
-                            },
-                            child: Icon(
-                              // Icons.menu,
-                              openNavigationDrawer ? Icons.menu : Icons.close,
-                              color: Colors.black54,
-                            ),
+                            markersSet = {};
+                            circlesSet = {};
+                          });
+                        }
+                      },
+                      child: Icon(
+                        // Icons.menu,
+                        openNavigationDrawer ? Icons.menu : Icons.close,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ),
+
+                  //ui for searching location
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: AnimatedSize(
+                      curve: Curves.easeIn,
+                      duration: const Duration(milliseconds: 120),
+                      child: Container(
+                        height: searchLocationContainerHeight,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            topLeft: Radius.circular(20),
                           ),
                         ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 18),
+                          child: Column(
+                            children: [
+                              //ride by destination or ride by km
 
-                        //ui for searching location
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: AnimatedSize(
-                            curve: Curves.easeIn,
-                            duration: const Duration(milliseconds: 120),
-                            child: Container(
-                              height: searchLocationContainerHeight,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  topLeft: Radius.circular(20),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 10,
                                 ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 18),
-                                child: Column(
-                                  children: [
-                                    //ride by destination or ride by km
-
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 10,
-                                      ),
-                                      child: Card(
-                                        elevation: 8.0,
-                                        color: Colors.white,
-                                        clipBehavior: Clip.hardEdge,
-                                        shape: RoundedRectangleBorder(
-                                          side: const BorderSide(
-                                              color: Color(0xffD0D0D0)),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        child: Row(
-                                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 10),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    //text1
-                                                    Row(
-                                                      children: [
-                                                        const Text(
-                                                          "Seats Count",
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xff019EE3)),
-                                                        ),
-                                                        Image.asset(
-                                                          'images/seats.png',
-                                                          height: 15,
-                                                        )
-                                                      ],
-                                                    ),
-                                                    // todo -- dropdown1
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 5),
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        3),
-                                                            color: const Color(
-                                                                0xff019EE3)),
-                                                        // width: 80,
-                                                        height: 20,
-                                                        child:
-                                                            DropdownButton<int>(
-                                                          icon: Row(
-                                                            // mainAxisAlignment: MainAxisAlignment.start,
-                                                            children: [
-                                                              Text(
-                                                                seatsCount
-                                                                    .toString(),
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .white),
-                                                              ),
-                                                              const Icon(
-                                                                Icons
-                                                                    .arrow_drop_down_sharp,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          items: <int>[
-                                                            1,
-                                                            2,
-                                                            3,
-                                                            4,
-                                                            5,
-                                                            6
-                                                          ].map((int value) {
-                                                            return DropdownMenuItem<
-                                                                int>(
-                                                              value: value,
-                                                              child: Text(
-                                                                value
-                                                                    .toString(),
-                                                              ),
-                                                            );
-                                                          }).toList(),
-                                                          onChanged: (newVal) {
-                                                            setState(() {
-                                                              seatsCount =
-                                                                  newVal!;
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )),
-
-                                            //
-                                            // todo -- line
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10, left: 80),
-                                              child: Container(
-                                                height: 70,
-                                                width: 1,
-                                                color: const Color(0xffD0D0D0),
-                                              ),
-                                            ),
-
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 20),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                child: Card(
+                                  elevation: 8.0,
+                                  color: Colors.white,
+                                  clipBehavior: Clip.hardEdge,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        color: Color(0xffD0D0D0)),
+                                    borderRadius:
+                                    BorderRadius.circular(10.0),
+                                  ),
+                                  child: Row(
+                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              //text1
+                                              Row(
                                                 children: [
-                                                  Row(
-                                                    children: [
-                                                      const Text(
-                                                        "Bags Count",
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xff019EE3)),
-                                                      ),
-                                                      Image.asset(
-                                                        'images/bags.png',
-                                                        height: 15,
-                                                      )
-                                                    ],
+                                                  const Text(
+                                                    "Seats Count",
+                                                    style: TextStyle(
+                                                        color: Color(
+                                                            0xff019EE3)),
                                                   ),
-
-                                                  // todo -- dropdown2
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 5),
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(3),
-                                                          color: const Color(
-                                                              0xff019EE3)),
-                                                      // width: 80,
-                                                      height: 20,
-                                                      child:
-                                                          DropdownButton<int>(
-                                                        icon: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              bagsCount
-                                                                  .toString(),
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
-                                                            const Icon(
-                                                              Icons
-                                                                  .arrow_drop_down_sharp,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        items: <int>[
-                                                          1,
-                                                          2,
-                                                          3,
-                                                          4,
-                                                          5
-                                                        ].map((int value) {
-                                                          return DropdownMenuItem<
-                                                              int>(
-                                                            value: value,
-                                                            child: Text(
-                                                              value.toString(),
-                                                            ),
-                                                          );
-                                                        }).toList(),
-                                                        onChanged: (newVal) {
-                                                          setState(() {
-                                                            bagsCount = newVal!;
-                                                          });
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  Image.asset(
+                                                    'images/seats.png',
+                                                    height: 15,
+                                                  )
                                                 ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    //from
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.add_location_alt_outlined,
-                                          color: Colors.grey,
-                                        ),
-                                        const SizedBox(
-                                          width: 12,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              'From',
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            Text(
-                                              Provider.of<AppInfo>(context)
-                                                          .userPickUpLocation !=
-                                                      null
-                                                  ? '${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 24)}...'
-                                                  : 'Your current location',
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-
-                                    const Divider(
-                                      height: 1,
-                                      thickness: 1,
-                                      color: Colors.grey,
-                                    ),
-
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-
-                                    //to
-                                    GestureDetector(
-                                      onTap: () async {
-                                        //go to search places screen
-                                        var responseFromSearchScreen =
-                                            await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (c) =>
-                                                SearchPlacesScreen(),
-                                          ),
-                                        );
-
-                                        if (responseFromSearchScreen ==
-                                            "obtainedDropOff") {
-                                          //draw poly line between pick up and drop off locations.
-                                          await drawPolyLineFromOriginToDestination();
-
-                                          setState(() {
-                                            openNavigationDrawer = false;
-                                          });
-                                        }
-                                      },
-                                      child: Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.add_location_alt_outlined,
-                                            color: Colors.grey,
-                                          ),
-                                          const SizedBox(
-                                            width: 12,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const Text(
-                                                'To',
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                              Text(
-                                                Provider.of<AppInfo>(context)
-                                                            .userDropOffLocation !=
-                                                        null
-                                                    ? Provider.of<AppInfo>(
-                                                            context)
-                                                        .userDropOffLocation!
-                                                        .locationName!
-                                                    : 'Where to go?',
-                                                style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 12,
+                                              // todo -- dropdown1
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.only(
+                                                    top: 5),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          3),
+                                                      color: const Color(
+                                                          0xff019EE3)),
+                                                  // width: 80,
+                                                  height: 20,
+                                                  child:
+                                                  DropdownButton<int>(
+                                                    icon: Row(
+                                                      // mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          seatsCount
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              color: Colors
+                                                                  .white),
+                                                        ),
+                                                        const Icon(
+                                                          Icons
+                                                              .arrow_drop_down_sharp,
+                                                          color: Colors
+                                                              .white,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    items: <int>[
+                                                      1,
+                                                      2,
+                                                      3,
+                                                      4,
+                                                      5,
+                                                      6
+                                                    ].map((int value) {
+                                                      return DropdownMenuItem<
+                                                          int>(
+                                                        value: value,
+                                                        child: Text(
+                                                          value
+                                                              .toString(),
+                                                        ),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (newVal) {
+                                                      setState(() {
+                                                        seatsCount =
+                                                        newVal!;
+                                                      });
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                             ],
-                                          ),
-                                        ],
+                                          )),
+
+                                      //
+                                      // todo -- line
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 10, left: 80),
+                                        child: Container(
+                                          height: 70,
+                                          width: 1,
+                                          color: const Color(0xffD0D0D0),
+                                        ),
                                       ),
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 20),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  "Bags Count",
+                                                  style: TextStyle(
+                                                      color: Color(
+                                                          0xff019EE3)),
+                                                ),
+                                                Image.asset(
+                                                  'images/bags.png',
+                                                  height: 15,
+                                                )
+                                              ],
+                                            ),
+
+                                            // todo -- dropdown2
+                                            Padding(
+                                              padding:
+                                              const EdgeInsets.only(
+                                                  top: 5),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(3),
+                                                    color: const Color(
+                                                        0xff019EE3)),
+                                                // width: 80,
+                                                height: 20,
+                                                child:
+                                                DropdownButton<int>(
+                                                  icon: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .center,
+                                                    children: [
+                                                      Text(
+                                                        bagsCount
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            color: Colors
+                                                                .white),
+                                                      ),
+                                                      const Icon(
+                                                        Icons
+                                                            .arrow_drop_down_sharp,
+                                                        color:
+                                                        Colors.white,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  items: <int>[
+                                                    1,
+                                                    2,
+                                                    3,
+                                                    4,
+                                                    5
+                                                  ].map((int value) {
+                                                    return DropdownMenuItem<
+                                                        int>(
+                                                      value: value,
+                                                      child: Text(
+                                                        value.toString(),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (newVal) {
+                                                    setState(() {
+                                                      bagsCount = newVal!;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              //from
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.add_location_alt_outlined,
+                                    color: Colors.grey,
+                                  ),
+                                  const SizedBox(
+                                    width: 12,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'From',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      Text(
+                                        Provider.of<AppInfo>(context)
+                                            .userPickUpLocation !=
+                                            null
+                                            ? '${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 24)}...'
+                                            : 'Your current location',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 10,
+                              ),
+
+                              const Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: Colors.grey,
+                              ),
+
+                              const SizedBox(
+                                height: 16,
+                              ),
+
+                              //to
+                              GestureDetector(
+                                onTap: () async {
+                                  //go to search places screen
+                                  var responseFromSearchScreen =
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (c) =>
+                                          SearchPlacesScreen(),
                                     ),
+                                  );
 
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
+                                  if (responseFromSearchScreen ==
+                                      "obtainedDropOff") {
+                                    //draw poly line between pick up and drop off locations.
+                                    await drawPolyLineFromOriginToDestination();
 
-                                    const Divider(
-                                      height: 1,
-                                      thickness: 1,
-                                      color: Colors.grey,
-                                    ),
-
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-
-
-                            //to
-                            GestureDetector(
-                              onTap: () async {
-                                //go to search places screen
-                                var responseFromSearchScreen = await Navigator.push(context, MaterialPageRoute(builder: (c)=> SearchPlacesScreen(),),);
-
-                                if(responseFromSearchScreen == "obtainedDropOff"){
-                                  //draw poly line between pick up and drop off locations.
-                                  await drawPolyLineFromOriginToDestination();
-
-                                  setState(() {
-                                    openNavigationDrawer = false;
-                                  });
-                                }
-                              },
-                              child: Container(
-                                // color: Colors.red,
-                                width: double.infinity,
+                                    setState(() {
+                                      openNavigationDrawer = false;
+                                    });
+                                  }
+                                },
                                 child: Row(
                                   children: [
                                     const Icon(
@@ -781,7 +708,8 @@ class _MainScreenState extends State<MainScreen> {
                                       width: 12,
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                       children: [
                                         const Text(
                                           'To',
@@ -791,8 +719,13 @@ class _MainScreenState extends State<MainScreen> {
                                           ),
                                         ),
                                         Text(
-                                          Provider.of<AppInfo>(context).userDropOffLocation != null
-                                              ? Provider.of<AppInfo>(context).userDropOffLocation!.locationName!
+                                          Provider.of<AppInfo>(context)
+                                              .userDropOffLocation !=
+                                              null
+                                              ? Provider.of<AppInfo>(
+                                              context)
+                                              .userDropOffLocation!
+                                              .locationName!
                                               : 'Where to go?',
                                           style: const TextStyle(
                                             color: Colors.grey,
@@ -804,50 +737,59 @@ class _MainScreenState extends State<MainScreen> {
                                   ],
                                 ),
                               ),
-                            ),
 
-                            const SizedBox(
-                              height: 10,
-                            ),
+                              const SizedBox(
+                                height: 10,
+                              ),
 
-                            const Divider(
-                              height: 1,
-                              thickness: 1,
-                              color: Colors.grey,
-                            ),
+                              const Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: Colors.grey,
+                              ),
 
-                            const SizedBox(
-                              height: 16,
-                            ),
+                              const SizedBox(
+                                height: 16,
+                              ),
 
-                            ElevatedButton(
-                              onPressed: () {
-                                log("Request a ride button on maps page got clicked..");
-                                if(Provider.of<AppInfo>(context, listen: false).userDropOffLocation != null){
-                                  Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount, bagsCount: bagsCount,distanceInMeters: distance,rideByKm: false,),), );
-                                }
-                                else{
-                                  AmoToast.showAmoToast("Please select the destination..", context);
-                                }
-                              },
-                              child: Text('Request a Ride'),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
 
-                                    
+
+                              const SizedBox(
+                                height: 16,
+                              ),
+
+                              ElevatedButton(
+                                onPressed: () {
+                                  log("Request a ride button on maps page got clicked..");
+                                  if(Provider.of<AppInfo>(context, listen: false).userDropOffLocation != null){
+                                    Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount, bagsCount: bagsCount,distanceInMeters: distance,rideByKm: false,),), );
+                                  }
+                                  else{
+                                    AmoToast.showAmoToast("Please select the destination..", context);
+                                  }
+                                },
+                                child: Text('Request a Ride'),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.green,
+                                  textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+
+
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                    const RideByKm(),
-                  ],
-                )),
+                  ),
+                ],
+              ),
+              const RideByKm(),
+            ],
+          )),
     );
   }
 
@@ -871,8 +813,8 @@ class _MainScreenState extends State<MainScreen> {
     );
 
     var directionDetailsInfo =
-        await AssistantMethods.obtainOriginToDestinationDirectionDetails(
-            originLatLng, destinationLatLng);
+    await AssistantMethods.obtainOriginToDestinationDirectionDetails(
+        originLatLng, destinationLatLng);
 
     // ignore: use_build_context_synchronously
     Navigator.pop(context);
@@ -884,7 +826,7 @@ class _MainScreenState extends State<MainScreen> {
 
     PolylinePoints pPoints = PolylinePoints();
     List<PointLatLng> decodedPolylinePointsResultList =
-        pPoints.decodePolyline(directionDetailsInfo!.e_points!);
+    pPoints.decodePolyline(directionDetailsInfo!.e_points!);
 
     pLineCoordinatesList.clear();
     if (decodedPolylinePointsResultList.isNotEmpty) {
@@ -936,7 +878,7 @@ class _MainScreenState extends State<MainScreen> {
     Marker originMarker = Marker(
       markerId: const MarkerId("originId"),
       infoWindow:
-          InfoWindow(title: originPosition.locationName, snippet: 'Origin'),
+      InfoWindow(title: originPosition.locationName, snippet: 'Origin'),
       position: originLatLng,
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
     );

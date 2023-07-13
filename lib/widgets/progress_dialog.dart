@@ -30,7 +30,7 @@ class ProgressDialog extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  message!,
+                  message,
                   style: const TextStyle(
                     overflow: TextOverflow.visible,
                     fontSize: 12,
