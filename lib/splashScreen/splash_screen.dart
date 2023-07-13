@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'package:amo_cabs/onboardingScreens/onboarding_screen1.dart';
 import 'package:flutter/material.dart';
@@ -13,32 +15,25 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
-
-
-
   void startTimer() {
     fAuth.currentUser != null
         ? AssistantMethods.readCurrentOnlineUserInfo()
         : null;
     Timer(const Duration(seconds: 3), () async {
-
-      if (await fAuth.currentUser != null) {
+      if (fAuth.currentUser != null) {
         currentFirebaseUser = fAuth.currentUser;
 
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (c) => MainScreen(),
-
+            builder: (c) => const MainScreen(),
           ),
         );
-      }
-
-      else {
+      } else {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (c) => OnboardingScreen(),
+            builder: (c) => const OnboardingScreen(),
           ),
         );
       }
@@ -47,7 +42,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     startTimer();
   }
@@ -64,8 +58,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
                 padding: const EdgeInsets.only(top: 70, left: 10),
                 child: Container(
                   alignment: Alignment.topLeft,
-                  child: Column(
-                    children: const [
+                  child: const Column(
+                    children: [
                       Text(
                         "Let's ",
                         style: TextStyle(
@@ -87,19 +81,16 @@ class _MySplashScreenState extends State<MySplashScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 81),
                 child: Center(
-                    child: Container(
-                        child: Image.asset(
-                          "images/img.png",
-                          height: 215,
-                          width: 215,
-                        ))),
+                    child: Image.asset(
+                  "images/img.png",
+                  height: 215,
+                  width: 215,
+                )),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 72, bottom: 5.0, left: 50),
-                child: Container(
-                  child: Image.asset(
-                    "images/img_1.png",
-                  ),
+                child: Image.asset(
+                  "images/img_1.png",
                 ),
               ),
             ],

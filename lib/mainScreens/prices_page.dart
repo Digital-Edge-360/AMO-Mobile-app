@@ -1,24 +1,24 @@
 import 'dart:developer';
 
-import 'package:amo_cabs/mainScreens/booking_confirmation_page.dart';
 import 'package:amo_cabs/widgets/car_type_widget.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 import 'package:provider/provider.dart';
 
 import '../infoHandler/app_info.dart';
 
+// ignore: must_be_immutable
 class PricesPage extends StatefulWidget {
   int seatsCount, bagsCount, distanceInMeters;
   bool rideByKm;
 
-  PricesPage(
-      {required this.seatsCount,
-      required this.bagsCount,
-      required this.distanceInMeters,
-      required this.rideByKm,
-      });
+  PricesPage({
+    super.key,
+    required this.seatsCount,
+    required this.bagsCount,
+    required this.distanceInMeters,
+    required this.rideByKm,
+  });
 
   @override
   State<PricesPage> createState() => _PricesPageState();
@@ -26,8 +26,6 @@ class PricesPage extends StatefulWidget {
 
 class _PricesPageState extends State<PricesPage> {
   bool oneWay = true;
-
-
 
   double perKmMultiplierHatchBack = 0.01;
   double perKmMultiplierSedan = 0.012;
@@ -71,14 +69,17 @@ class _PricesPageState extends State<PricesPage> {
                           height: 29,
                           width: 94,
                           decoration: BoxDecoration(
-                              color: oneWay ? Color(0xff019EE3) : Colors.white,
-                              borderRadius: BorderRadius.horizontal()),
+                              color: oneWay
+                                  ? const Color(0xff019EE3)
+                                  : Colors.white,
+                              borderRadius: const BorderRadius.horizontal()),
                           child: Center(
                               child: Text(
                             "One Way",
                             style: TextStyle(
-                                color:
-                                    oneWay ? Colors.white : Color(0xff019EE3),
+                                color: oneWay
+                                    ? Colors.white
+                                    : const Color(0xff019EE3),
                                 fontSize: 14,
                                 fontFamily: "Poppins"),
                           )),
@@ -101,15 +102,17 @@ class _PricesPageState extends State<PricesPage> {
                           height: 29,
                           width: 94,
                           decoration: BoxDecoration(
-                            color: oneWay ? Colors.white : Color(0xff019EE3),
-                            borderRadius: BorderRadius.horizontal(),
+                            color:
+                                oneWay ? Colors.white : const Color(0xff019EE3),
+                            borderRadius: const BorderRadius.horizontal(),
                           ),
                           child: Center(
                             child: Text(
                               "Return",
                               style: TextStyle(
-                                  color:
-                                      oneWay ? Color(0xff019EE3) : Colors.white,
+                                  color: oneWay
+                                      ? const Color(0xff019EE3)
+                                      : Colors.white,
                                   fontSize: 14,
                                   fontFamily: "Poppins"),
                             ),
@@ -119,7 +122,7 @@ class _PricesPageState extends State<PricesPage> {
                       onTap: () {
                         setState(() {
                           oneWay = false;
-                          print(oneWay);
+                          log(oneWay.toString());
                         });
                       },
                     ),
@@ -138,8 +141,7 @@ class _PricesPageState extends State<PricesPage> {
               ),
 
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 10, left: 10, right: 10),
+                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
                 child: Card(
                   elevation: 6.0,
                   color: const Color(0xff009B4E),
@@ -173,6 +175,7 @@ class _PricesPageState extends State<PricesPage> {
                                               .length >
                                           30
                                       ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
+                                      // ignore: unnecessary_string_interpolations
                                       : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
                                   style: const TextStyle(
                                       color: Colors.white,
@@ -191,65 +194,70 @@ class _PricesPageState extends State<PricesPage> {
 
 // Drop Location --
 
-              !widget.rideByKm ? Container(
-                alignment: Alignment.topLeft,
-                child: const Text("Drop Location",
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 12,
-                        color: Colors.black)),
-              ) : Container(),
+              !widget.rideByKm
+                  ? Container(
+                      alignment: Alignment.topLeft,
+                      child: const Text("Drop Location",
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 12,
+                              color: Colors.black)),
+                    )
+                  : Container(),
 
-              !widget.rideByKm ? Padding(
-                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                child: Card(
-                  elevation: 6.0,
-                  color: const Color(0xff009B4E),
-                  clipBehavior: Clip.hardEdge,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 40,
-                        padding: const EdgeInsets.all(10.0),
+              !widget.rideByKm
+                  ? Padding(
+                      padding:
+                          const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      child: Card(
+                        elevation: 6.0,
+                        color: const Color(0xff009B4E),
+                        clipBehavior: Clip.hardEdge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 1),
-                              child: Icon(
-                                Icons.location_on,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Center(
-                                child: Text(
-                                  Provider.of<AppInfo>(context)
-                                              .userDropOffLocation!
-                                              .locationName!
-                                              .length >
-                                          30
-                                      ? "${(Provider.of<AppInfo>(context).userDropOffLocation!.locationName!).substring(0, 29)}..."
-                                      : "${(Provider.of<AppInfo>(context).userDropOffLocation!.locationName!)}",
-                                  style: TextStyle(color: Colors.white),
-                                  //like app --
-                                ),
+                            Container(
+                              height: 40,
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 1),
+                                    child: Icon(
+                                      Icons.location_on,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Center(
+                                      child: Text(
+                                        Provider.of<AppInfo>(context)
+                                                    .userDropOffLocation!
+                                                    .locationName!
+                                                    .length >
+                                                30
+                                            ? "${(Provider.of<AppInfo>(context).userDropOffLocation!.locationName!).substring(0, 29)}..."
+                                            // ignore: unnecessary_string_interpolations
+                                            : "${(Provider.of<AppInfo>(context).userDropOffLocation!.locationName!)}",
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                        //like app --
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ) : Container(),
-
-
+                    )
+                  : Container(),
 
               Padding(
                 padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -310,7 +318,7 @@ class _PricesPageState extends State<PricesPage> {
                           child: Container(
                             height: 70,
                             width: 3,
-                            color: Color(0xffD0D0D0),
+                            color: const Color(0xffD0D0D0),
                           ),
                         ),
                       ),
@@ -361,17 +369,15 @@ class _PricesPageState extends State<PricesPage> {
               Container(
                 alignment: Alignment.topLeft,
                 child: Text(
-                    "Total Distance: ${(widget.distanceInMeters / 1000).toString()} km",
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 16,
-                        color: Colors.black),),
+                  "Total Distance: ${(widget.distanceInMeters / 1000).toString()} km",
+                  style: const TextStyle(
+                      fontFamily: "Poppins", fontSize: 16, color: Colors.black),
+                ),
               ),
 
               const SizedBox(
                 height: 18,
               ),
-
 
               //Expected prices
               Container(
@@ -383,28 +389,28 @@ class _PricesPageState extends State<PricesPage> {
                 ),
               ),
 
-
-
               SizedBox(
                 height: 300,
                 child: ListView.builder(
-                  itemCount: 3,
-
-                    itemBuilder: (BuildContext context, int i){
-                    log("index $i");
-                    log("expected = " + widget.seatsCount.toString() + "| available =" + noOfSeatsAvailableByCarType[i].toString());
-                    log("expected = " + widget.bagsCount.toString() + "| available =" + noOfBagStorageAvailableByCarType[i].toString());
+                    itemCount: 3,
+                    itemBuilder: (BuildContext context, int i) {
+                      log("index $i");
+                      log("expected = ${widget.seatsCount}| available =${noOfSeatsAvailableByCarType[i]}");
+                      log("expected = ${widget.bagsCount}| available =${noOfBagStorageAvailableByCarType[i]}");
                       // if(widget.seatsCount <= noOfSeatsAvailableByCarType[i] && widget.bagsCount <= noOfBagStorageAvailableByCarType[i]){
                       //   return null;
                       // }
 
-                    return CarTypeWidget(distanceInMeters: widget.distanceInMeters, seatsCount: widget.seatsCount, bagsCount: widget.seatsCount, index: i, isOneWay: oneWay,rideByKm: widget.rideByKm,);
-
-
-
+                      return CarTypeWidget(
+                        distanceInMeters: widget.distanceInMeters,
+                        seatsCount: widget.seatsCount,
+                        bagsCount: widget.seatsCount,
+                        index: i,
+                        isOneWay: oneWay,
+                        rideByKm: widget.rideByKm,
+                      );
                     }),
               ),
-
             ],
           ),
         ),
@@ -412,5 +418,3 @@ class _PricesPageState extends State<PricesPage> {
     );
   }
 }
-
-

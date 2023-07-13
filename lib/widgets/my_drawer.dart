@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../authentication/login_screen.dart';
 import '../global/global.dart';
-import '../splashScreen/splash_screen.dart';
 
+// ignore: must_be_immutable
 class MyDrawer extends StatefulWidget {
   String? name;
   String? phone;
   String? lastName;
 
-  MyDrawer({this.name, this.phone, this.lastName});
+  MyDrawer({super.key, this.name, this.phone, this.lastName});
   @override
   State<MyDrawer> createState() => _MyDrawerState();
 }
@@ -21,7 +22,6 @@ class _MyDrawerState extends State<MyDrawer> {
       backgroundColor: const Color(0xff029EE2),
       child: ListView(
         children: [
-
           //drawer header
           SizedBox(
             height: 250,
@@ -46,22 +46,20 @@ class _MyDrawerState extends State<MyDrawer> {
                           //  ],
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 30, left: 30),
-                              child: CircleAvatar(
-                                radius: 60,
-                                backgroundColor: Colors.blue,
-                                foregroundColor: Colors.black54,
-                                child: Text(
-                                  '${widget.name!.substring(0,1)}${widget.lastName!.substring(0,1)}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 44,
-                                    fontWeight: FontWeight.bold
+                                padding:
+                                    const EdgeInsets.only(top: 30, left: 30),
+                                child: CircleAvatar(
+                                  radius: 60,
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.black54,
+                                  child: Text(
+                                    '${widget.name!.substring(0, 1)}${widget.lastName!.substring(0, 1)}',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 44,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                              )
-                            ),
+                                )),
                           ),
                         ]),
 
@@ -70,17 +68,14 @@ class _MyDrawerState extends State<MyDrawer> {
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children:  [
+                          children: [
                             Text(
                               '${widget.name} ${widget.lastName}',
                               style: const TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: ("Poppins")),
+                                  fontSize: 20, fontFamily: ("Poppins")),
                             ),
-
                             Text(widget.phone.toString(),
                                 style: const TextStyle(
-
                                     fontFamily: ("Poppins"),
                                     color: Color(0xff019EE3)))
                           ],
@@ -91,16 +86,18 @@ class _MyDrawerState extends State<MyDrawer> {
                 )),
           ),
 
-
-          const SizedBox(height: 12,),
+          const SizedBox(
+            height: 12,
+          ),
 
           //drawer body
           GestureDetector(
-            onTap: (){
-
-            },
+            onTap: () {},
             child: const ListTile(
-              leading: Icon(Icons.history, color: Colors.white,),
+              leading: Icon(
+                Icons.history,
+                color: Colors.white,
+              ),
               title: Text(
                 "History",
                 style: TextStyle(
@@ -111,26 +108,12 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
 
           GestureDetector(
-            onTap: (){
-
-            },
+            onTap: () {},
             child: const ListTile(
-              leading: Icon(Icons.person, color: Colors.white,),
-              title: Text(
-                "Visit Profile",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+              leading: Icon(
+                Icons.info,
+                color: Colors.white,
               ),
-            ),
-          ),
-
-          GestureDetector(
-            onTap: (){
-
-            },
-            child: const ListTile(
-              leading: Icon(Icons.info, color: Colors.white,),
               title: Text(
                 "About",
                 style: TextStyle(
@@ -141,20 +124,24 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
 
           GestureDetector(
-            onTap: () async{
+            onTap: () async {
               await fAuth.signOut();
-              final SharedPreferences prefs =  await SharedPreferences.getInstance();
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
               await prefs.remove("userCurrentInfo");
 
+              // ignore: use_build_context_synchronously
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => MySplashScreen()),
-                  ModalRoute.withName('/')
-              );
-
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const LoginScreen()),
+                  ModalRoute.withName('/'));
             },
             child: const ListTile(
-              leading: Icon(Icons.logout, color: Colors.white,),
+              leading: Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
               title: Text(
                 "Logout",
                 style: TextStyle(
@@ -163,8 +150,6 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
           ),
-
-
         ],
       ),
     );

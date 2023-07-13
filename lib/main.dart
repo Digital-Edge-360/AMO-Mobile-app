@@ -18,7 +18,7 @@ void main() async {
             primarySwatch: Colors.blue,
           ),
           debugShowCheckedModeBanner: false,
-          home:  const MySplashScreen(),
+          home: const MySplashScreen(),
         ),
       ),
     ),
@@ -27,7 +27,7 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   final Widget? child;
-  MyApp({this.child});
+  const MyApp({super.key, this.child});
 
   static void restartApp(BuildContext context) {
     context.findAncestorStateOfType<_MyAppState>()!.restartApp();
@@ -35,8 +35,8 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
-
 }
+
 class _MyAppState extends State<MyApp> {
   Key key = UniqueKey();
   void restartApp() {

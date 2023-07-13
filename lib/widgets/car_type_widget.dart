@@ -3,15 +3,24 @@ import 'package:flutter/material.dart';
 import '../global/global.dart';
 import '../mainScreens/booking_confirmation_page.dart';
 import 'package:intl/intl.dart';
+
 class CarTypeWidget extends StatelessWidget {
   final int distanceInMeters, bagsCount, seatsCount, index;
   final bool isOneWay, rideByKm;
-  const CarTypeWidget({super.key, required this.distanceInMeters, required this.seatsCount, required this.bagsCount, required this.index, required this.isOneWay, required this.rideByKm});
+  const CarTypeWidget(
+      {super.key,
+      required this.distanceInMeters,
+      required this.seatsCount,
+      required this.bagsCount,
+      required this.index,
+      required this.isOneWay,
+      required this.rideByKm});
 
   static String formatPrice(double price) {
     final formatter = NumberFormat('#,##0.00', 'en_US');
     return formatter.format(price);
   }
+
 
   double calculatePrices(){
     double price = distanceInMeters *
@@ -65,58 +74,53 @@ class CarTypeWidget extends StatelessWidget {
               child: Text(
                 carTypes[index],
                 style: const TextStyle(
-                    fontFamily: "Poppins",
-                    fontSize: 12,
-                    color: Colors.black),
+                    fontFamily: "Poppins", fontSize: 12, color: Colors.black),
               ),
             ),
-
             Expanded(
               flex: 2,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Image.asset(
-                  'images/seats.png',
-                  height: 12,
-                ),
-                Text(
-                  '${noOfSeatsAvailableByCarType[index]}',
-                  style:const TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 12,
-                      color: Colors.black),
-                ),
-              ],
-            ),),
-
+                children: [
+                  Image.asset(
+                    'images/seats.png',
+                    height: 12,
+                  ),
+                  Text(
+                    '${noOfSeatsAvailableByCarType[index]}',
+                    style: const TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 12,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
             Expanded(
               flex: 2,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Image.asset(
-                  'images/bags.png',
-                  height: 12,
-                ),
-                Text(
-                  '${noOfBagStorageAvailableByCarType[index]}',
-                  style: const TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 12,
-                      color: Colors.black),
-                ),
-              ],
-            ),),
-
+                children: [
+                  Image.asset(
+                    'images/bags.png',
+                    height: 12,
+                  ),
+                  Text(
+                    '${noOfBagStorageAvailableByCarType[index]}',
+                    style: const TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 12,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
         trailing: Text(
           '₹${formatPrice(calculatePrices())}',
           style: const TextStyle(
-              fontFamily: "Poppins",
-              fontSize: 18,
-              color: Colors.black),
+              fontFamily: "Poppins", fontSize: 18, color: Colors.black),
         ),
       ),
     );
