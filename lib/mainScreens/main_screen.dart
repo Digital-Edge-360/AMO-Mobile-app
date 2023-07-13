@@ -752,40 +752,92 @@ class _MainScreenState extends State<MainScreen> {
                                       height: 16,
                                     ),
 
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        log("Request a ride button on maps page got clicked..");
-                                        if (Provider.of<AppInfo>(context,
-                                                    listen: false)
-                                                .userDropOffLocation !=
-                                            null) {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (c) => PricesPage(
-                                                seatsCount: seatsCount,
-                                                bagsCount: bagsCount,
-                                                distanceInMeters: distance,
-                                                rideByKm: false,
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          AmoToast.showAmoToast(
-                                              "Please select the destination..",
-                                              context);
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green,
-                                        textStyle: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
+
+                            //to
+                            GestureDetector(
+                              onTap: () async {
+                                //go to search places screen
+                                var responseFromSearchScreen = await Navigator.push(context, MaterialPageRoute(builder: (c)=> SearchPlacesScreen(),),);
+
+                                if(responseFromSearchScreen == "obtainedDropOff"){
+                                  //draw poly line between pick up and drop off locations.
+                                  await drawPolyLineFromOriginToDestination();
+
+                                  setState(() {
+                                    openNavigationDrawer = false;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                // color: Colors.red,
+                                width: double.infinity,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.add_location_alt_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'To',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 12,
+                                          ),
                                         ),
-                                      ),
-                                      child: const Text('Request a Ride'),
+                                        Text(
+                                          Provider.of<AppInfo>(context).userDropOffLocation != null
+                                              ? Provider.of<AppInfo>(context).userDropOffLocation!.locationName!
+                                              : 'Where to go?',
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(
+                              height: 10,
+                            ),
+
+                            const Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: Colors.grey,
+                            ),
+
+                            const SizedBox(
+                              height: 16,
+                            ),
+
+                            ElevatedButton(
+                              onPressed: () {
+                                log("Request a ride button on maps page got clicked..");
+                                if(Provider.of<AppInfo>(context, listen: false).userDropOffLocation != null){
+                                  Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount, bagsCount: bagsCount,distanceInMeters: distance,rideByKm: false,),), );
+                                }
+                                else{
+                                  AmoToast.showAmoToast("Please select the destination..", context);
+                                }
+                              },
+                              child: Text('Request a Ride'),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.green,
+                                textStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+
+                                    
                                 ),
                               ),
                             ),

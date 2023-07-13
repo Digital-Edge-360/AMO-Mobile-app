@@ -11,8 +11,10 @@ import '../widgets/progress_dialog.dart';
 
 // ignore: must_be_immutable
 class BookingConfirmation extends StatefulWidget {
-  int distanceInMeters, bagsCount, seatsCount, index;
-  String price;
+
+  int  distanceInMeters, bagsCount, seatsCount, index;
+  double price;
+
   bool isOneWay, rideByKm;
   BookingConfirmation(
       {super.key,
@@ -57,48 +59,40 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
     final List<String>? userDetails = prefs.getStringList('userCurrentInfo');
     //var pickUpMap = {'sourceName' : origin!.locationName, 'userPickupLatitude': origin!.locationLatitude, 'use' }
     var currentRideDetails = {
-      "pickUp": {
-        "pickUpName": origin!.locationName!,
-        "pickUpId": origin.locationId,
-        "pickUpLatitude": origin.locationLatitude,
-        "pickUpLongitude": origin.locationLatitude,
-        "pickUpHumanReadableAddress": origin.humanReadableAddress
-      },
-      "dropOff": widget.rideByKm
-          ? {
-              "dropOffName": '',
-              "dropOffId": '',
-              "dropOffLatitude": '',
-              "dropOffLongitude": '',
-              "dropOffHumanReadableAddress": ''
-            }
-          : {
-              "dropOffName": destination!.locationName!,
-              "dropOffId": destination.locationId,
-              "dropOffLatitude": destination.locationLatitude,
-              "dropOffLongitude": destination.locationLatitude,
-              "dropOffHumanReadableAddress": destination.humanReadableAddress
-            },
-      "distanceInMeters": widget.distanceInMeters,
-      "customerName":
-          userDetails != null ? "${userDetails[2]} ${userDetails[3]}" : "",
-      "pickUpDate": _selectedDatePickUp,
-      "pickUpTime": "${_selectedTimePickUp.hour}:${_selectedTimePickUp.minute}",
-      "returnPickUpDate": widget.isOneWay ? '' : _selectedDateReturnPickUp,
-      "returnPickUpTime": widget.isOneWay
-          ? ''
-          : "${_selectedTimeReturnPickUp.hour}:${_selectedTimeReturnPickUp.minute}",
-      "waitingTime": widget.isOneWay ? 0 : 'Yet to implement',
-      "noOfBagsRequest": widget.bagsCount,
-      "noOfSeatsRequest": widget.seatsCount,
-      "price": widget.price,
-      "carType": carTypes[widget.index],
-      "rideByKm": widget.rideByKm ? "km" : "destination",
-      "isOneWay": widget.isOneWay,
-      "status": "Pending",
-      "customerId": userDetails != null ? userDetails[0] : '',
-      "specialNotes": txtSpecialNotesTextEditingController.text,
-      "createdAt": DateTime.now(),
+
+        "pickUp": {"pickUpName": origin!.locationName!,
+                    "pickUpId": origin.locationId,
+                    "pickUpLatitude":origin.locationLatitude,
+                      "pickUpLongitude": origin.locationLongitude,
+                      "pickUpHumanReadableAddress": origin.humanReadableAddress },
+        "dropOff": widget.rideByKm ? {"dropOffName": '',
+          "dropOffId": '',
+          "dropOffLatitude":'',
+          "dropOffLongitude": '',
+          "dropOffHumanReadableAddress": '' }: {"dropOffName": destination!.locationName!,
+                    "dropOffId": destination.locationId,
+                  "dropOffLatitude":destination.locationLatitude,
+                    "dropOffLongitude": destination.locationLongitude,
+                    "dropOffHumanReadableAddress": destination.humanReadableAddress },
+        "distanceInMeters": widget.distanceInMeters,
+        "customerName": userDetails != null ?  userDetails[2]+ " " + userDetails[3] : "",
+        "pickUpDate": _selectedDatePickUp,
+        "pickUpTime": _selectedTimePickUp.hour.toString() + ":" + _selectedTimePickUp.minute.toString(),
+        "returnPickUpDate" : widget.isOneWay ? '': _selectedDateReturnPickUp,
+        "returnPickUpTime" : widget.isOneWay ? '': _selectedTimeReturnPickUp.hour.toString() + ":" + _selectedTimeReturnPickUp.minute.toString(),
+        "waitingTime" : widget.isOneWay ? 0 : 'Yet to implement',
+        "noOfBagsRequest": widget.bagsCount,
+        "noOfSeatsRequest": widget.seatsCount,
+        "price": widget.price,
+        "carType": carTypes[widget.index],
+        "rideByKm": widget.rideByKm ? "km" : "destination",
+        "isOneWay": widget.isOneWay,
+        "status": "Pending",
+        "customerId": userDetails!=null ? userDetails[0] : '',
+        "specialNotes": txtSpecialNotesTextEditingController.text,
+        "createdAt": DateTime.now(),
+
+
     };
 
     // _firestore.collection("rideRequest").doc(userModelCurrentInfo!.id!).set(currentRideDetails, SetOptions(merge: true));

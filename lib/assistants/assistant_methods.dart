@@ -62,22 +62,27 @@ class AssistantMethods {
     var responseDirectionApi = await RequestAssistant.receiveRequest(
         urlOriginToDestinationDirectionDetails);
 
-    if (responseDirectionApi == "Error Occured.") {
+    log("Response for polyline:");
+    log(responseDirectionApi.toString());
+
+    if(responseDirectionApi == "Error Occured."){
       return null;
     }
-    DirectionDetailsInfo directionDetailsInfo = DirectionDetailsInfo();
-    directionDetailsInfo.e_points =
-        responseDirectionApi["routes"][0]["overview_polyline"]["points"];
-    directionDetailsInfo.distance_text =
-        responseDirectionApi["routes"][0]["legs"][0]["distance"]["text"];
-    directionDetailsInfo.distance_value =
-        responseDirectionApi["routes"][0]["legs"][0]["distance"]["value"];
+    try{
+      DirectionDetailsInfo directionDetailsInfo = DirectionDetailsInfo();
+      directionDetailsInfo.e_points = responseDirectionApi["routes"][0]["overview_polyline"]["points"];
+      directionDetailsInfo.distance_text = responseDirectionApi["routes"][0]["legs"][0]["distance"]["text"];
+      directionDetailsInfo.distance_value = responseDirectionApi["routes"][0]["legs"][0]["distance"]["value"];
 
-    directionDetailsInfo.duration_text =
-        responseDirectionApi["routes"][0]["legs"][0]["duration"]["text"];
-    directionDetailsInfo.duration_value =
-        responseDirectionApi["routes"][0]["legs"][0]["duration"]["value"];
+      directionDetailsInfo.duration_text = responseDirectionApi["routes"][0]["legs"][0]["duration"]["text"];
+      directionDetailsInfo.duration_value = responseDirectionApi["routes"][0]["legs"][0]["duration"]["value"];
+      return directionDetailsInfo;
+    }
+    catch(e){
+      log("Error occured in polyline:" + e.toString());
+    }
 
-    return directionDetailsInfo;
+   
+
   }
 }
