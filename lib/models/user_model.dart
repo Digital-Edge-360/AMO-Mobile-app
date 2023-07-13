@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class UserModel {
   String? id;
@@ -8,7 +7,8 @@ class UserModel {
   String? lastName;
   String? email;
 
-  UserModel({this.id, this.phoneNumber, this.firstName, this.lastName, this.email});
+  UserModel(
+      {this.id, this.phoneNumber, this.firstName, this.lastName, this.email});
 
   UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
     final data = snap.data()!;

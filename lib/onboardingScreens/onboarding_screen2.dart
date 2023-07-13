@@ -18,13 +18,10 @@ class OnboardingScreen2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int a = 10;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-
         alignment: Alignment.center,
-
         child: Column(
           children: [
             const Padding(
@@ -39,7 +36,6 @@ class OnboardingScreen2 extends StatelessWidget {
                             color: Colors.black)),
                     Text(" Route",
                         style: TextStyle(
-
                             fontFamily: "Poppins",
                             fontSize: 30,
                             color: Color(0xff009B4E))),
@@ -51,7 +47,6 @@ class OnboardingScreen2 extends StatelessWidget {
               padding: const EdgeInsets.only(left: 20, right: 10),
               child: Container(
                 alignment: Alignment.center,
-
                 child: const Text(
                     "Get quick access to frequent locations, and save them as a favritos",
                     style: TextStyle(
@@ -59,28 +54,24 @@ class OnboardingScreen2 extends StatelessWidget {
                         fontSize: 15,
                         color: Color(0xff739AF0))),
               ),
-            )
-            ,
+            ),
             SizedBox(
               height: MediaQuery.of(context).size.width,
               child: Container(
-                height:  MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width,
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  // borderRadius: BorderRadius.circular(20),
+                    // borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
-                      // fit: BoxFit.cover,
-                      fit: BoxFit.fitWidth,
+                  // fit: BoxFit.cover,
+                  fit: BoxFit.fitWidth,
 
-                      image: AssetImage('images/img_4.png'),
-                    )),
+                  image: AssetImage('images/img_4.png'),
+                )),
               ),
             ),
-
-
-
             Padding(
-              padding: const EdgeInsets.only(left: 260,bottom: 10),
+              padding: const EdgeInsets.only(left: 260, bottom: 10),
               child: Card(
                 elevation: 6.0,
                 clipBehavior: Clip.hardEdge,
@@ -91,36 +82,33 @@ class OnboardingScreen2 extends StatelessWidget {
                     height: 40,
                     width: 100,
                     decoration: const BoxDecoration(
-                        color:Color(0xff009B4E),
-                        borderRadius: BorderRadius.horizontal(
-                        )),
+                        color: Color(0xff009B4E),
+                        borderRadius: BorderRadius.horizontal()),
                     child: Directionality(
                         textDirection: TextDirection.rtl,
                         child: ElevatedButton.icon(
                           style: style,
                           onPressed: () {
-
-                            Navigator.pushReplacement(context,
+                            Navigator.pushReplacement(
+                              context,
                               PageTransition(
                                 type: PageTransitionType.rightToLeft,
                                 duration: const Duration(milliseconds: 100),
-                                child:  OnboardingScreen3(),
+                                child: OnboardingScreen3(),
                               ),
                               // MaterialPageRoute(builder: (context) =>OnboardingScreen3(),),
-
                             );
                           },
                           icon: const Icon(
-                            Icons.arrow_back,size: 20,
+                            Icons.arrow_back,
+                            size: 20,
                           ),
                           label: const Text("Next"),
                           //.........
-                        ))
-                ),
+                        ))),
               ),
             ),
           ],
-
         ),
       ),
     );

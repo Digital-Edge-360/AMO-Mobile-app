@@ -9,6 +9,8 @@ import '../widgets/progress_dialog.dart';
 import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -72,7 +74,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 password: passwordTextEditingController.text.trim())
             .catchError((msg) {
       Navigator.pop(context);
-      Fluttertoast.showToast(msg: 'Error: ' + msg.toString());
+      Fluttertoast.showToast(msg: 'Error: $msg');
+      return msg;
+
+      ///Always add return statements while handling errors
     }))
         .user;
     if (firebaseUser != null) {
@@ -83,7 +88,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'phone': phoneTextEditingController.text.trim(),
       };
 
-
       DatabaseReference userRef =
           FirebaseDatabase.instance.ref().child('users');
       userRef.child(firebaseUser.uid).set(userMap);
@@ -91,13 +95,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       currentFirebaseUser = firebaseUser;
       Fluttertoast.showToast(msg: 'Account created sucessfully.');
 
+      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (c) => MySplashScreen(),
+          builder: (c) => const MySplashScreen(),
         ),
       );
     } else {
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       Fluttertoast.showToast(msg: 'Account has not been created.');
     }
@@ -248,7 +254,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.lightGreenAccent),
+                      backgroundColor: Colors.lightGreenAccent),
                   onPressed: () {
                     validateForms();
                   },
@@ -264,7 +270,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LoginScreen(),
+                      builder: (context) => const LoginScreen(),
                     ),
                   );
                 },

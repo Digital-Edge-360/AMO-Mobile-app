@@ -1,36 +1,28 @@
-import 'dart:convert';
 import 'dart:developer';
-
 import 'package:amo_cabs/authentication/registration_screen.dart';
 import 'package:amo_cabs/mainScreens/main_screen.dart';
-import 'package:amo_cabs/splashScreen/splash_screen.dart';
 import 'package:amo_cabs/widgets/amo_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../global/global.dart';
 import '../models/user_model.dart';
 import '../widgets/progress_dialog.dart';
 
-
-
-
+// ignore: must_be_immutable
 class OtpPage extends StatefulWidget {
   String verificationId;
   String phoneNumber;
-  OtpPage({required this.verificationId, required this.phoneNumber});
+  OtpPage({super.key, required this.verificationId, required this.phoneNumber});
   @override
+  // ignore: library_private_types_in_public_api
   _OtpPageState createState() => _OtpPageState();
 }
 
 class _OtpPageState extends State<OtpPage> {
-
   String? otpCode;
   String? phoneNumber;
 
@@ -38,13 +30,12 @@ class _OtpPageState extends State<OtpPage> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  
 
   // verify otp
   void verifyOtp(
-      String verificationId,
-      String userOtp,
-      ) async {
+    String verificationId,
+    String userOtp,
+  ) async {
     showDialog(
       context: context,
       builder: (BuildContext context) => ProgressDialog(
@@ -60,59 +51,64 @@ class _OtpPageState extends State<OtpPage> {
       // box.write('id', firebaseUser);
       // print(box.read('id'));
       if (firebaseUser != null) {
-        
-        final snapshot = await _db.collection("users").where("phoneNumber", isEqualTo: phoneNumber).get();
+        final snapshot = await _db
+            .collection("users")
+            .where("phoneNumber", isEqualTo: phoneNumber)
+            .get();
 
-        try{
-          final userData = snapshot.docs.map(
-                  (e) => UserModel.fromSnapshot(e)).single;
-          log("User Data : " + userData.toString());
-          
-
+        try {
+          final userData =
+              snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
+          log("User Data : $userData");
 
           userModelCurrentInfo = userData;
           currentFirebaseUser = firebaseUser;
           log(userModelCurrentInfo!.id!);
-          await perfs.setStringList("userCurrentInfo", [userModelCurrentInfo!.id!, userModelCurrentInfo!.phoneNumber!, userModelCurrentInfo!.firstName!, userModelCurrentInfo!.lastName!,userModelCurrentInfo!.email!]);
-
-
-
-
-
+          await perfs.setStringList("userCurrentInfo", [
+            userModelCurrentInfo!.id!,
+            userModelCurrentInfo!.phoneNumber!,
+            userModelCurrentInfo!.firstName!,
+            userModelCurrentInfo!.lastName!,
+            userModelCurrentInfo!.email!
+          ]);
 
           debugPrint("take to login page");
           Fluttertoast.showToast(msg: 'Logging in..');
 
+          // ignore: use_build_context_synchronously
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (c) => MySplashScreen(),
+              builder: (c) => const MainScreen(),
             ),
           );
-        }
-        catch(e){
+        } catch (e) {
           debugPrint(e.toString());
 
           debugPrint("taking to registration page");
           Fluttertoast.showToast(msg: 'Taking to registration page..');
 
-          Navigator.push(context, MaterialPageRoute(builder: (c) => RegistrationScreen(phoneNumber: phoneNumber!, firebaseUser: firebaseUser,),),);
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (c) => RegistrationScreen(
+                phoneNumber: phoneNumber!,
+                firebaseUser: firebaseUser,
+              ),
+            ),
+          );
 
           // Get.to(RegistrationScreen(), arguments: [phoneNumber]);
-
         }
-
-
       } else {
-
         Fluttertoast.showToast(msg: 'Error occured during sign in.');
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
       }
-
     } on FirebaseAuthException catch (e) {
-      Fluttertoast.showToast(msg: e.message.toString().substring(0, 60) + "..");
+      Fluttertoast.showToast(msg: "${e.message.toString().substring(0, 60)}..");
       Navigator.pop(context);
-
     }
   }
 
@@ -121,7 +117,6 @@ class _OtpPageState extends State<OtpPage> {
     phoneNumber = widget.phoneNumber;
     super.initState();
   }
-
 
   Future<void> signInWithPhoneNumber(String phoneNumber) async {
     showDialog(
@@ -136,13 +131,10 @@ class _OtpPageState extends State<OtpPage> {
     await auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
-        final UserCredential firebaseUser = await auth.signInWithCredential(credential);
-        User? user = firebaseUser.user;
-
         // authentication successful, do something
       },
       verificationFailed: (FirebaseAuthException e) {
-        log("Something went wrong. " + e.toString());
+        log("Something went wrong. $e");
       },
       codeSent: (String verificationId, int? resendToken) async {
         // code sent to phone number, save verificationId for later use
@@ -156,9 +148,7 @@ class _OtpPageState extends State<OtpPage> {
         await auth.signInWithCredential(credential);
         // authentication successful, do something
       },
-      codeAutoRetrievalTimeout: (String verificationId) {
-
-      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
 
@@ -166,9 +156,7 @@ class _OtpPageState extends State<OtpPage> {
     if (otpCode != null) {
       verifyOtp(widget.verificationId, otpCode!);
     } else {
-
       AmoToast.showAmoToast("Enter 6-Digit code", context);
-
     }
   }
 
@@ -179,19 +167,19 @@ class _OtpPageState extends State<OtpPage> {
       textStyle: const TextStyle(fontSize: 16),
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          )));
+        Radius.circular(10),
+      )));
 
   Widget buildText(String text) => Center(
-    child: Text(
-      text,
-      style: TextStyle(fontSize: 24, fontFamily: "Poppins",color: Colors.black),
-    ),
-  );
+        child: Text(
+          text,
+          style: const TextStyle(
+              fontSize: 24, fontFamily: "Poppins", color: Colors.black),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -246,8 +234,9 @@ class _OtpPageState extends State<OtpPage> {
               ),
               const SizedBox(height: 10),
               GestureDetector(
-                onTap: (){
-                  AmoToast.showAmoToast('Resending OTP, Please wait..', context);
+                onTap: () {
+                  AmoToast.showAmoToast(
+                      'Resending OTP, Please wait..', context);
                   signInWithPhoneNumber(widget.phoneNumber);
                 },
                 child: const Text(

@@ -8,10 +8,8 @@ import 'package:flutter/services.dart';
 import '../widgets/amo_toast.dart';
 import '../widgets/progress_dialog.dart';
 
-
-
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -19,12 +17,13 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   //phone number Screen
-  TextEditingController txtCountryCodeTextEditingController = TextEditingController();
+  TextEditingController txtCountryCodeTextEditingController =
+      TextEditingController();
   TextEditingController txtPhoneTextEditingController = TextEditingController();
 
   final ButtonStyle style = ElevatedButton.styleFrom(
       elevation: 6,
-      primary: const Color(0xff009B4E),
+      backgroundColor: const Color(0xff009B4E),
       // Background color
       textStyle: const TextStyle(
         fontSize: 16,
@@ -32,9 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ));
-
-
-
 
   Future<void> signInWithPhoneNumber(String phoneNumber) async {
     showDialog(
@@ -49,13 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
     await auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
-        final UserCredential firebaseUser = await auth.signInWithCredential(credential);
-        User? user = firebaseUser.user;
-
         // authentication successful, do something
       },
       verificationFailed: (FirebaseAuthException e) {
-        log("Something went wrong. " + e.toString());
+        log("Something went wrong. $e");
       },
       codeSent: (String verificationId, int? resendToken) async {
         // code sent to phone number, save verificationId for later use
@@ -65,35 +58,32 @@ class _LoginScreenState extends State<LoginScreen> {
           smsCode: smsCode,
         );
         Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (c) => OtpPage(verificationId: verificationId, phoneNumber: phoneNumber)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (c) => OtpPage(
+                    verificationId: verificationId, phoneNumber: phoneNumber)));
         await auth.signInWithCredential(credential);
         // authentication successful, do something
       },
-      codeAutoRetrievalTimeout: (String verificationId) {
-
-      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
+
   @override
   void initState() {
-    // TODO: implement initState
     txtCountryCodeTextEditingController.text = "+91";
     super.initState();
   }
 
-  bool checkNumber(){
-    if(txtPhoneTextEditingController.text.isEmpty){
-
+  bool checkNumber() {
+    if (txtPhoneTextEditingController.text.isEmpty) {
       AmoToast.showAmoToast('Phone number can\'t be empty.', context);
-
-    }
-    else if(txtPhoneTextEditingController.text.length < 10){
+    } else if (txtPhoneTextEditingController.text.length < 10) {
       AmoToast.showAmoToast('Invalid Phone number.', context);
-    }
-    else if(txtPhoneTextEditingController.text.length == 10){
+    } else if (txtPhoneTextEditingController.text.length == 10) {
       return true;
-    }
-    else{
+    } else {
       AmoToast.showAmoToast('Something went wrong.', context);
     }
     return false;
@@ -112,10 +102,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text(
                     "Welcome to",
                     style: TextStyle(
-                        fontFamily: "Poppins", fontSize:30, color: Colors.black),
+                        fontFamily: "Poppins",
+                        fontSize: 30,
+                        color: Colors.black),
                   ),
-
-
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: Image.asset(
@@ -128,13 +118,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
 
-
             const Padding(
-              padding: EdgeInsets.only(left: 10,top: 20),
+              padding: EdgeInsets.only(left: 10, top: 20),
               child: Row(
                 children: [
                   Text(
-
                     "Enter your phone number to continue..",
                     style: TextStyle(
                         fontFamily: "Poppins",
@@ -147,8 +135,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
             //phone text
             Padding(
-
-
               padding: const EdgeInsets.only(top: 60, left: 26),
               child: Row(
                 children: [
@@ -165,7 +151,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextSpan(
                             text: "*",
                             style: TextStyle(
-
                                 fontFamily: "Poppins",
                                 fontSize: 20,
                                 color: Color(0xff86DD8A))),
@@ -187,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   elevation: 5,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children:  [
+                    children: [
                       const SizedBox(
                         width: 10,
                       ),
@@ -198,10 +183,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
                             LengthLimitingTextInputFormatter(4),
-
                           ],
                           style: const TextStyle(
-                              fontFamily: "Poppins", fontSize:16, color: Colors.black),
+                              fontFamily: "Poppins",
+                              fontSize: 16,
+                              color: Colors.black),
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                           ),
@@ -216,34 +202,34 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Expanded(
                           child: TextField(
-                            maxLength: 10,
-                            autofocus: true,
-                            enableSuggestions: true,
-                            controller: txtPhoneTextEditingController,
-                            keyboardType: TextInputType.phone,
-                            style: const TextStyle(
-                                fontFamily: "Poppins", fontSize:18, color: Colors.black),
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(10),
-
-                            ],
-                            decoration: const InputDecoration(
-
-                              border: InputBorder.none,
-                              hintText: "Phone",
-                              counterText: "",
-                              hintStyle: TextStyle(
-                                  fontFamily: "Poppins", fontSize:18, color: Colors.grey),
-                            ),
-                          ))
+                        maxLength: 10,
+                        autofocus: true,
+                        enableSuggestions: true,
+                        controller: txtPhoneTextEditingController,
+                        keyboardType: TextInputType.phone,
+                        style: const TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 18,
+                            color: Colors.black),
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(10),
+                        ],
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Phone",
+                          counterText: "",
+                          hintStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 18,
+                              color: Colors.grey),
+                        ),
+                      ))
                     ],
                   ),
                 ),
               ),
             ),
-
-
 
             //todo---button
 
@@ -259,17 +245,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 45,
                   width: 210,
                   decoration: const BoxDecoration(
-
                       color: Color(0xff009B4E),
                       borderRadius: BorderRadius.horizontal()),
                   child: ElevatedButton(
                     style: style,
-                    onPressed: () async{
-                      if(checkNumber()){
-
-
-                        signInWithPhoneNumber(txtCountryCodeTextEditingController.text+txtPhoneTextEditingController.text);
-
+                    onPressed: () async {
+                      if (checkNumber()) {
+                        signInWithPhoneNumber(
+                            txtCountryCodeTextEditingController.text +
+                                txtPhoneTextEditingController.text);
 
                         // Navigator.push(
                         //   context,
@@ -281,14 +265,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         //   ),
                         // );
                       }
-
                     },
                     child: const Text("Login"),
                   ),
                 ),
               ),
             ),
-
           ],
         ),
       ),

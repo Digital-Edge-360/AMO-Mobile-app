@@ -1,114 +1,107 @@
-import 'package:amo_cabs/mainScreens/main_screen.dart';
+import 'dart:developer';
+
 import 'package:amo_cabs/splashScreen/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 import '../../global/global.dart';
 import '../../widgets/amo_toast.dart';
 import '../models/user_model.dart';
-import '../widgets/progress_dialog.dart';
 
-
+// ignore: must_be_immutable
 class RegistrationScreen extends StatefulWidget {
   String phoneNumber;
   User firebaseUser;
-  RegistrationScreen({required this.phoneNumber, required this.firebaseUser});
+  RegistrationScreen(
+      {super.key, required this.phoneNumber, required this.firebaseUser});
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-
   String? phoneNumber;
-  TextEditingController txtFirstNameTextEditingController = TextEditingController();
-  TextEditingController txtLastNameTextEditingController = TextEditingController();
+  TextEditingController txtFirstNameTextEditingController =
+      TextEditingController();
+  TextEditingController txtLastNameTextEditingController =
+      TextEditingController();
   TextEditingController txtEmailTextEditingController = TextEditingController();
 
-  checkInputFields() async{
-    if(txtFirstNameTextEditingController.text.isEmpty){
-
+  checkInputFields() async {
+    if (txtFirstNameTextEditingController.text.isEmpty) {
       AmoToast.showAmoToast('First name can\'t be empty.', context);
-
-    }
-    else if(txtFirstNameTextEditingController.text.length < 3){
-
+    } else if (txtFirstNameTextEditingController.text.length < 3) {
       AmoToast.showAmoToast('Invalid first name.', context);
-
-    }
-    else if(txtLastNameTextEditingController.text.isEmpty){
+    } else if (txtLastNameTextEditingController.text.isEmpty) {
       AmoToast.showAmoToast('Last name can\'t be empty.', context);
-    }
-    else if(txtLastNameTextEditingController.text.length < 3){
-
+    } else if (txtLastNameTextEditingController.text.length < 3) {
       AmoToast.showAmoToast('Invalid last name.', context);
-
-    }
-
-
-    else{
+    } else {
       String firstName = txtFirstNameTextEditingController.text;
       String lastName = txtLastNameTextEditingController.text;
-      String email = txtEmailTextEditingController.text.isEmpty ? "" : txtEmailTextEditingController.text;
+      String email = txtEmailTextEditingController.text.isEmpty
+          ? ""
+          : txtEmailTextEditingController.text;
 
-
-      var collectionRef = await FirebaseFirestore.instance.collection("users");
+      var collectionRef = FirebaseFirestore.instance.collection("users");
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      try{
-        await  collectionRef.add({
+      try {
+        await collectionRef.add({
           "active": true,
           "email": email,
-          "firstName":firstName,
+          "firstName": firstName,
           "lastName": lastName,
-          "fullName": firstName + " " +lastName,
+          "fullName": "$firstName $lastName",
           "rideIds": [],
           "phoneNumber": phoneNumber,
           "role": "Customer",
           "totalRides": 0,
 
-
-
           //your data which will be added to the collection and collection will be created after this
-        }).then((_) async{
-          print("collection created");
+        }).then((_) async {
+          log("collection created");
           AmoToast.showAmoToast('Registered succesfully.', context);
-          final snapshot = await collectionRef.where("phoneNumber", isEqualTo: phoneNumber).get();
-          final userData = snapshot.docs.map(
-                  (e) => UserModel.fromSnapshot(e)).single;
+          final snapshot = await collectionRef
+              .where("phoneNumber", isEqualTo: phoneNumber)
+              .get();
+          final userData =
+              snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
 
           userModelCurrentInfo = userData;
           currentFirebaseUser = widget.firebaseUser;
-          await prefs.setStringList("userCurrentInfo", [userModelCurrentInfo!.id!, userModelCurrentInfo!.phoneNumber!, userModelCurrentInfo!.firstName!, userModelCurrentInfo!.lastName!,userModelCurrentInfo!.email!]);
-
-
+          await prefs.setStringList("userCurrentInfo", [
+            userModelCurrentInfo!.id!,
+            userModelCurrentInfo!.phoneNumber!,
+            userModelCurrentInfo!.firstName!,
+            userModelCurrentInfo!.lastName!,
+            userModelCurrentInfo!.email!
+          ]);
 
           debugPrint("take to login page");
+          // ignore: use_build_context_synchronously
           AmoToast.showAmoToast('Loggin in..', context);
 
+          // ignore: use_build_context_synchronously
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (c) => MySplashScreen(),
+              builder: (c) => const MySplashScreen(),
             ),
           );
-        }).catchError((e){
-          print(e.toString() + " an error occured");
+        }).catchError((e) {
+          log("$e an error occured");
         });
-      }
-      catch(e){
+      } catch (e) {
+        // ignore: use_build_context_synchronously
         AmoToast.showAmoToast('Something went wrong.', context);
       }
     }
-
   }
 
-
-
   final ButtonStyle style = ElevatedButton.styleFrom(
-      primary: const Color(0xff009B4E),
+      backgroundColor: const Color(0xff009B4E),
       // Background color
       textStyle: const TextStyle(
         fontSize: 16,
@@ -122,9 +115,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     phoneNumber = widget.phoneNumber;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -136,7 +129,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   const Text(
                     "Welcome to",
                     style: TextStyle(
-                        fontFamily: "Poppins", fontSize:30, color: Colors.black),
+                        fontFamily: "Poppins",
+                        fontSize: 30,
+                        color: Colors.black),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
@@ -150,7 +145,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(left: 10,top: 20),
+              padding: EdgeInsets.only(left: 10, top: 20),
               child: Row(
                 children: [
                   Text(
@@ -182,7 +177,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         TextSpan(
                             text: "*",
                             style: TextStyle(
-
                                 fontFamily: "Poppins",
                                 fontSize: 16,
                                 color: Color(0xff019EE3))),
@@ -193,9 +187,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
             ),
 
-
             // Text  field
-
 
             Column(
               children: [
@@ -208,21 +200,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.0),
                       ),
-                      child:  Container(
+                      child: Container(
                         height: 64,
                         padding: const EdgeInsets.all(10.0),
-                        child:  Row(
+                        child: Row(
                           children: <Widget>[
-
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsets.only(left: 15),
+                                padding: const EdgeInsets.only(left: 15),
                                 child: TextField(
                                   controller: txtFirstNameTextEditingController,
-                                  maxLength: 20,
                                   decoration: const InputDecoration(
                                     hintText: "Enter your first name",
-                                    hintStyle: TextStyle(fontSize: 14,color: Color(0xffC1C1C1)),
+                                    hintStyle: TextStyle(
+                                        fontSize: 14, color: Color(0xffC1C1C1)),
                                     border: InputBorder.none,
                                   ),
                                 ),
@@ -230,7 +221,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ],
                         ),
-
                       )),
                 ),
 
@@ -253,7 +243,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             TextSpan(
                                 text: "*",
                                 style: TextStyle(
-
                                     fontFamily: "Poppins",
                                     fontSize: 16,
                                     color: Color(0xff019EE3))),
@@ -262,7 +251,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     ],
                   ),
-
                 ),
 
                 //text field
@@ -276,21 +264,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.0),
                       ),
-                      child:  Container(
+                      child: Container(
                         height: 64,
                         padding: const EdgeInsets.all(10.0),
-                        child:  Row(
+                        child: Row(
                           children: <Widget>[
-
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsets.only(left: 15),
+                                padding: const EdgeInsets.only(left: 15),
                                 child: TextField(
                                   controller: txtLastNameTextEditingController,
-                                  maxLength: 20,
                                   decoration: const InputDecoration(
                                     hintText: "Enter your last name ",
-                                    hintStyle: TextStyle(fontSize: 14,color: Color(0xffC1C1C1)),
+                                    hintStyle: TextStyle(
+                                        fontSize: 14, color: Color(0xffC1C1C1)),
                                     border: InputBorder.none,
                                   ),
                                 ),
@@ -298,12 +285,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ],
                         ),
-
                       )),
                 ),
-
-
-
 
                 //Email address text
                 Padding(
@@ -325,17 +308,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 style: TextStyle(
                                     fontFamily: "Poppins",
                                     fontSize: 14,
-                                    color: Color(0xff009B4E)
-                                )
-                            ),
+                                    color: Color(0xff009B4E))),
                           ],
                         ),
                       ),
                     ],
                   ),
-
                 ),
-
 
                 Padding(
                   padding: const EdgeInsets.only(top: 1, left: 22, right: 22),
@@ -346,20 +325,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.0),
                       ),
-                      child:  Container(
+                      child: Container(
                         height: 64,
                         padding: const EdgeInsets.all(10.0),
-                        child:  Row(
-                          children:  <Widget>[
-
+                        child: Row(
+                          children: <Widget>[
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.only(top: 10,left: 18),
+                                padding:
+                                    const EdgeInsets.only(top: 10, left: 18),
                                 child: TextField(
                                   controller: txtEmailTextEditingController,
                                   decoration: const InputDecoration(
                                     hintText: "Enter your Email address",
-                                    hintStyle: TextStyle(fontSize: 14,color: Color(0xffC1C1C1)),
+                                    hintStyle: TextStyle(
+                                        fontSize: 14, color: Color(0xffC1C1C1)),
                                     border: InputBorder.none,
                                   ),
                                 ),
@@ -367,15 +347,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ],
                         ),
-
                       )),
                 ),
 
                 //
-
               ],
             ),
-
 
             // registration button
 
@@ -403,11 +380,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
     );
-
   }
 }

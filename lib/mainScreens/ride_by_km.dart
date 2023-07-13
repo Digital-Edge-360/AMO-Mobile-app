@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:amo_cabs/mainScreens/main_screen.dart';
 import 'package:amo_cabs/mainScreens/prices_page.dart';
 import 'package:amo_cabs/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
@@ -25,23 +24,22 @@ class _RideByKmState extends State<RideByKm> {
   String? userLastName;
   String? userPhone;
 
-  assignUserName() async{
-    try{
-      userName = await userModelCurrentInfo!.firstName!;
-      userLastName = await userModelCurrentInfo!.lastName!;
-      userPhone =  await userModelCurrentInfo!.phoneNumber!;
-    }
-    catch(e){
+  assignUserName() async {
+    try {
+      userName = userModelCurrentInfo!.firstName!;
+      userLastName = userModelCurrentInfo!.lastName!;
+      userPhone = userModelCurrentInfo!.phoneNumber!;
+    } catch (e) {
       log(e.toString());
     }
-}
-
+  }
 
   @override
   void initState() {
     assignUserName();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +50,7 @@ class _RideByKmState extends State<RideByKm> {
         ),
         child: MyDrawer(
           name: userName,
-          lastName : userLastName,
+          lastName: userLastName,
           phone: userPhone,
         ),
       ),
@@ -61,10 +59,10 @@ class _RideByKmState extends State<RideByKm> {
         child: Stack(
           children: [
             Column(
-
               children: [
-                const SizedBox(height: 60,),
-
+                const SizedBox(
+                  height: 60,
+                ),
 
 // Drop Location --
 
@@ -77,35 +75,37 @@ class _RideByKmState extends State<RideByKm> {
                           color: Colors.black)),
                 ),
 
-
                 Slider(
-                    value: km.toDouble()/500.0,
+                    value: km.toDouble() / 500.0,
                     divisions: 500,
-                    onChanged: (val){
+                    onChanged: (val) {
                       setState(() {
-                        km = (val*500).toInt();
+                        km = (val * 500).toInt();
                       });
                     }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Card(
-
                       elevation: 5,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("$km kilometers", style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 10,
-                            color: Colors.black),),
+                        child: Text(
+                          "$km kilometers",
+                          style: const TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 10,
+                              color: Colors.black),
+                        ),
                       ),
                     ),
                   ],
                 ),
 
-
                 Padding(
-                  padding: const EdgeInsets.only(top: 10,),
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                  ),
                   child: Card(
                     elevation: 8.0,
                     color: Colors.white,
@@ -124,10 +124,16 @@ class _RideByKmState extends State<RideByKm> {
                               children: [
                                 //text1
                                 Row(
-
-                                  children:  [
-                                    const Text("Seats Count",style: TextStyle(color: Color(0xff019EE3)),),
-                                    Image.asset('images/seats.png',height: 15,)
+                                  children: [
+                                    const Text(
+                                      "Seats Count",
+                                      style:
+                                          TextStyle(color: Color(0xff019EE3)),
+                                    ),
+                                    Image.asset(
+                                      'images/seats.png',
+                                      height: 15,
+                                    )
                                   ],
                                 ),
                                 // todo -- dropdown1
@@ -136,23 +142,31 @@ class _RideByKmState extends State<RideByKm> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(3),
-                                        color: Color(0xff019EE3)),
+                                        color: const Color(0xff019EE3)),
                                     // width: 80,
                                     height: 20,
                                     child: DropdownButton<int>(
                                       icon: Row(
                                         // mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
-                                          Text(seatsCount.toString(), style: TextStyle(color: Colors.white),),
-
-                                          Icon(Icons.arrow_drop_down_sharp, color: Colors.white,),
+                                          Text(
+                                            seatsCount.toString(),
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                          const Icon(
+                                            Icons.arrow_drop_down_sharp,
+                                            color: Colors.white,
+                                          ),
                                         ],
                                       ),
-
-                                      items: <int>[1, 2, 3, 4, 5, 6].map((int value) {
+                                      items: <int>[1, 2, 3, 4, 5, 6]
+                                          .map((int value) {
                                         return DropdownMenuItem<int>(
                                           value: value,
-                                          child: Text(value.toString(),),
+                                          child: Text(
+                                            value.toString(),
+                                          ),
                                         );
                                       }).toList(),
                                       onChanged: (newVal) {
@@ -171,10 +185,9 @@ class _RideByKmState extends State<RideByKm> {
                         Padding(
                           padding: const EdgeInsets.only(right: 10, left: 80),
                           child: Container(
-
                             height: 70,
                             width: 1,
-                            color: Color(0xffD0D0D0),
+                            color: const Color(0xffD0D0D0),
                           ),
                         ),
 
@@ -184,12 +197,17 @@ class _RideByKmState extends State<RideByKm> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                children:  [
-                                  Text("Bags Count",style: TextStyle(color: Color(0xff019EE3)),),
-                                  Image.asset('images/bags.png',height: 15,)
+                                children: [
+                                  const Text(
+                                    "Bags Count",
+                                    style: TextStyle(color: Color(0xff019EE3)),
+                                  ),
+                                  Image.asset(
+                                    'images/bags.png',
+                                    height: 15,
+                                  )
                                 ],
                               ),
-
 
                               // todo -- dropdown2
                               Padding(
@@ -197,23 +215,32 @@ class _RideByKmState extends State<RideByKm> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(3),
-                                      color: Color(0xff019EE3)),
+                                      color: const Color(0xff019EE3)),
                                   // width: 80,
                                   height: 20,
                                   child: DropdownButton<int>(
                                     icon: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Text(bagsCount.toString(), style: TextStyle(color: Colors.white),),
-
-                                        Icon(Icons.arrow_drop_down_sharp, color: Colors.white,),
+                                        Text(
+                                          bagsCount.toString(),
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_drop_down_sharp,
+                                          color: Colors.white,
+                                        ),
                                       ],
                                     ),
-
-                                    items: <int>[1, 2, 3, 4, 5].map((int value) {
+                                    items:
+                                        <int>[1, 2, 3, 4, 5].map((int value) {
                                       return DropdownMenuItem<int>(
                                         value: value,
-                                        child: Text(value.toString(),),
+                                        child: Text(
+                                          value.toString(),
+                                        ),
                                       );
                                     }).toList(),
                                     onChanged: (newVal) {
@@ -222,7 +249,6 @@ class _RideByKmState extends State<RideByKm> {
                                       });
                                     },
                                   ),
-
                                 ),
                               ),
                             ],
@@ -233,24 +259,33 @@ class _RideByKmState extends State<RideByKm> {
                   ),
                 ),
 
-
-                const SizedBox(height: 14,),
+                const SizedBox(
+                  height: 14,
+                ),
 
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (c) => PricesPage(seatsCount: seatsCount, bagsCount: bagsCount,distanceInMeters: km * 1000, rideByKm: true,),), );
-
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (c) => PricesPage(
+                          seatsCount: seatsCount,
+                          bagsCount: bagsCount,
+                          distanceInMeters: km * 1000,
+                          rideByKm: true,
+                        ),
+                      ),
+                    );
                   },
-                  child: Text('Request a Ride'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
+                    backgroundColor: Colors.green,
                     textStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  child: const Text('Request a Ride'),
                 ),
-
               ],
             ),
             Positioned(
@@ -258,20 +293,17 @@ class _RideByKmState extends State<RideByKm> {
               left: 14,
               child: GestureDetector(
                 onTap: () {
-                  if(openNavigationDrawer){
-
+                  if (openNavigationDrawer) {
                     tKey.currentState!.openDrawer();
-                  }
-                  else{
+                  } else {
                     //restart- refresh- minimize app progamitacally
                     // SystemNavigator.pop();
                     setState(() {
                       openNavigationDrawer = true;
-
                     });
                   }
                 },
-                child:  Icon(
+                child: Icon(
                   // Icons.menu,
                   openNavigationDrawer ? Icons.menu : Icons.close,
                   color: Colors.black54,

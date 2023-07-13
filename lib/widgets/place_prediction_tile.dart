@@ -15,45 +15,44 @@ class PlacePredictionTileDesign extends StatelessWidget {
 
   getPlaceDirectionDetails(String? placeId, context) async {
     showDialog(
-        context: context,
-        builder: (BuildContext context) => ProgressDialog(
-          message: "Setting up drop-off, please wait",
-        ),
+      context: context,
+      builder: (BuildContext context) => ProgressDialog(
+        message: "Setting up drop-off, please wait",
+      ),
     );
-    String placeDirectionDetailsUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$mapKey";
-    var responseApi = await RequestAssistant.receiveRequest(placeDirectionDetailsUrl);
+    String placeDirectionDetailsUrl =
+        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$mapKey";
+    var responseApi =
+        await RequestAssistant.receiveRequest(placeDirectionDetailsUrl);
 
     Navigator.pop(context);
 
-    if(responseApi == 'Error Occured.'){
+    if (responseApi == 'Error Occured.') {
       return;
     }
 
-
-
-    if(responseApi["status"] == "OK"){
+    if (responseApi["status"] == "OK") {
       Directions directions = Directions();
       directions.locationId = placeId;
       directions.locationName = responseApi['result']['name'];
-      directions.locationLatitude = responseApi['result']['geometry']['location']['lat'];
-      directions.locationLongitude = responseApi['result']['geometry']['location']['lng'];
+      directions.locationLatitude =
+          responseApi['result']['geometry']['location']['lat'];
+      directions.locationLongitude =
+          responseApi['result']['geometry']['location']['lng'];
 
-      Provider.of<AppInfo>(context, listen: false).updateDropOffLocationAddress(directions);
-      
+      Provider.of<AppInfo>(context, listen: false)
+          .updateDropOffLocationAddress(directions);
+
       Navigator.pop(context, "obtainedDropOff");
 
       // print("loaction name = " + directions.locationName!.toString());
-
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        primary: Colors.white
-      ),
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
       onPressed: () {
         getPlaceDirectionDetails(predictedPlaces!.place_id, context);
       },
@@ -79,11 +78,10 @@ class PlacePredictionTileDesign extends StatelessWidget {
                       fontSize: 16,
                       color: Colors.black,
                     ),
-
                   ),
-
-                  const SizedBox(height: 2,),
-
+                  const SizedBox(
+                    height: 2,
+                  ),
                   Text(
                     predictedPlaces!.secondary_text!,
                     overflow: TextOverflow.ellipsis,
@@ -91,11 +89,10 @@ class PlacePredictionTileDesign extends StatelessWidget {
                       fontSize: 12,
                       color: Colors.black,
                     ),
-
                   ),
-
-                  const SizedBox(height: 8,),
-
+                  const SizedBox(
+                    height: 8,
+                  ),
                 ],
               ),
             ),

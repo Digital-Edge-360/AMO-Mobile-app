@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 class OnboardingScreen3 extends StatelessWidget {
-
   OnboardingScreen3({Key? key}) : super(key: key);
 
   final ButtonStyle style = ElevatedButton.styleFrom(
@@ -18,12 +17,10 @@ class OnboardingScreen3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
         alignment: Alignment.center,
-
         child: Column(
           children: [
             const Padding(
@@ -49,7 +46,6 @@ class OnboardingScreen3 extends StatelessWidget {
               padding: const EdgeInsets.only(left: 20, right: 10),
               child: Container(
                 alignment: Alignment.center,
-
                 child: const Text(
                     "Your destination is at your fingertips. Open app & enter where you want to go",
                     style: TextStyle(
@@ -57,26 +53,22 @@ class OnboardingScreen3 extends StatelessWidget {
                         fontSize: 15,
                         color: Color(0xff739AF0))),
               ),
-            )
-            ,
+            ),
             SizedBox(
               height: MediaQuery.of(context).size.width,
               child: Container(
-                height:  MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width,
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  // borderRadius: BorderRadius.circular(20),
+                    // borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
-                      // fit: BoxFit.cover,
-                      fit: BoxFit.fitWidth,
+                  // fit: BoxFit.cover,
+                  fit: BoxFit.fitWidth,
 
-                      image: AssetImage('images/img_5.png'),
-                    )),
+                  image: AssetImage('images/img_5.png'),
+                )),
               ),
             ),
-
-
-
             Padding(
               padding: const EdgeInsets.only(left: 260),
               child: Card(
@@ -89,36 +81,34 @@ class OnboardingScreen3 extends StatelessWidget {
                     height: 40,
                     width: 100,
                     decoration: const BoxDecoration(
-                        color:Color(0xff009B4E),
-                        borderRadius: BorderRadius.horizontal(
-                        )),
+                        color: Color(0xff009B4E),
+                        borderRadius: BorderRadius.horizontal()),
                     child: Directionality(
                         textDirection: TextDirection.rtl,
                         child: ElevatedButton.icon(
                           style: style,
                           onPressed: () {
-                            Navigator.pushReplacement(context,
+                            Navigator.pushReplacement(
+                              context,
 
                               PageTransition(
                                 type: PageTransitionType.rightToLeft,
                                 duration: const Duration(milliseconds: 100),
-                                child:  LoginScreen(),
+                                child: const LoginScreen(),
                               ),
                               // MaterialPageRoute(builder: (context) =>OnboardingScreen4(),),
                             );
-
                           },
                           icon: const Icon(
-                            Icons.arrow_back,size: 20,
+                            Icons.arrow_back,
+                            size: 20,
                           ),
                           label: const Text("Next"),
                           //.........
-                        ))
-                ),
+                        ))),
               ),
             ),
           ],
-
         ),
       ),
     );
