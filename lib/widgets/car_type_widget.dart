@@ -8,12 +8,12 @@ class CarTypeWidget extends StatelessWidget {
   final bool isOneWay, rideByKm;
   const CarTypeWidget({super.key, required this.distanceInMeters, required this.seatsCount, required this.bagsCount, required this.index, required this.isOneWay, required this.rideByKm});
 
-  String formatPrice(double price) {
+  static String formatPrice(double price) {
     final formatter = NumberFormat('#,##0.00', 'en_US');
     return formatter.format(price);
   }
 
-  String calculatePrices(){
+  double calculatePrices(){
     double price = distanceInMeters *
         perKmMultiplier[index] * 2;
     if(price < 500){
@@ -22,7 +22,7 @@ class CarTypeWidget extends StatelessWidget {
 
 
 
-    return formatPrice(price);
+    return price;
     // if(isOneWay){
     //   //TODO:
     // }
@@ -112,7 +112,7 @@ class CarTypeWidget extends StatelessWidget {
           ],
         ),
         trailing: Text(
-          '₹${calculatePrices()}',
+          '₹${formatPrice(calculatePrices())}',
           style: const TextStyle(
               fontFamily: "Poppins",
               fontSize: 18,

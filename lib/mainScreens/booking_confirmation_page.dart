@@ -12,7 +12,7 @@ import '../widgets/progress_dialog.dart';
 
 class BookingConfirmation extends StatefulWidget {
   int  distanceInMeters, bagsCount, seatsCount, index;
-  String price;
+  double price;
   bool isOneWay, rideByKm;
   BookingConfirmation({required this.price, required this.distanceInMeters, required this.bagsCount, required this.seatsCount, required this.index, required this.isOneWay, required this.rideByKm});
 

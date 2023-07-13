@@ -630,37 +630,41 @@ class _MainScreenState extends State<MainScreen> {
                                   });
                                 }
                               },
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.add_location_alt_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(
-                                    width: 12,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'To',
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
+                              child: Container(
+                                // color: Colors.red,
+                                width: double.infinity,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.add_location_alt_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'To',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 12,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        Provider.of<AppInfo>(context).userDropOffLocation != null
-                                            ? Provider.of<AppInfo>(context).userDropOffLocation!.locationName!
-                                            : 'Where to go?',
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
+                                        Text(
+                                          Provider.of<AppInfo>(context).userDropOffLocation != null
+                                              ? Provider.of<AppInfo>(context).userDropOffLocation!.locationName!
+                                              : 'Where to go?',
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 12,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
 
