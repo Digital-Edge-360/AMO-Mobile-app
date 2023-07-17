@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "907307276923-lctmk2qt04k1nf947ilsqg8e8ipg3ec7.apps.googleusercontent.com",
+          "client_id": "907307276923-ijgdajdvu520r1tiacou0f07lfrlvf97.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.amo_cabs",
-            "certificate_hash": "df3bf811c76d0e1727153a8a8b9679157a8ff433"
+            "certificate_hash": "3ea111b90e796ca4772b9e5c69881a3e6bc37785"
           }
         },
         {
