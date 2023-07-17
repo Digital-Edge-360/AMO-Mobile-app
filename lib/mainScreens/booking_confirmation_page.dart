@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:amo_cabs/global/global.dart';
 import 'package:amo_cabs/mainScreens/main_screen.dart';
+import 'package:amo_cabs/mainScreens/thank_you_screen.dart';
 import 'package:amo_cabs/widgets/amo_toast.dart';
 import 'package:amo_cabs/widgets/car_type_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,11 +16,11 @@ import '../widgets/progress_dialog.dart';
 
 // ignore: must_be_immutable
 class BookingConfirmation extends StatefulWidget {
-
-  int  distanceInMeters, bagsCount, seatsCount, index;
+  int distanceInMeters, bagsCount, seatsCount, index;
   double price;
 
   bool isOneWay, rideByKm;
+
   BookingConfirmation(
       {super.key,
       required this.price,
@@ -43,6 +47,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
     content: Text('Request sent sucessfully!'),
   );
 
+  late String price;
+  double priceInDouble = 0;
+
   sendRideRequest() async {
     showDialog(
       context: context,
@@ -60,40 +67,58 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
     final List<String>? userDetails = prefs.getStringList('userCurrentInfo');
     //var pickUpMap = {'sourceName' : origin!.locationName, 'userPickupLatitude': origin!.locationLatitude, 'use' }
     var currentRideDetails = {
-
-        "pickUp": {"pickUpName": origin!.locationName!,
-                    "pickUpId": origin.locationId,
-                    "pickUpLatitude":origin.locationLatitude,
-                      "pickUpLongitude": origin.locationLongitude,
-                      "pickUpHumanReadableAddress": origin.humanReadableAddress },
-        "dropOff": widget.rideByKm ? {"dropOffName": '',
-          "dropOffId": '',
-          "dropOffLatitude":'',
-          "dropOffLongitude": '',
-          "dropOffHumanReadableAddress": '' }: {"dropOffName": destination!.locationName!,
-                    "dropOffId": destination.locationId,
-                  "dropOffLatitude":destination.locationLatitude,
-                    "dropOffLongitude": destination.locationLongitude,
-                    "dropOffHumanReadableAddress": destination.humanReadableAddress },
-        "distanceInMeters": widget.distanceInMeters,
-        "customerName": userDetails != null ?  userDetails[2]+ " " + userDetails[3] : "",
-        "pickUpDate": _selectedDatePickUp,
-        "pickUpTime": _selectedTimePickUp.hour.toString() + ":" + _selectedTimePickUp.minute.toString(),
-        "returnPickUpDate" : widget.isOneWay ? '': _selectedDateReturnPickUp,
-        "returnPickUpTime" : widget.isOneWay ? '': _selectedTimeReturnPickUp.hour.toString() + ":" + _selectedTimeReturnPickUp.minute.toString(),
-        "waitingTime" : widget.isOneWay ? 0 : 'Yet to implement',
-        "noOfBagsRequest": widget.bagsCount,
-        "noOfSeatsRequest": widget.seatsCount,
-        "price": widget.price,
-        "carType": carTypes[widget.index],
-        "rideByKm": widget.rideByKm ? "km" : "destination",
-        "isOneWay": widget.isOneWay,
-        "status": "Pending",
-        "customerId": userDetails!=null ? userDetails[0] : '',
-        "specialNotes": txtSpecialNotesTextEditingController.text,
-        "createdAt": DateTime.now(),
-
-
+      "pickUp": {
+        "pickUpName": origin!.locationName!,
+        "pickUpId": origin.locationId,
+        "pickUpLatitude": origin.locationLatitude,
+        "pickUpLongitude": origin.locationLongitude,
+        "pickUpHumanReadableAddress": origin.humanReadableAddress
+      },
+      "dropOff": widget.rideByKm
+          ? {
+              "dropOffName": '',
+              "dropOffId": '',
+              "dropOffLatitude": '',
+              "dropOffLongitude": '',
+              "dropOffHumanReadableAddress": ''
+            }
+          : {
+              "dropOffName": destination!.locationName!,
+              "dropOffId": destination.locationId,
+              "dropOffLatitude": destination.locationLatitude,
+              "dropOffLongitude": destination.locationLongitude,
+              "dropOffHumanReadableAddress": destination.humanReadableAddress
+            },
+      "distanceInMeters": widget.distanceInMeters,
+      "customerName":
+          userDetails != null ? userDetails[2] + " " + userDetails[3] : "",
+      "pickUpDate": _selectedDatePickUp,
+      "pickUpTime": _selectedTimePickUp.hour.toString() +
+          ":" +
+          _selectedTimePickUp.minute.toString(),
+      "returnPickUpDate": widget.isOneWay ? '' : _selectedDateReturnPickUp,
+      "returnPickUpTime": widget.isOneWay
+          ? ''
+          : _selectedTimeReturnPickUp.hour.toString() +
+              ":" +
+              _selectedTimeReturnPickUp.minute.toString(),
+      "waitingTime": widget.isOneWay ? 0 : 'Yet to implement',
+      "noOfBagsRequest": widget.bagsCount,
+      "noOfSeatsRequest": widget.seatsCount,
+      "price": widget.price,
+      "carType": carTypes[widget.index],
+      "rideByKm": widget.rideByKm ? "km" : "destination",
+      "isOneWay": widget.isOneWay,
+      "status": "Pending",
+      "customerId": userDetails != null ? userDetails[0] : '',
+      "specialNotes": txtSpecialNotesTextEditingController.text,
+      "createdAt": DateTime.now(),
+      "commission": userRole! == "Agent"
+          ? txtCommisionAmountTextEditingController.text.toString()
+          : "",
+      "customerPhoneNumber": userRole! == "Agent"
+          ? txtCustomerMobileNumberTextEditingController.text.toString()
+          : "",
     };
 
     // _firestore.collection("rideRequest").doc(userModelCurrentInfo!.id!).set(currentRideDetails, SetOptions(merge: true));
@@ -111,7 +136,15 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
       Provider.of<AppInfo>(context, listen: false).userDropOffLocation = null;
 
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (c) => const MainScreen()));
+        context,
+        MaterialPageRoute(
+          builder: (c) => ThankYouScreen(
+            commission: txtCommisionAmountTextEditingController.text.toString(),
+            price: price,
+            index: widget.index,
+          ),
+        ),
+      );
     }).catchError((e) {
       AmoToast.showAmoToast("Something went wrong", context);
       debugPrint("Something went wrong $e");
@@ -122,6 +155,12 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   TextEditingController txtSpecialNotesTextEditingController =
       TextEditingController();
   TextEditingController txtCouponTextEditingController =
+      TextEditingController();
+
+  TextEditingController txtCustomerMobileNumberTextEditingController =
+      TextEditingController();
+
+  TextEditingController txtCommisionAmountTextEditingController =
       TextEditingController();
 
   _selectPickUpTime(BuildContext context) async {
@@ -150,8 +189,12 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
     }
   }
 
-  void st() {
-    _selectedTimePickUp.minute;
+  late final String? userRole;
+
+  getUserRole() async {
+    // Obtain shared preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    userRole = prefs.getString('userType');
   }
 
   void _pickUpDatePicker() {
@@ -193,7 +236,16 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserRole();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    priceInDouble = widget.price;
+    price = CarTypeWidget.formatPrice(widget.price);
     int index = widget.index;
     return Scaffold(
       appBar: AppBar(),
@@ -402,9 +454,11 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                           fontWeight: FontWeight.bold,
                           fontSize: 20)),
                 ),
+
                 const SizedBox(
                   height: 16,
                 ),
+
                 Row(
                   children: [
                     // Pick a date
@@ -670,8 +724,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                 decoration: const InputDecoration(
                                   labelText: 'Special Notes:',
                                 ),
-                                maxLines: 2, // <-- SEE HERE
-                                // <-- SEE HERE
+                                maxLines: 2, //
                               ),
                             ),
                           ),
@@ -694,29 +747,31 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                 decoration: const InputDecoration(
                                   labelText: 'Enter Coupon code:',
                                 ),
-                                maxLines: 5, // <-- SEE HERE
-                                minLines: 1, // <-- SEE HERE
+                                maxLines: 1,
                               ),
                             ),
                           ),
-                          Card(
-                              elevation: 6.0,
-                              color: const Color(0xff009B4E),
-                              clipBehavior: Clip.hardEdge,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6.0),
-                              ),
-                              child: Container(
-                                  width: 100,
-                                  height: 40,
-                                  color: const Color(0xff009B4E),
-                                  child: const Center(
-                                      child: Text(
-                                    "Apply",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Poppins'),
-                                  )))),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Card(
+                                elevation: 6.0,
+                                color: const Color(0xff009B4E),
+                                clipBehavior: Clip.hardEdge,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                                child: Container(
+                                    width: 100,
+                                    height: 40,
+                                    color: const Color(0xff009B4E),
+                                    child: const Center(
+                                        child: Text(
+                                      "Apply",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Poppins'),
+                                    )))),
+                          ),
                         ],
                       )),
                 ),
@@ -724,6 +779,83 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                 const SizedBox(
                   height: 15,
                 ),
+
+                //customer mobile app
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    "Customer Mobile Number",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                ),
+
+                TextField(
+                  maxLength: 10,
+                  autofocus: true,
+                  enableSuggestions: true,
+                  controller: txtCustomerMobileNumberTextEditingController,
+                  keyboardType: TextInputType.phone,
+                  style: const TextStyle(
+                      fontFamily: "Poppins", fontSize: 16, color: Colors.black),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(10),
+                  ],
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Customer Phone",
+                    counterText: "",
+                    hintStyle: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 18,
+                        color: Colors.grey),
+                  ),
+                ),
+
+                //Add commision
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    "Add Commission",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                ),
+
+                TextField(
+                  maxLength: 4,
+                  autofocus: true,
+                  enableSuggestions: true,
+                  onChanged: (newVal) {
+                    double commission = double.parse(newVal);
+                    setState(() {
+                      priceInDouble += commission;
+                      price = CarTypeWidget.formatPrice(priceInDouble);
+                    });
+                  },
+                  controller: txtCommisionAmountTextEditingController,
+                  keyboardType: TextInputType.phone,
+                  style: const TextStyle(
+                      fontFamily: "Poppins", fontSize: 16, color: Colors.black),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(10),
+                  ],
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Commission Amount",
+                    counterText: "",
+                    hintStyle: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 18,
+                        color: Colors.grey),
+                  ),
+                ),
+
+                //estimated fare text
                 Text.rich(
                   TextSpan(
                     children: [
@@ -732,7 +864,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                         style: TextStyle(fontSize: 18),
                       ),
                       TextSpan(
-                        text: '₹${CarTypeWidget.formatPrice(widget.price)}',
+                        text: '₹${price}',
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
@@ -740,6 +872,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                   ),
                 ),
 
+                //confirm button
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Card(

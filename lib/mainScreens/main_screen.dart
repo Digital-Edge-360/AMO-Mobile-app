@@ -838,7 +838,7 @@ class _MainScreenState extends State<MainScreen> {
     polyLineSet.clear();
     setState(() {
       Polyline polyline = Polyline(
-        color: Colors.purpleAccent,
+        color: Colors.black54,
         polylineId: const PolylineId("PolylineID"),
         jointType: JointType.round,
         points: pLineCoordinatesList,

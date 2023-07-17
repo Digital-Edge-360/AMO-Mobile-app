@@ -47,6 +47,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
       var collectionRef = FirebaseFirestore.instance.collection("users");
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? userRole = prefs.getString('userType');
+      log("===============");
+      log(prefs.getString('userType').toString());
       try {
         await collectionRef.add({
           "active": true,
@@ -56,7 +59,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           "fullName": "$firstName $lastName",
           "rideIds": [],
           "phoneNumber": phoneNumber,
-          "role": "Customer",
+          "role": prefs.getString('userType'),
           "totalRides": 0,
 
           //your data which will be added to the collection and collection will be created after this

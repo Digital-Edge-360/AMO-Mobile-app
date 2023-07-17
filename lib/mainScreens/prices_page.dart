@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:amo_cabs/models/directions.dart';
 import 'package:amo_cabs/widgets/car_type_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +42,11 @@ class _PricesPageState extends State<PricesPage> {
 
   var noOfSeatsAvailableByCarType = [3, 3, 6];
   var noOfBagStorageAvailableByCarType = [2, 4, 5];
+
+  late Directions userPickUpLocation, userDropOffLocation;
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -169,14 +175,14 @@ class _PricesPageState extends State<PricesPage> {
                               padding: const EdgeInsets.only(left: 10),
                               child: Center(
                                 child: Text(
-                                  (Provider.of<AppInfo>(context)
-                                                  .userPickUpLocation!
-                                                  .locationName!)
-                                              .length >
-                                          30
-                                      ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
-                                      // ignore: unnecessary_string_interpolations
-                                      : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
+                                    (Provider.of<AppInfo>(context)
+                                        .userPickUpLocation!
+                                        .locationName!)
+                                        .length >
+                                        30
+                                        ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
+                                    // ignore: unnecessary_string_interpolations
+                                        : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
                                   style: const TextStyle(
                                       color: Colors.white,
                                       overflow: TextOverflow.ellipsis),

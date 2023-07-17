@@ -1,3 +1,4 @@
+import 'package:amo_cabs/onboardingScreens/login_as_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -129,12 +130,13 @@ class _MyDrawerState extends State<MyDrawer> {
               final SharedPreferences prefs =
                   await SharedPreferences.getInstance();
               await prefs.remove("userCurrentInfo");
+              await prefs.remove('userType');
 
               // ignore: use_build_context_synchronously
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => const LoginScreen()),
+                      builder: (BuildContext context) => LogInAsScreen()),
                   ModalRoute.withName('/'));
             },
             child: const ListTile(

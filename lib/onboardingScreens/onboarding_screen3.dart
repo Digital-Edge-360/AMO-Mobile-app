@@ -2,6 +2,8 @@ import 'package:amo_cabs/authentication/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
+import 'login_as_screen.dart';
+
 class OnboardingScreen3 extends StatelessWidget {
   OnboardingScreen3({Key? key}) : super(key: key);
 
@@ -94,7 +96,7 @@ class OnboardingScreen3 extends StatelessWidget {
                               PageTransition(
                                 type: PageTransitionType.rightToLeft,
                                 duration: const Duration(milliseconds: 100),
-                                child: const LoginScreen(),
+                                child: const LogInAsScreen(),
                               ),
                               // MaterialPageRoute(builder: (context) =>OnboardingScreen4(),),
                             );

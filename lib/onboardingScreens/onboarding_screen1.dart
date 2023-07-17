@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
+import 'login_as_screen.dart';
 import 'onboarding_screen2.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -110,6 +111,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   type: PageTransitionType.rightToLeft,
                                   duration: const Duration(milliseconds: 100),
                                   child:  OnboardingScreen2(),
+
                                 ),
                                 // MaterialPageRoute(builder: (context) =>OnboardingScreen2())
                               );
