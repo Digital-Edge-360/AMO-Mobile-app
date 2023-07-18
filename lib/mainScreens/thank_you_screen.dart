@@ -88,7 +88,7 @@ class ThankYouScreen extends StatelessWidget {
                       style: TextStyle(fontFamily:"Poppins",color: Colors.black54,fontSize: 16),
                     ),
                     TextSpan(
-                      text: "Rs ${price!}/-",
+                      text: "Rs ${price}/-",
                       style: TextStyle(fontFamily:"Poppins",color: Colors.black,fontSize: 16),
                     ),
                   ],
