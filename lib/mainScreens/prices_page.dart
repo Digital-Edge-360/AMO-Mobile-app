@@ -27,7 +27,7 @@ class PricesPage extends StatefulWidget {
 }
 
 class _PricesPageState extends State<PricesPage> {
-  bool oneWay = true;
+  bool? oneWay = null;
 
   double perKmMultiplierHatchBack = 0.01;
   double perKmMultiplierSedan = 0.012;
@@ -58,83 +58,8 @@ class _PricesPageState extends State<PricesPage> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              //todo -- button
-              Padding(
-                padding: const EdgeInsets.only(right: 5, top: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      child: Card(
-                        elevation: 5.0,
-                        clipBehavior: Clip.hardEdge,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: Container(
-                          height: 29,
-                          width: 94,
-                          decoration: BoxDecoration(
-                              color: oneWay
-                                  ? const Color(0xff019EE3)
-                                  : Colors.white,
-                              borderRadius: const BorderRadius.horizontal()),
-                          child: Center(
-                              child: Text(
-                            "One Way",
-                            style: TextStyle(
-                                color: oneWay
-                                    ? Colors.white
-                                    : const Color(0xff019EE3),
-                                fontSize: 14,
-                                fontFamily: "Poppins"),
-                          )),
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          oneWay = true;
-                        });
-                      },
-                    ),
-                    GestureDetector(
-                      child: Card(
-                        elevation: 6.0,
-                        clipBehavior: Clip.hardEdge,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: Container(
-                          height: 29,
-                          width: 94,
-                          decoration: BoxDecoration(
-                            color:
-                                oneWay ? Colors.white : const Color(0xff019EE3),
-                            borderRadius: const BorderRadius.horizontal(),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Return",
-                              style: TextStyle(
-                                  color: oneWay
-                                      ? const Color(0xff019EE3)
-                                      : Colors.white,
-                                  fontSize: 14,
-                                  fontFamily: "Poppins"),
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          oneWay = false;
-                          log(oneWay.toString());
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
+
+
 
 // source location
               Container(
@@ -371,6 +296,88 @@ class _PricesPageState extends State<PricesPage> {
                 height: 18,
               ),
 
+
+              Padding(
+                padding: const EdgeInsets.only(right: 5, top: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //one way trip type
+                    GestureDetector(
+                      child: Card(
+                        elevation: 5.0,
+                        clipBehavior: Clip.hardEdge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: Container(
+                          height: 29,
+                          width: 94,
+                          decoration: BoxDecoration(
+                              color: oneWay?? false
+                                  ? const Color(0xff019EE3)
+                                  : Colors.white,
+                              borderRadius: const BorderRadius.horizontal()),
+                          child: Center(
+                              child: Text(
+                                "One Way",
+                                style: TextStyle(
+                                    color: oneWay ?? false
+                                        ? Colors.white
+                                        : const Color(0xff019EE3),
+                                    fontSize: 14,
+                                    fontFamily: "Poppins"),
+                              )),
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          oneWay = true;
+                        });
+                      },
+                    ),
+
+                    //return trip type
+                    GestureDetector(
+                      child: Card(
+                        elevation: 6.0,
+                        clipBehavior: Clip.hardEdge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: Container(
+                          height: 29,
+                          width: 94,
+                          decoration: BoxDecoration(
+                            color:
+                            oneWay?? true ? Colors.white : const Color(0xff019EE3),
+                            borderRadius: const BorderRadius.horizontal(),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Return",
+                              style: TextStyle(
+                                  color: oneWay ?? true
+                                      ? const Color(0xff019EE3)
+                                      : Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: "Poppins"),
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          oneWay = false;
+                          log(oneWay.toString());
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 12,),
               //total distance
               Container(
                 alignment: Alignment.topLeft,
@@ -394,6 +401,8 @@ class _PricesPageState extends State<PricesPage> {
                       fontFamily: "Poppins", fontSize: 16, color: Colors.black),
                 ),
               ),
+
+              const SizedBox(height: 12,),
 
               SizedBox(
                 height: 300,

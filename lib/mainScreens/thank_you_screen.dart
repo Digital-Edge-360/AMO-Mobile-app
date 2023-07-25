@@ -140,41 +140,6 @@ class ThankYouScreen extends StatelessWidget {
               ),
             ),
 
-            //button
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Card(
-                elevation: 6.0,
-                clipBehavior: Clip.hardEdge,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Container(
-                  height: 45,
-                  width: 210,
-                  decoration: const BoxDecoration(
-                      color: Color(0xff029EE2),
-                      borderRadius: BorderRadius.horizontal()),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff029EE2),
-                      // Background color
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      //    Navigator.push(context,MaterialPageRoute(builder: (context) =>OtpScreen()),);
-                    },
-                    child: const Text("Cancel Booking"
-                        ""),
-                  ),
-                ),
-              ),
-            ),
 
 
 

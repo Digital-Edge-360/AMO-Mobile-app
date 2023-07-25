@@ -29,6 +29,7 @@ class _RideByKmState extends State<RideByKm> {
       userName = userModelCurrentInfo!.firstName!;
       userLastName = userModelCurrentInfo!.lastName!;
       userPhone = userModelCurrentInfo!.phoneNumber!;
+      log("name is $userName");
     } catch (e) {
       log(e.toString());
     }
@@ -36,6 +37,7 @@ class _RideByKmState extends State<RideByKm> {
 
   @override
   void initState() {
+
     assignUserName();
     super.initState();
   }

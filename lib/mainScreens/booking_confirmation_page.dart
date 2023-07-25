@@ -116,9 +116,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
       "commission": userRole! == "Agent"
           ? txtCommisionAmountTextEditingController.text.toString()
           : "",
-      "customerPhoneNumber": userRole! == "Agent"
-          ? txtCustomerMobileNumberTextEditingController.text.toString()
-          : "",
+      "customerPhoneNumber": userModelCurrentInfo!.phoneNumber,
+      "driverPhoneNumber": "",
     };
 
     // _firestore.collection("rideRequest").doc(userModelCurrentInfo!.id!).set(currentRideDetails, SetOptions(merge: true));

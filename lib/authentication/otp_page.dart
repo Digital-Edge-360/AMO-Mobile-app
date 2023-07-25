@@ -61,8 +61,14 @@ class _OtpPageState extends State<OtpPage> {
       // box.write('id', firebaseUser);
       // print(box.read('id'));
       if (firebaseUser != null) {
+        // final snapshot = await _db
+        //     .collection("users")
+        //     .where("phoneNumber", isEqualTo: phoneNumber)
+        //     .get();
         final snapshot = await _db
-            .collection("users")
+            .collection("allUsers")
+            .doc('customer')
+            .collection('allCustomers')
             .where("phoneNumber", isEqualTo: phoneNumber)
             .get();
 
@@ -85,36 +91,34 @@ class _OtpPageState extends State<OtpPage> {
           final String? userRole = widget.isAgent! ? "Agent" : "Customer";
 
 
-          if (userModelCurrentInfo!.userRole == userRole) {
+          if (userModelCurrentInfo!.active!) {
+            await saveUserTypeData();
+            debugPrint("take to login page");
+            Fluttertoast.showToast(msg: 'Logging in..');
 
-            if (userModelCurrentInfo!.active!) {
-              await saveUserTypeData();
-              debugPrint("take to login page");
-              Fluttertoast.showToast(msg: 'Logging in..');
+            // ignore: use_build_context_synchronously
 
-              // ignore: use_build_context_synchronously
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => MainScreen(),
+              ),
+              ModalRoute.withName('/'),
+            );
+          }
+          else {
+            debugPrint("user is blocked");
+            Fluttertoast.showToast(
+                msg: 'Your Id is not active. Please contact support.');
 
-              Navigator.pushAndRemoveUntil(
+            // ignore: use_build_context_synchronously
+            Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => MainScreen(),
-                ),
-                ModalRoute.withName('/'),
-              );
-            } else {
-              debugPrint("user is blocked");
-              Fluttertoast.showToast(
-                  msg: 'Your Id is not active. Please contact support.');
-
-              // ignore: use_build_context_synchronously
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => LogInAsScreen()),
-                  ModalRoute.withName('/'));
-            }
+                    builder: (BuildContext context) => LogInAsScreen()),
+                ModalRoute.withName('/'));
           }
-          else{
+
             debugPrint("Invalid user role. Aborting..");
             Fluttertoast.showToast(msg: 'Invalid role. Already registered with a different role.');
             Navigator.pushAndRemoveUntil(
@@ -122,7 +126,7 @@ class _OtpPageState extends State<OtpPage> {
                 MaterialPageRoute(
                     builder: (BuildContext context) => LogInAsScreen()),
                 ModalRoute.withName('/'));
-          }
+
         } catch (e) {
           debugPrint(e.toString());
           debugPrint("taking to registration page");

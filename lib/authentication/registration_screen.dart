@@ -45,7 +45,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ? ""
           : txtEmailTextEditingController.text;
 
-      var collectionRef = FirebaseFirestore.instance.collection("users");
+      // var collectionRef = FirebaseFirestore.instance.collection("users");
+      var collectionRef = FirebaseFirestore.instance.collection("allUsers").doc('customer').collection('customers');
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? userRole = prefs.getString('userType');
       log("===============");
@@ -59,7 +60,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           "fullName": "$firstName $lastName",
           "rideIds": [],
           "phoneNumber": phoneNumber,
-          "role": prefs.getString('userType'),
           "totalRides": 0,
 
           //your data which will be added to the collection and collection will be created after this

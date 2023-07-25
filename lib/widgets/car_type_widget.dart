@@ -1,3 +1,4 @@
+import 'package:amo_cabs/widgets/amo_toast.dart';
 import 'package:flutter/material.dart';
 
 import '../global/global.dart';
@@ -6,7 +7,8 @@ import 'package:intl/intl.dart';
 
 class CarTypeWidget extends StatelessWidget {
   final int distanceInMeters, bagsCount, seatsCount, index;
-  final bool isOneWay, rideByKm;
+  final bool  rideByKm;
+  final bool? isOneWay;
   const CarTypeWidget(
       {super.key,
       required this.distanceInMeters,
@@ -47,20 +49,25 @@ class CarTypeWidget extends StatelessWidget {
       elevation: 5,
       child: ListTile(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (c) => BookingConfirmation(
-                index: index,
-                isOneWay: isOneWay,
-                price: calculatePrices(),
-                distanceInMeters: distanceInMeters,
-                bagsCount: bagsCount,
-                seatsCount: seatsCount,
-                rideByKm: rideByKm,
+          if(isOneWay == null){
+            AmoToast.showAmoToast("Please select either one way or return as trip type.", context);
+          }
+          else{
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (c) => BookingConfirmation(
+                  index: index,
+                  isOneWay: isOneWay!,
+                  price: calculatePrices(),
+                  distanceInMeters: distanceInMeters,
+                  bagsCount: bagsCount,
+                  seatsCount: seatsCount,
+                  rideByKm: rideByKm,
+                ),
               ),
-            ),
-          );
+            );
+          }
         },
         leading: Image.asset(
           carTypesImages[index],
