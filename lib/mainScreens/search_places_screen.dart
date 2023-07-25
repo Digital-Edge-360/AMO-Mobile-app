@@ -10,12 +10,19 @@ import '../models/predicted_places.dart';
 import '../widgets/place_prediction_tile.dart';
 
 class SearchPlacesScreen extends StatefulWidget {
+  bool isSource;
+  SearchPlacesScreen({required this.isSource});
   @override
   State<SearchPlacesScreen> createState() => _SearchPlacesScreenState();
 }
 
 class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   List<PredictedPlaces> placePredictedList = [];
+
+
+
+
+
 
   void findPlaceAutoCompleteSearch(String inputText) async {
     if (inputText.length > 1) {
@@ -77,10 +84,10 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                             color: Colors.white,
                           ),
                         ),
-                        const Center(
+                         Center(
                           child: Text(
-                            'Search and select drop off location',
-                            style: TextStyle(
+                            widget.isSource ?"Search and select pick up location":'Search and select drop off location',
+                            style: const TextStyle(
                               fontSize: 18,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -139,6 +146,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                     itemBuilder: (context, index) {
                       return PlacePredictionTileDesign(
                         predictedPlaces: placePredictedList[index],
+                        isSource: widget.isSource,
                       );
                     },
                     separatorBuilder: (BuildContext context, int index) {

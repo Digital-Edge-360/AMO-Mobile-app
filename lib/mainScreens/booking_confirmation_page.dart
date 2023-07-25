@@ -189,7 +189,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
     }
   }
 
-  late final String? userRole;
+  String? userRole = "Customer";
 
   getUserRole() async {
     // Obtain shared preferences.
@@ -238,8 +238,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     getUserRole();
+    super.initState();
+
   }
 
   @override
@@ -780,80 +781,83 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                   height: 15,
                 ),
 
-                //customer mobile app
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    "Customer Mobile Number",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
+                Visibility(
+                  visible: userRole != "Customer",
+
+                  child: Column(children: [ //customer mobile app
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      "Customer Mobile Number",
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                      ),
                     ),
                   ),
-                ),
 
-                TextField(
-                  maxLength: 10,
-                  autofocus: true,
-                  enableSuggestions: true,
-                  controller: txtCustomerMobileNumberTextEditingController,
-                  keyboardType: TextInputType.phone,
-                  style: const TextStyle(
-                      fontFamily: "Poppins", fontSize: 16, color: Colors.black),
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(10),
-                  ],
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Customer Phone",
-                    counterText: "",
-                    hintStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 18,
-                        color: Colors.grey),
-                  ),
-                ),
-
-                //Add commision
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    "Add Commission",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
+                  TextField(
+                    maxLength: 10,
+                    autofocus: true,
+                    enableSuggestions: true,
+                    controller: txtCustomerMobileNumberTextEditingController,
+                    keyboardType: TextInputType.phone,
+                    style: const TextStyle(
+                        fontFamily: "Poppins", fontSize: 16, color: Colors.black),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10),
+                    ],
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Customer Phone",
+                      counterText: "",
+                      hintStyle: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 18,
+                          color: Colors.grey),
                     ),
                   ),
-                ),
 
-                TextField(
-                  maxLength: 4,
-                  autofocus: true,
-                  enableSuggestions: true,
-                  onChanged: (newVal) {
-                    double commission = double.parse(newVal);
-                    setState(() {
-                      priceInDouble += commission;
-                      price = CarTypeWidget.formatPrice(priceInDouble);
-                    });
-                  },
-                  controller: txtCommisionAmountTextEditingController,
-                  keyboardType: TextInputType.phone,
-                  style: const TextStyle(
-                      fontFamily: "Poppins", fontSize: 16, color: Colors.black),
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(10),
-                  ],
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Commission Amount",
-                    counterText: "",
-                    hintStyle: TextStyle(
+                  //Add commision
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      "Add Commission",
+                      style: TextStyle(
                         fontFamily: "Poppins",
-                        fontSize: 18,
-                        color: Colors.grey),
+                      ),
+                    ),
                   ),
-                ),
+
+                  TextField(
+                    maxLength: 4,
+                    autofocus: true,
+                    enableSuggestions: true,
+                    onChanged: (newVal) {
+                      double commission = double.parse(newVal);
+                      setState(() {
+                        priceInDouble += commission;
+                        price = CarTypeWidget.formatPrice(priceInDouble);
+                      });
+                    },
+                    controller: txtCommisionAmountTextEditingController,
+                    keyboardType: TextInputType.phone,
+                    style: const TextStyle(
+                        fontFamily: "Poppins", fontSize: 16, color: Colors.black),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10),
+                    ],
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Commission Amount",
+                      counterText: "",
+                      hintStyle: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 18,
+                          color: Colors.grey),
+                    ),
+                  ),],),),
 
                 //estimated fare text
                 Text.rich(

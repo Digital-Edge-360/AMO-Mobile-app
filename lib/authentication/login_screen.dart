@@ -10,10 +10,7 @@ import '../widgets/amo_toast.dart';
 import '../widgets/progress_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
-
   bool? isAgent;
-
-
 
   LoginScreen({required this.isAgent});
 
@@ -26,8 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController txtCountryCodeTextEditingController =
       TextEditingController();
   TextEditingController txtPhoneTextEditingController = TextEditingController();
-
-
 
   final ButtonStyle style = ElevatedButton.styleFrom(
       elevation: 6,
@@ -67,10 +62,14 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         Navigator.pop(context);
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (c) => OtpPage(
-                    verificationId: verificationId, phoneNumber: phoneNumber, isAgent: widget.isAgent),),);
+          context,
+          MaterialPageRoute(
+            builder: (c) => OtpPage(
+                verificationId: verificationId,
+                phoneNumber: phoneNumber,
+                isAgent: widget.isAgent),
+          ),
+        );
         await auth.signInWithCredential(credential);
         // authentication successful, do something
       },
@@ -82,7 +81,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     txtCountryCodeTextEditingController.text = "+91";
     super.initState();
-
   }
 
   bool checkNumber() {

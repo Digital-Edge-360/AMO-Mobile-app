@@ -5,6 +5,7 @@ import 'package:amo_cabs/widgets/car_type_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../infoHandler/app_info.dart';
 
@@ -44,7 +45,6 @@ class _PricesPageState extends State<PricesPage> {
   var noOfBagStorageAvailableByCarType = [2, 4, 5];
 
   late Directions userPickUpLocation, userDropOffLocation;
-
 
 
 

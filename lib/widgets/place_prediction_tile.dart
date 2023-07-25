@@ -10,8 +10,9 @@ import '../models/predicted_places.dart';
 
 class PlacePredictionTileDesign extends StatelessWidget {
   final PredictedPlaces? predictedPlaces;
+  final bool isSource;
 
-  const PlacePredictionTileDesign({super.key, this.predictedPlaces});
+  const PlacePredictionTileDesign({super.key, this.predictedPlaces, required this.isSource});
 
   getPlaceDirectionDetails(String? placeId, context) async {
     showDialog(
@@ -40,7 +41,12 @@ class PlacePredictionTileDesign extends StatelessWidget {
       directions.locationLongitude =
           responseApi['result']['geometry']['location']['lng'];
 
-      Provider.of<AppInfo>(context, listen: false)
+      isSource ?
+
+          Provider.of<AppInfo>(context, listen: false)
+          .updatePickUpLocationAddress(directions)
+
+          :Provider.of<AppInfo>(context, listen: false)
           .updateDropOffLocationAddress(directions);
 
       Navigator.pop(context, "obtainedDropOff");

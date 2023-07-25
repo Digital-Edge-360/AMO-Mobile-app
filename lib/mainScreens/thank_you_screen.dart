@@ -1,3 +1,5 @@
+import 'package:amo_cabs/global/global.dart';
+import 'package:amo_cabs/mainScreens/main_screen.dart';
 import 'package:flutter/material.dart';
 
 class ThankYouScreen extends StatelessWidget {
@@ -28,7 +30,7 @@ class ThankYouScreen extends StatelessWidget {
               alignment: Alignment.center,
               padding: const EdgeInsets.only(top: 20,left:10),
               child: RichText(
-                text: const TextSpan(
+                text:  TextSpan(
 
                   children: <TextSpan>[
                     TextSpan(
@@ -36,7 +38,7 @@ class ThankYouScreen extends StatelessWidget {
                       style: TextStyle(fontFamily:"Poppins",color: Colors.black26,fontSize: 16),
                     ),
                     TextSpan(
-                      text: "Swift Dzire",
+                      text: "${carTypes[index]}",
                       style: TextStyle(fontFamily:"Poppins",color: Colors.black,fontSize: 16),
                     ),
                     TextSpan(
@@ -125,7 +127,11 @@ class ThankYouScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      //    Navigator.push(context,MaterialPageRoute(builder: (context) =>OtpScreen()),);
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => MainScreen()),
+                          ModalRoute.withName('/'));
                     },
                     child: const Text("Back to Home"
                         ""),

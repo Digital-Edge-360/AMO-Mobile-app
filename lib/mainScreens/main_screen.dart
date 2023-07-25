@@ -274,7 +274,7 @@ class _MainScreenState extends State<MainScreen> {
     userPhone = userModelCurrentInfo!.phoneNumber!;
   }
 
-  double searchLocationContainerHeight = 320.0;
+  double searchLocationContainerHeight = 260.0;
 
   void initialTask() async {
     await checkIfLocationPermissionAllowed();
@@ -286,6 +286,8 @@ class _MainScreenState extends State<MainScreen> {
     });
     await locateUserPosition();
   }
+
+
 
   @override
   void initState() {
@@ -339,6 +341,9 @@ class _MainScreenState extends State<MainScreen> {
                   GoogleMap(
                     mapType: MapType.normal,
                     myLocationButtonEnabled: true,
+                    rotateGesturesEnabled: true,
+
+
                     myLocationEnabled: true,
                     zoomControlsEnabled: true,
                     markers: markersSet,
@@ -391,6 +396,75 @@ class _MainScreenState extends State<MainScreen> {
                         color: Colors.black54,
                       ),
                     ),
+                  ),
+
+                  Positioned(
+                    top: 70,
+                    child: GestureDetector(
+                      onTap: () async{
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (c) =>
+                                SearchPlacesScreen(isSource: true,),
+                          ),
+                        );
+
+                      },
+                      child: Container(
+                        width: MediaQuery.sizeOf(context).width,
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+
+
+                        child: Card(
+                          elevation: 5,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                   Radius.circular(10),
+                                ),
+                              ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.add_location_alt_outlined,
+                                  color: Colors.green,
+                                ),
+                                const SizedBox(
+                                  width: 12,
+                                ),
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'From',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    Text(
+                                      Provider.of<AppInfo>(context)
+                                          .userPickUpLocation !=
+                                          null
+                                          ? (Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).length > 20 ?'${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 20)}...':'${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}'
+                                          : 'Your current location',
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
                   ),
 
                   //ui for searching location
@@ -621,45 +695,7 @@ class _MainScreenState extends State<MainScreen> {
                                 ),
                               ),
 
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              //from
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.add_location_alt_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(
-                                    width: 12,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'From',
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                      Text(
-                                        Provider.of<AppInfo>(context)
-                                            .userPickUpLocation !=
-                                            null
-                                            ? '${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 24)}...'
-                                            : 'Your current location',
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+
 
                               const SizedBox(
                                 height: 10,
@@ -684,7 +720,7 @@ class _MainScreenState extends State<MainScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (c) =>
-                                          SearchPlacesScreen(),
+                                          SearchPlacesScreen(isSource: false,),
                                     ),
                                   );
 
@@ -698,43 +734,47 @@ class _MainScreenState extends State<MainScreen> {
                                     });
                                   }
                                 },
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.add_location_alt_outlined,
-                                      color: Colors.grey,
-                                    ),
-                                    const SizedBox(
-                                      width: 12,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'To',
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 12,
+                                child: SizedBox(
+
+                                  width: MediaQuery.sizeOf(context).width,
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.add_location_alt_outlined,
+                                        color: Colors.grey,
+                                      ),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            'To',
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          Provider.of<AppInfo>(context)
-                                              .userDropOffLocation !=
-                                              null
-                                              ? Provider.of<AppInfo>(
-                                              context)
-                                              .userDropOffLocation!
-                                              .locationName!
-                                              : 'Where to go?',
-                                          style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 12,
+                                          Text(
+                                            Provider.of<AppInfo>(context)
+                                                .userDropOffLocation !=
+                                                null
+                                                ? Provider.of<AppInfo>(
+                                                context)
+                                                .userDropOffLocation!
+                                                .locationName!
+                                                : 'Where to go?',
+                                            style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
 
@@ -754,9 +794,7 @@ class _MainScreenState extends State<MainScreen> {
 
 
 
-                              const SizedBox(
-                                height: 16,
-                              ),
+
 
                               ElevatedButton(
                                 onPressed: () {
@@ -872,27 +910,27 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     newGoogleMapController!.animateCamera(
-      CameraUpdate.newLatLngBounds(boundsLatLng, 65),
-    );
+      CameraUpdate.newLatLngBounds(boundsLatLng, 65),    );
+
 
     Marker originMarker = Marker(
       markerId: const MarkerId("originId"),
       infoWindow:
       InfoWindow(title: originPosition.locationName, snippet: 'Origin'),
       position: originLatLng,
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
     );
     Marker destinationMarker = Marker(
       markerId: const MarkerId("destinaitonId"),
       infoWindow: InfoWindow(
           title: destinationPosition.locationName, snippet: 'Destination'),
       position: destinationLatLng,
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
 
     Circle originCircle = Circle(
       circleId: const CircleId('originId'),
-      fillColor: Colors.green,
+      fillColor: Colors.lightGreenAccent,
       radius: 12,
       strokeWidth: 3,
       strokeColor: Colors.white,
@@ -901,7 +939,7 @@ class _MainScreenState extends State<MainScreen> {
 
     Circle destinationCircle = Circle(
       circleId: const CircleId('destinationId'),
-      fillColor: Colors.red,
+      fillColor: Colors.redAccent,
       radius: 12,
       strokeWidth: 3,
       strokeColor: Colors.white,
