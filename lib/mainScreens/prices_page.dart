@@ -146,7 +146,7 @@ class _PricesPageState extends State<PricesPage> {
                         color: Colors.black)),
               ),
 
-              Padding(
+              widget.rideByKm ? Container() : Padding(
                 padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
                 child: Card(
                   elevation: 6.0,
@@ -175,14 +175,14 @@ class _PricesPageState extends State<PricesPage> {
                               padding: const EdgeInsets.only(left: 10),
                               child: Center(
                                 child: Text(
-                                    (Provider.of<AppInfo>(context)
-                                        .userPickUpLocation!
-                                        .locationName!)
-                                        .length >
-                                        30
-                                        ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
-                                    // ignore: unnecessary_string_interpolations
-                                        : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
+                                  (Provider.of<AppInfo>(context)
+                                      .userPickUpLocation!
+                                      .locationName!)
+                                      .length >
+                                      30
+                                      ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
+                                  // ignore: unnecessary_string_interpolations
+                                      : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
                                   style: const TextStyle(
                                       color: Colors.white,
                                       overflow: TextOverflow.ellipsis),
