@@ -11,9 +11,17 @@ class UserModel {
   String? userRole;
   bool? active;
   int? totalRides;
+  List<dynamic> rideIds = [];
 
   UserModel(
-      {this.id, this.phoneNumber, this.firstName, this.lastName, this.email, this.userRole, this.active, this.totalRides});
+      {this.id,
+      this.phoneNumber,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.userRole,
+      this.active,
+      this.totalRides});
 
   UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
     final data = snap.data()!;
@@ -26,5 +34,6 @@ class UserModel {
     firstName = data['firstName'];
     lastName = data['lastName'];
     email = data['email'];
+    rideIds = data['rideIds'];
   }
 }

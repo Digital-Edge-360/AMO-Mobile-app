@@ -2,7 +2,6 @@ import 'package:amo_cabs/onboardingScreens/login_as_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../authentication/login_screen.dart';
 import '../global/global.dart';
 
 // ignore: must_be_immutable

@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:amo_cabs/authentication/registration_screen.dart';
 import 'package:amo_cabs/mainScreens/main_screen.dart';
 import 'package:amo_cabs/widgets/amo_toast.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../global/global.dart';
 import '../models/user_model.dart';
 import '../onboardingScreens/login_as_screen.dart';
@@ -19,7 +21,11 @@ class OtpPage extends StatefulWidget {
   String phoneNumber;
   bool? isAgent;
 
-  OtpPage({super.key, required this.verificationId, required this.phoneNumber, required this.isAgent});
+  OtpPage(
+      {super.key,
+      required this.verificationId,
+      required this.phoneNumber,
+      required this.isAgent});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -35,10 +41,9 @@ class _OtpPageState extends State<OtpPage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-
-  saveUserTypeData() async{
+  saveUserTypeData() async {
     final SharedPreferences perfs = await SharedPreferences.getInstance();
-    await perfs.setString("userType", widget.isAgent! ? "Agent" : "Customer" );
+    await perfs.setString("userType", widget.isAgent! ? "Agent" : "Customer");
   }
 
   // verify otp
@@ -68,7 +73,7 @@ class _OtpPageState extends State<OtpPage> {
         final snapshot = await _db
             .collection("allUsers")
             .doc('customer')
-            .collection('allCustomers')
+            .collection('customers')
             .where("phoneNumber", isEqualTo: phoneNumber)
             .get();
 
@@ -90,7 +95,6 @@ class _OtpPageState extends State<OtpPage> {
 
           final String? userRole = widget.isAgent! ? "Agent" : "Customer";
 
-
           if (userModelCurrentInfo!.active!) {
             await saveUserTypeData();
             debugPrint("take to login page");
@@ -105,8 +109,7 @@ class _OtpPageState extends State<OtpPage> {
               ),
               ModalRoute.withName('/'),
             );
-          }
-          else {
+          } else {
             debugPrint("user is blocked");
             Fluttertoast.showToast(
                 msg: 'Your Id is not active. Please contact support.');
@@ -119,14 +122,14 @@ class _OtpPageState extends State<OtpPage> {
                 ModalRoute.withName('/'));
           }
 
-            debugPrint("Invalid user role. Aborting..");
-            Fluttertoast.showToast(msg: 'Invalid role. Already registered with a different role.');
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => LogInAsScreen()),
-                ModalRoute.withName('/'));
-
+          debugPrint("Invalid user role. Aborting..");
+          Fluttertoast.showToast(
+              msg: 'Invalid role. Already registered with a different role.');
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => LogInAsScreen()),
+              ModalRoute.withName('/'));
         } catch (e) {
           debugPrint(e.toString());
           debugPrint("taking to registration page");

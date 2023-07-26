@@ -19,11 +19,6 @@ class SearchPlacesScreen extends StatefulWidget {
 class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   List<PredictedPlaces> placePredictedList = [];
 
-
-
-
-
-
   void findPlaceAutoCompleteSearch(String inputText) async {
     if (inputText.length > 1) {
       String urlAutoCompleteSearch =
@@ -57,17 +52,9 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
           //search place ui
           Container(
             height: 180,
-            decoration: const BoxDecoration(color: Colors.black54, boxShadow: [
-              BoxShadow(
-                color: Color(0xff029EE2),
-                blurRadius: 8,
-                spreadRadius: 0.5,
-                offset: Offset(
-                  0.7,
-                  0.7,
-                ),
-              ),
-            ]),
+            decoration: const BoxDecoration(
+              color: Colors.blue,
+            ),
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(10),
@@ -84,9 +71,11 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                             color: Colors.white,
                           ),
                         ),
-                         Center(
+                        Center(
                           child: Text(
-                            widget.isSource ?"Search and select pick up location":'Search and select drop off location',
+                            widget.isSource
+                                ? "Search and select pick up location"
+                                : 'Search and select drop off location',
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.white,
