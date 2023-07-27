@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart' as lottie;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
+  static CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(22.545468, 88.342013),
     zoom: 14.4746,
   );
@@ -239,6 +240,10 @@ class _MainScreenState extends State<MainScreen> {
     Position cPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     userCurrentPosition = cPosition;
+    _kGooglePlex = CameraPosition(
+      target: LatLng(cPosition.latitude, cPosition.longitude),
+      zoom: 14.4746,
+    );
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -346,8 +351,13 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
         body: isLoading
-            ? ProgressDialog(
-                message: "Loading..",
+            ? Center(
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.3,
+                  child: lottie.Lottie.asset(
+                    "assets/lottie/cab_loading.json",
+                  ),
+                ),
               )
             : IndexedStack(
                 key: ValueKey<int>(_index),
@@ -850,9 +860,9 @@ class _MainScreenState extends State<MainScreen> {
         Provider.of<AppInfo>(context, listen: false).userDropOffLocation;
 
     var originLatLng = LatLng(
-        originPosition!.locationLatitude!, originPosition!.locationLongitude!);
+        originPosition!.locationLatitude!, originPosition.locationLongitude!);
     var destinationLatLng = LatLng(destinationPosition!.locationLatitude!,
-        destinationPosition!.locationLongitude!);
+        destinationPosition.locationLongitude!);
     showDialog(
       context: context,
       builder: (BuildContext context) => ProgressDialog(
@@ -870,7 +880,7 @@ class _MainScreenState extends State<MainScreen> {
     distance = directionDetailsInfo!.distance_value!;
 
     log("these are points = ");
-    log(directionDetailsInfo!.e_points!.toString());
+    log(directionDetailsInfo.e_points!.toString());
 
     PolylinePoints pPoints = PolylinePoints();
     List<PointLatLng> decodedPolylinePointsResultList =
