@@ -19,11 +19,12 @@ class BookingConfirmation extends StatefulWidget {
   int distanceInMeters, bagsCount, seatsCount, index;
   double price;
 
-  bool isOneWay, rideByKm;
+  bool isOneWay, rideByKm, isEv;
 
   BookingConfirmation(
       {super.key,
       required this.price,
+      required this.isEv,
       required this.distanceInMeters,
       required this.bagsCount,
       required this.seatsCount,
@@ -114,11 +115,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
       "customerId": userDetails != null ? userDetails[0] : '',
       "specialNotes": txtSpecialNotesTextEditingController.text,
       "createdAt": DateTime.now(),
-      "commission": userRole! == "Agent"
-          ? txtCommisionAmountTextEditingController.text.toString()
-          : "",
       "customerPhoneNumber": userModelCurrentInfo!.phoneNumber,
       "driverPhoneNumber": "",
+      "isEv": widget.isEv,
     };
 
     // _firestore.collection("rideRequest").doc(userModelCurrentInfo!.id!).set(currentRideDetails, SetOptions(merge: true));

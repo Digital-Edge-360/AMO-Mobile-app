@@ -17,7 +17,6 @@ import '../global/global.dart';
 import '../infoHandler/app_info.dart';
 import '../widgets/amo_toast.dart';
 import '../widgets/car_type_widget.dart';
-import '../widgets/my_drawer.dart';
 import '../widgets/progress_dialog.dart';
 
 class MainScreen extends StatefulWidget {
@@ -286,13 +285,14 @@ class _MainScreenState extends State<MainScreen> {
       });
     });
     await locateUserPosition();
-    CarTypeWidget.getCategoryDetails();
+    // CarTypeWidget.getCategoryDetails();
   }
 
   @override
   void initState() {
     isLoading = true;
     super.initState();
+    CarTypeWidget.getCategoryDetails();
     initialTask();
   }
 
@@ -301,22 +301,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          shadowColor: Colors.black,
-          backgroundColor: Colors.blue.shade500,
-          elevation: 4,
-        ),
         key: sKey,
-        drawer: Theme(
-          data: Theme.of(context).copyWith(
-            canvasColor: Colors.black,
-          ),
-          child: MyDrawer(
-            name: userName,
-            lastName: userLastName,
-            phone: userPhone,
-          ),
-        ),
         bottomNavigationBar: BottomNavigationBar(
           elevation: 5,
           enableFeedback: true,

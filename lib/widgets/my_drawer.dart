@@ -1,5 +1,9 @@
+import 'dart:developer';
+
+import 'package:amo_cabs/infoHandler/app_info.dart';
 import 'package:amo_cabs/onboardingScreens/login_as_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../global/global.dart';
@@ -70,11 +74,11 @@ class _MyDrawerState extends State<MyDrawer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${widget.name} ${widget.lastName}',
+                              '${userModelCurrentInfo!.firstName} ${userModelCurrentInfo!.lastName}',
                               style: const TextStyle(
                                   fontSize: 20, fontFamily: ("Poppins")),
                             ),
-                            Text(widget.phone.toString(),
+                            Text(userModelCurrentInfo!.phoneNumber.toString(),
                                 style: const TextStyle(
                                     fontFamily: ("Poppins"),
                                     color: Color(0xff019EE3)))
@@ -91,8 +95,37 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
 
           //drawer body
+
+          //MainScreen
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Provider.of<AppInfo>(context, listen: false)
+                  .changeCurrentIndex(0);
+              log("Main page got clicked");
+              Navigator.pop(context);
+            },
+            child: const ListTile(
+              leading: Icon(
+                Icons.home,
+                color: Colors.white,
+              ),
+              title: Text(
+                "Home",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+
+          //history
+          GestureDetector(
+            onTap: () {
+              Provider.of<AppInfo>(context, listen: false)
+                  .changeCurrentIndex(1);
+              log("history page got clicked");
+              Navigator.pop(context);
+            },
             child: const ListTile(
               leading: Icon(
                 Icons.history,

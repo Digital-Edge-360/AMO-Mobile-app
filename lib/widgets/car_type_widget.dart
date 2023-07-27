@@ -62,7 +62,7 @@ class CarTypeWidget extends StatefulWidget {
         .get();
     evCarCategories = [];
     for (int i = 0; i < querySnapshotForEv.size; i++) {
-      var b = querySnapshot.docs[i];
+      var b = querySnapshotForEv.docs[i];
       CarCategory tempCategory = CarCategory(
         id: b.id,
         baseFare: b['baseFare'],
@@ -98,6 +98,8 @@ class CarTypeWidget extends StatefulWidget {
 
 class _CarTypeWidgetState extends State<CarTypeWidget> {
   double calculatePrices() {
+    log("ev farePerKm ${evCarCategories[widget.index].farePerKm!}");
+    log("non ev farePerKm ${nonEvCarCategories[widget.index].farePerKm!}");
     var kmMultiplier = widget.isEv
         ? evCarCategories[widget.index].farePerKm!
         : nonEvCarCategories[widget.index].farePerKm!;
@@ -106,7 +108,7 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
         : nonEvCarCategories[widget.index].baseFare!;
     double price = (widget.distanceInMeters / 1000) * kmMultiplier * 2;
 
-    price += evCarCategories[widget.index].baseFare!;
+    price += baseFare;
 
     return price;
     // if(isOneWay){
@@ -125,8 +127,11 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: widget.isEv ? Colors.blue : Color(0xff009B4E),
+      color: widget.isEv ? Colors.blue : const Color(0xff009B4E),
       elevation: 5,
+      shadowColor: Colors.black,
+      borderOnForeground: true,
+      semanticContainer: true,
       child: ListTile(
         onTap: () {
           if (widget.isOneWay == null) {
@@ -138,6 +143,7 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
               context,
               MaterialPageRoute(
                 builder: (c) => BookingConfirmation(
+                  isEv: widget.isEv,
                   index: widget.index,
                   isOneWay: widget.isOneWay!,
                   price: calculatePrices(),
