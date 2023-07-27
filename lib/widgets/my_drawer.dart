@@ -141,14 +141,19 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
 
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Provider.of<AppInfo>(context, listen: false)
+                  .changeCurrentIndex(2);
+              log("history page got clicked");
+              Navigator.pop(context);
+            },
             child: const ListTile(
               leading: Icon(
                 Icons.info,
                 color: Colors.white,
               ),
               title: Text(
-                "About",
+                "Support",
                 style: TextStyle(
                   color: Colors.white,
                 ),
