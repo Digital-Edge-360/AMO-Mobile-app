@@ -27,7 +27,7 @@ var carTypesImages = [
   'images/hatchback.png',
 ];
 
-var noOfSeatsAvailableByCarType = [7, 6, 3, 3];
-var noOfBagStorageAvailableByCarType = [5, 4, 3, 2];
+var noOfSeatsAvailableByCarType = [3, 4, 6, 7];
+var noOfBagStorageAvailableByCarType = [2, 3, 4, 5];
 
 double basePrice = 100;

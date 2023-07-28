@@ -45,6 +45,7 @@ class CarTypeWidget extends StatefulWidget {
           farePerKm: a['farePerKm'],
           name: a['name'],
           waiting: a['waiting'],
+          description: a['description'],
         );
 
         log("id :" + a.id);
@@ -65,13 +66,13 @@ class CarTypeWidget extends StatefulWidget {
       for (int i = 0; i < querySnapshotForEv.size; i++) {
         var b = querySnapshotForEv.docs[i];
         CarCategory tempCategory = CarCategory(
-          id: b.id,
-          baseFare: b['baseFare'],
-          cars: b['cars'],
-          farePerKm: b['farePerKm'],
-          name: b['name'],
-          waiting: b['waiting'],
-        );
+            id: b.id,
+            baseFare: b['baseFare'],
+            cars: b['cars'],
+            farePerKm: b['farePerKm'],
+            name: b['name'],
+            waiting: b['waiting'],
+            description: b['description']);
 
         // log("======================");
         // log("Ev id :" + a.id);

@@ -12,31 +12,29 @@ class _SupportPageState extends State<SupportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              InkWell(
-                  onTap: () {
-                    makePhoneCall();
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "78-11-822-499",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Icon(Icons.call)
-                    ],
-                  )),
-              const Text(
-                'Support Phone Number:',
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-            ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Support Phone Number:',
+            style: TextStyle(color: Colors.black, fontSize: 20),
           ),
-        ),
+          InkWell(
+              onTap: () {
+                makePhoneCall();
+              },
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "78-11-822-499",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Icon(Icons.call)
+                ],
+              )),
+        ],
       ),
     );
   }

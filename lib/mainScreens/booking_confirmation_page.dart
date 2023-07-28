@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../infoHandler/app_info.dart';
+import '../models/directions.dart';
 import '../widgets/progress_dialog.dart';
 
 // ignore: must_be_immutable
@@ -52,6 +53,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   double priceInDouble = 0;
   String? addedRideId;
 
+  Directions? pickUp;
+  Directions? dropOff;
+
   sendRideRequest() async {
     showDialog(
       context: context,
@@ -61,8 +65,11 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
     );
     var origin =
         Provider.of<AppInfo>(context, listen: false).userPickUpLocation;
+    pickUp = origin;
     var destination =
         Provider.of<AppInfo>(context, listen: false).userDropOffLocation;
+
+    dropOff = destination;
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -180,6 +187,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
             commission: txtCommisionAmountTextEditingController.text.toString(),
             price: price,
             index: widget.index,
+            pickUpDate: _selectedDatePickUp!,
+            dropOff: dropOff!,
+            origin: pickUp!,
           ),
         ),
       );
@@ -227,12 +237,6 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
   String? userRole = "Customer";
 
-  getUserRole() async {
-    // Obtain shared preferences.
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    userRole = prefs.getString('userType');
-  }
-
   void _pickUpDatePicker() {
     // showDatePicker is a pre-made funtion of Flutter
     showDatePicker(
@@ -274,7 +278,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   @override
   void initState() {
     // TODO: implement initState
-    getUserRole();
+
     super.initState();
   }
 
@@ -306,7 +310,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                 Row(
                   children: [
                     Text(
-                      carTypes[index],
+                      widget.isEv
+                          ? evCarCategories[index]!.name!.toUpperCase()
+                          : nonEvCarCategories[index]!.name!.toUpperCase(),
                       style:
                           const TextStyle(fontFamily: 'Poppins', fontSize: 25),
                     ),
@@ -318,9 +324,16 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                 ),
 
                 // description
-                Text(
-                    "The ${carTypes[index]} is a ${noOfSeatsAvailableByCarType[index] + 1} seater car with luggage capacity of ${noOfBagStorageAvailableByCarType[index]}. All our vehicles are eVehicles, leaving behind no carbon footprint."),
+                Text(widget.isEv
+                    ? evCarCategories[index]!.description!
+                    : evCarCategories[index]!.description!),
 
+                // Text(
+                //     "The ${carTypes[index]} is a ${noOfSeatsAvailableByCarType[index] + 1} seater car with luggage capacity of ${noOfBagStorageAvailableByCarType[index]}. All our vehicles are eVehicles, leaving behind no carbon footprint."),
+
+                const SizedBox(
+                  height: 10,
+                ),
                 Container(
                   // padding: EdgeInsets.only(left: 20, top: 10),
                   alignment: Alignment.centerLeft,
@@ -348,9 +361,11 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                 Expanded(
                                     child: Image.asset("images/img_32.png")),
                                 Expanded(
-                                    child: Text(
-                                        noOfSeatsAvailableByCarType[index]
-                                            .toString())),
+                                  child: Text(
+                                    noOfSeatsAvailableByCarType[index]
+                                        .toString(),
+                                  ),
+                                ),
                               ],
                             ))),
                     // box-2

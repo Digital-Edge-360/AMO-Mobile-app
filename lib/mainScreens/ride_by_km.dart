@@ -133,6 +133,8 @@ class _RideByKmState extends State<RideByKm> {
                                 // width: 80,
                                 height: 20,
                                 child: DropdownButton<int>(
+                                  elevation: 4,
+                                  underline: Container(),
                                   icon: Row(
                                     // mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -147,8 +149,8 @@ class _RideByKmState extends State<RideByKm> {
                                       ),
                                     ],
                                   ),
-                                  items:
-                                      <int>[1, 2, 3, 4, 5, 6].map((int value) {
+                                  items: <int>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                                      .map((int value) {
                                     return DropdownMenuItem<int>(
                                       value: value,
                                       child: Text(
@@ -206,6 +208,8 @@ class _RideByKmState extends State<RideByKm> {
                               // width: 80,
                               height: 20,
                               child: DropdownButton<int>(
+                                elevation: 4,
+                                underline: Container(),
                                 icon: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

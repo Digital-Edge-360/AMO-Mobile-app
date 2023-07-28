@@ -581,6 +581,7 @@ class _MainScreenState extends State<MainScreen> {
                                                       child:
                                                           DropdownButton<int>(
                                                         elevation: 4,
+                                                        underline: Container(),
                                                         icon: Row(
                                                           // mainAxisAlignment: MainAxisAlignment.start,
                                                           children: [
@@ -605,7 +606,11 @@ class _MainScreenState extends State<MainScreen> {
                                                           3,
                                                           4,
                                                           5,
-                                                          6
+                                                          6,
+                                                          7,
+                                                          8,
+                                                          9,
+                                                          10,
                                                         ].map((int value) {
                                                           return DropdownMenuItem<
                                                               int>(
@@ -677,6 +682,7 @@ class _MainScreenState extends State<MainScreen> {
                                                     height: 20,
                                                     child: DropdownButton<int>(
                                                       elevation: 4,
+                                                      underline: Container(),
                                                       icon: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
