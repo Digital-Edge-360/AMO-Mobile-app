@@ -1,5 +1,5 @@
 import 'package:amo_cabs/global/global.dart';
-import 'package:amo_cabs/mainScreens/main_screen.dart';
+import 'package:amo_cabs/mainScreens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../models/directions.dart';
@@ -28,7 +28,7 @@ class ThankYouScreen extends StatelessWidget {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => MainScreen()),
+                      builder: (BuildContext context) => HomeScreen()),
                   ModalRoute.withName('/'));
             },
           ),
@@ -230,7 +230,7 @@ class ThankYouScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    MainScreen()),
+                                    HomeScreen()),
                             ModalRoute.withName('/'));
                       },
                       child: const Text("Back to Home"
