@@ -8,6 +8,7 @@ import 'infoHandler/app_info.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(
     MyApp(
       child: ChangeNotifierProvider(

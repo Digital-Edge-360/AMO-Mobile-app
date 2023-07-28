@@ -44,16 +44,14 @@ class LogInAsScreen extends StatelessWidget {
                 height: 10,
               ),
 
-
               //login as customer card
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => LoginScreen(isAgent: false)),
+                          builder: (BuildContext context) => LoginScreen()),
                       ModalRoute.withName('/'));
-                  
                 },
                 child: Card(
                   elevation: 5,
@@ -69,14 +67,19 @@ class LogInAsScreen extends StatelessWidget {
                         const Text(
                           'Login as Customer',
                           style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 14,
+                            fontFamily: "Poppins",
+                            fontSize: 14,
                           ),
                         ),
-                        SizedBox(width: 10,),
+                        SizedBox(
+                          width: 10,
+                        ),
                         CircleAvatar(
                           radius: 60,
-                          child: Image.asset("images/agent.png", height: 90,),
+                          child: Image.asset(
+                            "images/agent.png",
+                            height: 90,
+                          ),
                         )
                       ],
                     ),
@@ -84,16 +87,17 @@ class LogInAsScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 18,),
-
+              const SizedBox(
+                height: 18,
+              ),
 
               //login as agent card
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => LoginScreen(isAgent: true)),
+                          builder: (BuildContext context) => LoginScreen()),
                       ModalRoute.withName('/'));
                 },
                 child: Card(
@@ -107,14 +111,16 @@ class LogInAsScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-
-
                         CircleAvatar(
                           radius: 60,
-                          child: Image.asset("images/agent.png", height: 90,),
+                          child: Image.asset(
+                            "images/agent.png",
+                            height: 90,
+                          ),
                         ),
-                        const SizedBox(width: 10,),
-
+                        const SizedBox(
+                          width: 10,
+                        ),
                         const Text(
                           'Login as Agent',
                           style: TextStyle(

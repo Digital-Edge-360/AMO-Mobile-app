@@ -28,68 +28,73 @@ class CarTypeWidget extends StatefulWidget {
     return formatter.format(price);
   }
 
-  static void getCategoryDetails() async {
+  static Future<int?> getCategoryDetails() async {
     log("inside getCategoryDetails");
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection("isNotEv")
-        .orderBy("baseFare")
-        .get();
-    nonEvCarCategories = [];
-    for (int i = 0; i < querySnapshot.size; i++) {
-      var a = querySnapshot.docs[i];
-      CarCategory tempCategory = CarCategory(
-        id: a.id,
-        baseFare: a['baseFare'],
-        cars: a['cars'],
-        farePerKm: a['farePerKm'],
-        name: a['name'],
-        waiting: a['waiting'],
-      );
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("isNotEv")
+          .orderBy("baseFare")
+          .get();
+      nonEvCarCategories = [];
+      for (int i = 0; i < querySnapshot.size; i++) {
+        var a = querySnapshot.docs[i];
+        CarCategory tempCategory = CarCategory(
+          id: a.id,
+          baseFare: a['baseFare'],
+          cars: a['cars'],
+          farePerKm: a['farePerKm'],
+          name: a['name'],
+          waiting: a['waiting'],
+        );
 
-      // log("id :" + a.id);
-      // log("baseFare: ${a['baseFare']}");
-      // log("cars: ${a['cars']}");
-      // log("fare per km: ${a['farePerKm']}");
-      // log("name: ${a['name']}");
-      // log("waiting: ${a['waiting']}");
+        log("id :" + a.id);
+        // log("baseFare: ${a['baseFare']}");
+        // log("cars: ${a['cars']}");
+        // log("fare per km: ${a['farePerKm']}");
+        // log("name: ${a['name']}");
+        // log("waiting: ${a['waiting']}");
 
-      nonEvCarCategories.add(tempCategory);
+        nonEvCarCategories.add(tempCategory);
+      }
+
+      QuerySnapshot querySnapshotForEv = await FirebaseFirestore.instance
+          .collection("isEv")
+          .orderBy("baseFare")
+          .get();
+      evCarCategories = [];
+      for (int i = 0; i < querySnapshotForEv.size; i++) {
+        var b = querySnapshotForEv.docs[i];
+        CarCategory tempCategory = CarCategory(
+          id: b.id,
+          baseFare: b['baseFare'],
+          cars: b['cars'],
+          farePerKm: b['farePerKm'],
+          name: b['name'],
+          waiting: b['waiting'],
+        );
+
+        // log("======================");
+        // log("Ev id :" + a.id);
+        // log("Ev baseFare: ${a['baseFare']}");
+        // log("Ev cars: ${a['cars']}");
+        // log("Ev fare per km: ${a['farePerKm']}");
+        // log("Ev name: ${a['name']}");
+        // log("Ev waiting: ${a['waiting']}");
+
+        evCarCategories.add(tempCategory);
+      }
+      log("======");
+      log(evCarCategories.toString());
+      // await FirebaseFirestore.instance
+      //     .collection('isNotEv')
+      //     .snapshots()
+      //     .forEach((element) {
+      //   log(element.docs.);
+      // });
+    } catch (e) {
+      log("Error: $e");
     }
-
-    QuerySnapshot querySnapshotForEv = await FirebaseFirestore.instance
-        .collection("isEv")
-        .orderBy("baseFare")
-        .get();
-    evCarCategories = [];
-    for (int i = 0; i < querySnapshotForEv.size; i++) {
-      var b = querySnapshotForEv.docs[i];
-      CarCategory tempCategory = CarCategory(
-        id: b.id,
-        baseFare: b['baseFare'],
-        cars: b['cars'],
-        farePerKm: b['farePerKm'],
-        name: b['name'],
-        waiting: b['waiting'],
-      );
-
-      // log("======================");
-      // log("Ev id :" + a.id);
-      // log("Ev baseFare: ${a['baseFare']}");
-      // log("Ev cars: ${a['cars']}");
-      // log("Ev fare per km: ${a['farePerKm']}");
-      // log("Ev name: ${a['name']}");
-      // log("Ev waiting: ${a['waiting']}");
-
-      evCarCategories.add(tempCategory);
-    }
-    log("======");
-    log(evCarCategories.toString());
-    // await FirebaseFirestore.instance
-    //     .collection('isNotEv')
-    //     .snapshots()
-    //     .forEach((element) {
-    //   log(element.docs.);
-    // });
+    return 0;
   }
 
   @override

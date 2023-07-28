@@ -21,12 +21,12 @@ class CarCategory {
   String? name;
 
   CarCategory(
-      {this.id,
-      this.baseFare,
-      this.cars,
-      this.farePerKm,
-      this.waiting,
-      this.name});
+      {required this.id,
+      required this.baseFare,
+      required this.cars,
+      required this.farePerKm,
+      required this.waiting,
+      required this.name});
 
   CarCategory.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
     final data = snap.data()!;

@@ -4,16 +4,11 @@ import 'package:amo_cabs/authentication/otp_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/amo_toast.dart';
 import '../widgets/progress_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
-  bool? isAgent;
-
-  LoginScreen({required this.isAgent});
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -65,9 +60,9 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(
             builder: (c) => OtpPage(
-                verificationId: verificationId,
-                phoneNumber: phoneNumber,
-                isAgent: widget.isAgent),
+              verificationId: verificationId,
+              phoneNumber: phoneNumber,
+            ),
           ),
         );
         await auth.signInWithCredential(credential);

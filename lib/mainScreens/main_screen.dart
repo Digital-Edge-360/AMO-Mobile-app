@@ -283,6 +283,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void initialTask() async {
     await checkIfLocationPermissionAllowed();
+    await CarTypeWidget.getCategoryDetails();
 
     setState(() {
       setState(() {
@@ -297,7 +298,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     isLoading = true;
     super.initState();
-    CarTypeWidget.getCategoryDetails();
+
     initialTask();
   }
 
@@ -352,8 +353,9 @@ class _MainScreenState extends State<MainScreen> {
         ),
         body: isLoading
             ? Center(
-                child: SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.3,
+                child: Container(
+                  color: Colors.white,
+                  height: MediaQuery.sizeOf(context).height,
                   child: lottie.Lottie.asset(
                     "assets/lottie/cab_loading.json",
                   ),

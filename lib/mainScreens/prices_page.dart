@@ -485,8 +485,8 @@ class _PricesPageState extends State<PricesPage> {
           iconSize: 14,
           onTap: (int index) {
             setState(() {
-              log(evCarCategories[0].baseFare.toString());
-              log(nonEvCarCategories[0].baseFare.toString());
+              // log(evCarCategories[0].baseFare.toString());
+              // log(nonEvCarCategories[0].baseFare.toString());
               _selectedIndex = index;
             });
           },
