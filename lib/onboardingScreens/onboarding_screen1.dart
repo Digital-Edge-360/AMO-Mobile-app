@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-
-import 'login_as_screen.dart';
 import 'onboarding_screen2.dart';
 
 class OnboardingScreen extends StatefulWidget {

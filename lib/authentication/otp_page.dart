@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:amo_cabs/authentication/login_screen.dart';
 import 'package:amo_cabs/authentication/registration_screen.dart';
+import 'package:amo_cabs/mainScreens/home_screen.dart';
 import 'package:amo_cabs/mainScreens/main_screen.dart';
 import 'package:amo_cabs/widgets/amo_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -96,7 +97,7 @@ class _OtpPageState extends State<OtpPage> {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (BuildContext context) => MainScreen(),
+                builder: (BuildContext context) => HomeScreen(),
               ),
               ModalRoute.withName('/'),
             );

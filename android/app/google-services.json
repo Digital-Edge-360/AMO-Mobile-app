@@ -7,6 +7,80 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:907307276923:android:b44c73eb84f79d250520de",
+        "android_client_info": {
+          "package_name": "com.amo.local"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907307276923-cmjh3o6u3kvqg5b5nd64n8jlp6sidnb8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo.local",
+            "certificate_hash": "3ea111b90e796ca4772b9e5c69881a3e6bc37785"
+          }
+        },
+        {
+          "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHmQujVyUD7fJQiuqhrMuqzy78ly1Sf4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907307276923:android:ece781ae710138c90520de",
+        "android_client_info": {
+          "package_name": "com.amo_cabs.local.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907307276923-l7l5q9033g2jus6kdeu3npgf5poktsti.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo_cabs.local.customer",
+            "certificate_hash": "df3bf811c76d0e1727153a8a8b9679157a8ff433"
+          }
+        },
+        {
+          "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHmQujVyUD7fJQiuqhrMuqzy78ly1Sf4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:907307276923:android:10cd6dcda920bac20520de",
         "android_client_info": {
           "package_name": "com.example.amo_cabs"

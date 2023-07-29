@@ -1,14 +1,11 @@
 import 'dart:developer';
-
+import 'package:amo_cabs/authentication/login_screen.dart';
 import 'package:amo_cabs/infoHandler/app_info.dart';
-import 'package:amo_cabs/onboardingScreens/login_as_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../global/global.dart';
 
-// ignore: must_be_immutable
 class MyDrawer extends StatefulWidget {
   String? name;
   String? phone;
@@ -173,7 +170,7 @@ class _MyDrawerState extends State<MyDrawer> {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => LogInAsScreen()),
+                      builder: (BuildContext context) => LoginScreen()),
                   ModalRoute.withName('/'));
             },
             child: const ListTile(

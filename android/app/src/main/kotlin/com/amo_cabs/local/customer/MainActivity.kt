@@ -1,4 +1,4 @@
-package com.example.amo_cabs
+package com.amo_cabs.local.customer
 
 import io.flutter.embedding.android.FlutterActivity
 
