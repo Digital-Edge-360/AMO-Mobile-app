@@ -188,7 +188,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
             price: price,
             index: widget.index,
             pickUpDate: _selectedDatePickUp!,
-            dropOff: dropOff!,
+            dropOff: widget.rideByKm ? null : dropOff!,
             origin: pickUp!,
           ),
         ),

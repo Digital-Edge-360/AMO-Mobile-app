@@ -133,7 +133,8 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: widget.isEv ? Colors.blue : const Color(0xff009B4E),
+      // color: widget.isEv ? Colors.blue : const Color(0xff009B4E),
+      color: Colors.white70,
       elevation: 5,
       shadowColor: Colors.black,
       borderOnForeground: true,

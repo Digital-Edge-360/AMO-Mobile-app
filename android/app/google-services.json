@@ -51,47 +51,10 @@
       },
       "oauth_client": [
         {
-          "client_id": "907307276923-l7l5q9033g2jus6kdeu3npgf5poktsti.apps.googleusercontent.com",
+          "client_id": "907307276923-a6qd64s9j23982rbhtv8t7hta7b61u4q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.amo_cabs.local.customer",
-            "certificate_hash": "df3bf811c76d0e1727153a8a8b9679157a8ff433"
-          }
-        },
-        {
-          "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCHmQujVyUD7fJQiuqhrMuqzy78ly1Sf4M"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:907307276923:android:10cd6dcda920bac20520de",
-        "android_client_info": {
-          "package_name": "com.example.amo_cabs"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "907307276923-ijgdajdvu520r1tiacou0f07lfrlvf97.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.amo_cabs",
             "certificate_hash": "3ea111b90e796ca4772b9e5c69881a3e6bc37785"
           }
         },

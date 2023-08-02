@@ -432,7 +432,7 @@ class _MainScreenState extends State<MainScreen> {
                         top: 0,
                         child: GestureDetector(
                           onTap: () async {
-                            await Navigator.push(
+                            var responseFromSearchScreen = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (c) => SearchPlacesScreen(
@@ -440,6 +440,10 @@ class _MainScreenState extends State<MainScreen> {
                                 ),
                               ),
                             );
+
+                            if (responseFromSearchScreen == "obtainedDropOff") {
+                              await drawPolyLineFromOriginToDestination();
+                            }
                           },
                           child: Container(
                             width: MediaQuery.sizeOf(context).width,
@@ -753,9 +757,9 @@ class _MainScreenState extends State<MainScreen> {
                                         //draw poly line between pick up and drop off locations.
                                         await drawPolyLineFromOriginToDestination();
 
-                                        setState(() {
-                                          openNavigationDrawer = false;
-                                        });
+                                        // setState(() {
+                                        //   openNavigationDrawer = false;
+                                        // });
                                       }
                                     },
                                     child: Card(
@@ -904,7 +908,7 @@ class _MainScreenState extends State<MainScreen> {
     polyLineSet.clear();
     setState(() {
       Polyline polyline = Polyline(
-        color: Colors.black54,
+        color: Colors.blue,
         polylineId: const PolylineId("PolylineID"),
         jointType: JointType.round,
         points: pLineCoordinatesList,

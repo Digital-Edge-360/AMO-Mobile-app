@@ -7,7 +7,7 @@ import '../models/directions.dart';
 class ThankYouScreen extends StatelessWidget {
   String commission, price;
   DateTime pickUpDate;
-  Directions origin, dropOff;
+  Directions? origin, dropOff;
   int index;
   ThankYouScreen({
     required this.commission,
@@ -75,7 +75,7 @@ class ThankYouScreen extends StatelessWidget {
                       ),
                       TextSpan(
                         text:
-                            " for ${pickUpDate.day}-${pickUpDate.month}-${pickUpDate.year} from ${origin.locationName}.",
+                            " for ${pickUpDate.day}-${pickUpDate.month}-${pickUpDate.year} from ${origin?.locationName}.",
                         style: TextStyle(
                             fontFamily: "Poppins",
                             color: Colors.black26,
@@ -142,9 +142,9 @@ class ThankYouScreen extends StatelessWidget {
                               fontSize: 16),
                         ),
                         Text(
-                          origin.locationName!.length <= 20
-                              ? "${origin.locationName.toString()}"
-                              : "${origin.locationName.toString().substring(0, 20)}",
+                          origin!.locationName!.length <= 20
+                              ? "${origin?.locationName.toString()}"
+                              : "${origin?.locationName.toString().substring(0, 20)}",
                           style: TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontFamily: "Poppins",
@@ -152,10 +152,12 @@ class ThankYouScreen extends StatelessWidget {
                               fontSize: 16),
                         ),
                         Text(
-                          dropOff.locationName!.length <= 20
-                              ? "${dropOff.locationName.toString()}"
-                              : "${dropOff.locationName.toString().substring(0, 20)}",
-                          style: TextStyle(
+                          dropOff == null
+                              ? 'Booked by km'
+                              : dropOff!.locationName!.length <= 20
+                                  ? "${dropOff?.locationName.toString()}"
+                                  : "${dropOff?.locationName.toString().substring(0, 20)}",
+                          style: const TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontFamily: "Poppins",
                               color: Colors.black26,

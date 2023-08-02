@@ -32,6 +32,7 @@ class _HistoryPageState extends State<HistoryPage> {
       _data = _firestore
           .collection("rideRequests")
           .where("customerId", isEqualTo: userModelCurrentInfo!.id)
+          .orderBy("pickUpDate")
           .get()
           .asStream();
     } catch (e) {
@@ -40,6 +41,17 @@ class _HistoryPageState extends State<HistoryPage> {
       _isLoading = false;
     }
   }
+
+  List<String> filterOptions = [
+    "all",
+    "upcoming",
+    "completed",
+    "Pending",
+    "rejected"
+  ];
+
+  String filter = "all";
+  int filterIndex = 0;
 
   @override
   String? get location => null;
@@ -74,14 +86,173 @@ class _HistoryPageState extends State<HistoryPage> {
                 snapshot.data != null) {
               var docs = snapshot.data?.docs;
               log(docs.toString());
-              return ListView.builder(
-                itemCount: docs?.length,
-                itemBuilder: (context, index) {
-                  return _RideDetailsTile(
-                    docs: docs,
-                    index: index,
-                  );
-                },
+              return Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.05,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(
+                          decelerationRate: ScrollDecelerationRate.normal),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                filterIndex = 0;
+                                filter = filterOptions[filterIndex];
+                              });
+                            },
+                            child: Card(
+                              color: filterIndex == 0
+                                  ? Color(0xff009B4E)
+                                  : Colors.white,
+                              elevation: 4,
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 10),
+                                child: Text(
+                                  'All',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                filterIndex = 1;
+                                filter = filterOptions[filterIndex];
+                              });
+                            },
+                            child: Card(
+                              color: filterIndex == 1
+                                  ? Color(0xff009B4E)
+                                  : Colors.white,
+                              elevation: 4,
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 10),
+                                child: Text('Upcoming'),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                filterIndex = 2;
+                                filter = filterOptions[filterIndex];
+                              });
+                            },
+                            child: Card(
+                              color: filterIndex == 2
+                                  ? Color(0xff009B4E)
+                                  : Colors.white,
+                              elevation: 4,
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 10),
+                                child: Text('Completed'),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                filterIndex = 3;
+                                filter = filterOptions[filterIndex];
+                              });
+                            },
+                            child: Card(
+                              color: filterIndex == 3
+                                  ? Color(0xff009B4E)
+                                  : Colors.white,
+                              elevation: 4,
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 10),
+                                child: Text('Pending'),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                filterIndex = 4;
+                                filter = filterOptions[filterIndex];
+                              });
+                            },
+                            child: Card(
+                              color: filterIndex == 4
+                                  ? Color(0xff009B4E)
+                                  : Colors.white,
+                              elevation: 4,
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 10),
+                                child: Text('Cancelled'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.83,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: docs?.length,
+                      itemBuilder: (context, index) {
+                        log(docs?.elementAt(index).data()["status"]);
+                        if (filter == "upcoming" &&
+                            docs?.elementAt(index).data()["status"] ==
+                                "upcoming") {
+                          log("inside upcoming");
+
+                          return _RideDetailsTile(
+                            docs: docs,
+                            index: index,
+                          );
+                        } else if (filter == "completed" &&
+                            docs?.elementAt(index).data()["status"] ==
+                                "completed") {
+                          log("inside completed");
+                          return _RideDetailsTile(
+                            docs: docs,
+                            index: index,
+                          );
+                        } else if (filter == "Pending" &&
+                            docs?.elementAt(index).data()["status"] ==
+                                "Pending") {
+                          log("inside rejected");
+                          return _RideDetailsTile(
+                            docs: docs,
+                            index: index,
+                          );
+                        } else if (filter == "completed" &&
+                            docs?.elementAt(index).data()["status"] ==
+                                "completed") {
+                          log("inside completed");
+                          return _RideDetailsTile(
+                            docs: docs,
+                            index: index,
+                          );
+                        } else if (filter == "all") {
+                          log("inside all");
+                          return _RideDetailsTile(
+                            docs: docs,
+                            index: index,
+                          );
+                        } else {
+                          log("inside nothing");
+                          return Container();
+                        }
+                      },
+                    ),
+                  ),
+                ],
               );
             } else {
               return Center(
@@ -153,7 +324,8 @@ class _RideDetailsTile extends StatelessWidget {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.ideographic,
                           children: [
                             Row(
                               children: [
@@ -174,6 +346,17 @@ class _RideDetailsTile extends StatelessWidget {
                                     Text('Audi Q7'),
                                   ],
                                 ),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Text(
+                                  'Booking ID:',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                Text(docs!.elementAt(index)!.id!.toString()),
                               ],
                             ),
                             Padding(

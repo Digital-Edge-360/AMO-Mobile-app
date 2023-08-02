@@ -382,15 +382,15 @@ class _PricesPageState extends State<PricesPage> {
               const SizedBox(
                 height: 12,
               ),
-              //total distance
-              Container(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Total Distance: ${(widget.distanceInMeters / 1000).toString()} km",
-                  style: const TextStyle(
-                      fontFamily: "Poppins", fontSize: 16, color: Colors.black),
-                ),
-              ),
+              // //total distance
+              // Container(
+              //   alignment: Alignment.topLeft,
+              //   child: Text(
+              //     "Total Distance: ${(widget.distanceInMeters / 1000).toString()} km",
+              //     style: const TextStyle(
+              //         fontFamily: "Poppins", fontSize: 16, color: Colors.black),
+              //   ),
+              // ),
 
               const SizedBox(
                 height: 18,
@@ -410,87 +410,34 @@ class _PricesPageState extends State<PricesPage> {
                 height: 12,
               ),
 
-              _selectedIndex == 0
-                  ? SizedBox(
-                      height: 300,
-                      child: ListView.builder(
-                          itemCount: evCarCategories.length,
-                          itemBuilder: (BuildContext context, int i) {
-                            log("length is " +
-                                evCarCategories.length.toString());
-                            log("index $i");
-                            // log("expected = ${widget.seatsCount}| available =${noOfSeatsAvailableByCarType[i]}");
-                            // log("expected = ${widget.bagsCount}| available =${noOfBagStorageAvailableByCarType[i]}");
-                            // // if(widget.seatsCount <= noOfSeatsAvailableByCarType[i] && widget.bagsCount <= noOfBagStorageAvailableByCarType[i]){
-                            //   return null;
-                            // }
+              SizedBox(
+                height: 300,
+                child: ListView.builder(
+                    itemCount: evCarCategories.length,
+                    itemBuilder: (BuildContext context, int i) {
+                      log("length is " + evCarCategories.length.toString());
+                      log("index $i");
+                      // log("expected = ${widget.seatsCount}| available =${noOfSeatsAvailableByCarType[i]}");
+                      // log("expected = ${widget.bagsCount}| available =${noOfBagStorageAvailableByCarType[i]}");
+                      // // if(widget.seatsCount <= noOfSeatsAvailableByCarType[i] && widget.bagsCount <= noOfBagStorageAvailableByCarType[i]){
+                      //   return null;
+                      // }
 
-                            return CarTypeWidget(
-                              isEv: true,
-                              distanceInMeters: widget.distanceInMeters,
-                              seatsCount: widget.seatsCount,
-                              bagsCount: widget.seatsCount,
-                              index: i,
-                              isOneWay: oneWay,
-                              rideByKm: widget.rideByKm,
-                            );
-                          }),
-                    )
-                  : SizedBox(
-                      height: 300,
-                      child: ListView.builder(
-                          itemCount: nonEvCarCategories.length,
-                          itemBuilder: (BuildContext context, int i) {
-                            log("length is " +
-                                evCarCategories.length.toString());
-                            log("index $i");
-                            // log("expected = ${widget.seatsCount}| available =${noOfSeatsAvailableByCarType[i]}");
-                            // log("expected = ${widget.bagsCount}| available =${noOfBagStorageAvailableByCarType[i]}");
-                            // // if(widget.seatsCount <= noOfSeatsAvailableByCarType[i] && widget.bagsCount <= noOfBagStorageAvailableByCarType[i]){
-                            //   return null;
-                            // }
-
-                            return CarTypeWidget(
-                              isEv: false,
-                              distanceInMeters: widget.distanceInMeters,
-                              seatsCount: widget.seatsCount,
-                              bagsCount: widget.seatsCount,
-                              index: i,
-                              isOneWay: oneWay,
-                              rideByKm: widget.rideByKm,
-                            );
-                          }),
-                    ),
+                      return CarTypeWidget(
+                        isEv: true,
+                        distanceInMeters: widget.distanceInMeters,
+                        seatsCount: widget.seatsCount,
+                        bagsCount: widget.seatsCount,
+                        index: i,
+                        isOneWay: oneWay,
+                        rideByKm: widget.rideByKm,
+                      );
+                    }),
+              ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(Icons.electric_bolt),
-                label: 'EV',
-                backgroundColor: Colors.green.shade600),
-            const BottomNavigationBarItem(
-                icon: Icon(Icons.local_fire_department_outlined),
-                label: 'Non EV',
-                backgroundColor: Colors.blue),
-          ],
-          type: BottomNavigationBarType.shifting,
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.black,
-          selectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-          iconSize: 14,
-          onTap: (int index) {
-            setState(() {
-              // log(evCarCategories[0].baseFare.toString());
-              // log(nonEvCarCategories[0].baseFare.toString());
-              _selectedIndex = index;
-            });
-          },
-          elevation: 3),
     );
   }
 }
