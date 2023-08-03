@@ -3,10 +3,9 @@ import 'dart:developer';
 import 'package:amo_cabs/models/directions.dart';
 import 'package:amo_cabs/widgets/car_type_widget.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../global/global.dart';
 import '../infoHandler/app_info.dart';
 
 // ignore: must_be_immutable
@@ -27,7 +26,7 @@ class PricesPage extends StatefulWidget {
 }
 
 class _PricesPageState extends State<PricesPage> {
-  bool oneWay = true;
+  bool? oneWay = null;
 
   double perKmMultiplierHatchBack = 0.01;
   double perKmMultiplierSedan = 0.012;
@@ -41,101 +40,26 @@ class _PricesPageState extends State<PricesPage> {
     'images/suv.png'
   ];
 
-  var noOfSeatsAvailableByCarType = [3, 3, 6];
-  var noOfBagStorageAvailableByCarType = [2, 4, 5];
-
   late Directions userPickUpLocation, userDropOffLocation;
+  int _selectedIndex = 0;
 
-
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     log("distance = ${widget.distanceInMeters}");
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.blue.shade400,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              //todo -- button
-              Padding(
-                padding: const EdgeInsets.only(right: 5, top: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      child: Card(
-                        elevation: 5.0,
-                        clipBehavior: Clip.hardEdge,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: Container(
-                          height: 29,
-                          width: 94,
-                          decoration: BoxDecoration(
-                              color: oneWay
-                                  ? const Color(0xff019EE3)
-                                  : Colors.white,
-                              borderRadius: const BorderRadius.horizontal()),
-                          child: Center(
-                              child: Text(
-                            "One Way",
-                            style: TextStyle(
-                                color: oneWay
-                                    ? Colors.white
-                                    : const Color(0xff019EE3),
-                                fontSize: 14,
-                                fontFamily: "Poppins"),
-                          )),
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          oneWay = true;
-                        });
-                      },
-                    ),
-                    GestureDetector(
-                      child: Card(
-                        elevation: 6.0,
-                        clipBehavior: Clip.hardEdge,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: Container(
-                          height: 29,
-                          width: 94,
-                          decoration: BoxDecoration(
-                            color:
-                                oneWay ? Colors.white : const Color(0xff019EE3),
-                            borderRadius: const BorderRadius.horizontal(),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Return",
-                              style: TextStyle(
-                                  color: oneWay
-                                      ? const Color(0xff019EE3)
-                                      : Colors.white,
-                                  fontSize: 14,
-                                  fontFamily: "Poppins"),
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          oneWay = false;
-                          log(oneWay.toString());
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
 // source location
               Container(
                 alignment: Alignment.topLeft,
@@ -146,57 +70,60 @@ class _PricesPageState extends State<PricesPage> {
                         color: Colors.black)),
               ),
 
-              widget.rideByKm ? Container() : Padding(
-                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                child: Card(
-                  elevation: 6.0,
-                  color: const Color(0xff009B4E),
-                  clipBehavior: Clip.hardEdge,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 40,
-                        padding: const EdgeInsets.all(10.0),
+              widget.rideByKm
+                  ? Container()
+                  : Padding(
+                      padding:
+                          const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      child: Card(
+                        elevation: 6.0,
+                        color: const Color(0xff009B4E),
+                        clipBehavior: Clip.hardEdge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 1),
-                              child: Icon(
-                                Icons.location_on,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Center(
-                                child: Text(
-                                  (Provider.of<AppInfo>(context)
-                                      .userPickUpLocation!
-                                      .locationName!)
-                                      .length >
-                                      30
-                                      ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
-                                  // ignore: unnecessary_string_interpolations
-                                      : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
-                                  style: const TextStyle(
+                            Container(
+                              height: 40,
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 1),
+                                    child: Icon(
+                                      Icons.location_on,
                                       color: Colors.white,
-                                      overflow: TextOverflow.ellipsis),
-                                  //like app --
-                                ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Center(
+                                      child: Text(
+                                        (Provider.of<AppInfo>(context)
+                                                        .userPickUpLocation!
+                                                        .locationName!)
+                                                    .length >
+                                                30
+                                            ? "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 29)}..."
+                                            // ignore: unnecessary_string_interpolations
+                                            : "${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}",
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            overflow: TextOverflow.ellipsis),
+                                        //like app --
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
 
 // Drop Location --
 
@@ -371,15 +298,99 @@ class _PricesPageState extends State<PricesPage> {
                 height: 18,
               ),
 
-              //total distance
-              Container(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Total Distance: ${(widget.distanceInMeters / 1000).toString()} km",
-                  style: const TextStyle(
-                      fontFamily: "Poppins", fontSize: 16, color: Colors.black),
+              Padding(
+                padding: const EdgeInsets.only(right: 5, top: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //one way trip type
+                    GestureDetector(
+                      child: Card(
+                        elevation: 5.0,
+                        clipBehavior: Clip.hardEdge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: Container(
+                          height: 29,
+                          width: 94,
+                          decoration: BoxDecoration(
+                              color: oneWay ?? false
+                                  ? const Color(0xff019EE3)
+                                  : Colors.white,
+                              borderRadius: const BorderRadius.horizontal()),
+                          child: Center(
+                              child: Text(
+                            "One Way",
+                            style: TextStyle(
+                                color: oneWay ?? false
+                                    ? Colors.white
+                                    : const Color(0xff019EE3),
+                                fontSize: 14,
+                                fontFamily: "Poppins"),
+                          )),
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          oneWay = true;
+                        });
+                      },
+                    ),
+
+                    //return trip type
+                    GestureDetector(
+                      child: Card(
+                        elevation: 6.0,
+                        clipBehavior: Clip.hardEdge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: Container(
+                          height: 29,
+                          width: 94,
+                          decoration: BoxDecoration(
+                            color: oneWay ?? true
+                                ? Colors.white
+                                : const Color(0xff019EE3),
+                            borderRadius: const BorderRadius.horizontal(),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Return",
+                              style: TextStyle(
+                                  color: oneWay ?? true
+                                      ? const Color(0xff019EE3)
+                                      : Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: "Poppins"),
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          oneWay = false;
+                          log(oneWay.toString());
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
+
+              const SizedBox(
+                height: 12,
+              ),
+              // //total distance
+              // Container(
+              //   alignment: Alignment.topLeft,
+              //   child: Text(
+              //     "Total Distance: ${(widget.distanceInMeters / 1000).toString()} km",
+              //     style: const TextStyle(
+              //         fontFamily: "Poppins", fontSize: 16, color: Colors.black),
+              //   ),
+              // ),
 
               const SizedBox(
                 height: 18,
@@ -395,19 +406,25 @@ class _PricesPageState extends State<PricesPage> {
                 ),
               ),
 
+              const SizedBox(
+                height: 12,
+              ),
+
               SizedBox(
                 height: 300,
                 child: ListView.builder(
-                    itemCount: 3,
+                    itemCount: evCarCategories.length,
                     itemBuilder: (BuildContext context, int i) {
+                      log("length is " + evCarCategories.length.toString());
                       log("index $i");
-                      log("expected = ${widget.seatsCount}| available =${noOfSeatsAvailableByCarType[i]}");
-                      log("expected = ${widget.bagsCount}| available =${noOfBagStorageAvailableByCarType[i]}");
-                      // if(widget.seatsCount <= noOfSeatsAvailableByCarType[i] && widget.bagsCount <= noOfBagStorageAvailableByCarType[i]){
+                      // log("expected = ${widget.seatsCount}| available =${noOfSeatsAvailableByCarType[i]}");
+                      // log("expected = ${widget.bagsCount}| available =${noOfBagStorageAvailableByCarType[i]}");
+                      // // if(widget.seatsCount <= noOfSeatsAvailableByCarType[i] && widget.bagsCount <= noOfBagStorageAvailableByCarType[i]){
                       //   return null;
                       // }
 
                       return CarTypeWidget(
+                        isEv: true,
                         distanceInMeters: widget.distanceInMeters,
                         seatsCount: widget.seatsCount,
                         bagsCount: widget.seatsCount,

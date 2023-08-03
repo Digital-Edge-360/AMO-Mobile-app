@@ -1,8 +1,8 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:amo_cabs/global/global.dart';
-import 'package:amo_cabs/mainScreens/main_screen.dart';
 import 'package:amo_cabs/mainScreens/thank_you_screen.dart';
+import 'package:amo_cabs/models/user_model.dart';
 import 'package:amo_cabs/widgets/amo_toast.dart';
 import 'package:amo_cabs/widgets/car_type_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../infoHandler/app_info.dart';
+import '../models/directions.dart';
 import '../widgets/progress_dialog.dart';
 
 // ignore: must_be_immutable
@@ -19,11 +20,12 @@ class BookingConfirmation extends StatefulWidget {
   int distanceInMeters, bagsCount, seatsCount, index;
   double price;
 
-  bool isOneWay, rideByKm;
+  bool isOneWay, rideByKm, isEv;
 
   BookingConfirmation(
       {super.key,
       required this.price,
+      required this.isEv,
       required this.distanceInMeters,
       required this.bagsCount,
       required this.seatsCount,
@@ -49,6 +51,10 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
   late String price;
   double priceInDouble = 0;
+  String? addedRideId;
+
+  Directions? pickUp;
+  Directions? dropOff;
 
   sendRideRequest() async {
     showDialog(
@@ -59,8 +65,11 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
     );
     var origin =
         Provider.of<AppInfo>(context, listen: false).userPickUpLocation;
+    pickUp = origin;
     var destination =
         Provider.of<AppInfo>(context, listen: false).userDropOffLocation;
+
+    dropOff = destination;
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -113,25 +122,61 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
       "customerId": userDetails != null ? userDetails[0] : '',
       "specialNotes": txtSpecialNotesTextEditingController.text,
       "createdAt": DateTime.now(),
-      "commission": userRole! == "Agent"
-          ? txtCommisionAmountTextEditingController.text.toString()
-          : "",
-      "customerPhoneNumber": userRole! == "Agent"
-          ? txtCustomerMobileNumberTextEditingController.text.toString()
-          : "",
+      "customerPhoneNumber": userModelCurrentInfo!.phoneNumber,
+      "driverPhoneNumber": "",
+      "isEv": widget.isEv,
     };
 
     // _firestore.collection("rideRequest").doc(userModelCurrentInfo!.id!).set(currentRideDetails, SetOptions(merge: true));
 
     // ignore: unused_local_variable
-    var id = await _firestore
+    await _firestore
         .collection("rideRequests")
         .add(currentRideDetails)
         .then((documentSnapshot) {
       debugPrint("Added Data with ID: ${documentSnapshot.id}");
+      addedRideId = documentSnapshot.id;
+      addRideId();
+    }).catchError((e) {
+      AmoToast.showAmoToast("Something went wrong", context);
+      debugPrint("Something went wrong $e");
+      Navigator.pop(context);
+    });
+  }
 
-      // Find the ScaffoldMessenger in the widget tree
-      // and use it to show a SnackBar.
+  void addRideId() async {
+    final snapshot = await _firestore
+        .collection("allUsers")
+        .doc("customer")
+        .collection("customers")
+        .where("phoneNumber", isEqualTo: userModelCurrentInfo!.phoneNumber!)
+        .get();
+
+    UserModel userData =
+        snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
+    log("User Data : $userData");
+
+    log("user id is" + userData.id.toString());
+    List prevRideIds = userData.rideIds;
+    log(prevRideIds.toString());
+    log("ride id is :" + addedRideId.toString());
+
+    prevRideIds.add(addedRideId);
+    log(prevRideIds.toString());
+
+    log("appending ride ids");
+
+    await _firestore
+        .collection('allUsers')
+        .doc("customer")
+        .collection("customers")
+        .doc(userData.id)
+        .update({
+      "rideIds": prevRideIds,
+      "totalRides": userData.totalRides! + 1
+    }).then((result) {
+      log("ride Id appended");
+
       ScaffoldMessenger.of(context).showSnackBar(successSnackBar);
       Provider.of<AppInfo>(context, listen: false).userDropOffLocation = null;
 
@@ -142,13 +187,14 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
             commission: txtCommisionAmountTextEditingController.text.toString(),
             price: price,
             index: widget.index,
+            pickUpDate: _selectedDatePickUp!,
+            dropOff: widget.rideByKm ? null : dropOff!,
+            origin: pickUp!,
           ),
         ),
       );
-    }).catchError((e) {
-      AmoToast.showAmoToast("Something went wrong", context);
-      debugPrint("Something went wrong $e");
-      Navigator.pop(context);
+    }).catchError((onError) {
+      print("something went wrong");
     });
   }
 
@@ -191,12 +237,6 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
   String? userRole = "Customer";
 
-  getUserRole() async {
-    // Obtain shared preferences.
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    userRole = prefs.getString('userType');
-  }
-
   void _pickUpDatePicker() {
     // showDatePicker is a pre-made funtion of Flutter
     showDatePicker(
@@ -238,9 +278,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   @override
   void initState() {
     // TODO: implement initState
-    getUserRole();
-    super.initState();
 
+    super.initState();
   }
 
   @override
@@ -271,7 +310,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                 Row(
                   children: [
                     Text(
-                      carTypes[index],
+                      widget.isEv
+                          ? evCarCategories[index]!.name!.toUpperCase()
+                          : nonEvCarCategories[index]!.name!.toUpperCase(),
                       style:
                           const TextStyle(fontFamily: 'Poppins', fontSize: 25),
                     ),
@@ -283,9 +324,16 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                 ),
 
                 // description
-                Text(
-                    "The ${carTypes[index]} is a ${noOfSeatsAvailableByCarType[index] + 1} seater car with luggage capacity of ${noOfBagStorageAvailableByCarType[index]}. All our vehicles are eVehicles, leaving behind no carbon footprint."),
+                Text(widget.isEv
+                    ? evCarCategories[index]!.description!
+                    : evCarCategories[index]!.description!),
 
+                // Text(
+                //     "The ${carTypes[index]} is a ${noOfSeatsAvailableByCarType[index] + 1} seater car with luggage capacity of ${noOfBagStorageAvailableByCarType[index]}. All our vehicles are eVehicles, leaving behind no carbon footprint."),
+
+                const SizedBox(
+                  height: 10,
+                ),
                 Container(
                   // padding: EdgeInsets.only(left: 20, top: 10),
                   alignment: Alignment.centerLeft,
@@ -313,9 +361,11 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                 Expanded(
                                     child: Image.asset("images/img_32.png")),
                                 Expanded(
-                                    child: Text(
-                                        noOfSeatsAvailableByCarType[index]
-                                            .toString())),
+                                  child: Text(
+                                    noOfSeatsAvailableByCarType[index]
+                                        .toString(),
+                                  ),
+                                ),
                               ],
                             ))),
                     // box-2
@@ -783,81 +833,90 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
                 Visibility(
                   visible: userRole != "Customer",
-
-                  child: Column(children: [ //customer mobile app
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      "Customer Mobile Number",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
+                  child: Column(
+                    children: [
+                      //customer mobile app
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          "Customer Mobile Number",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
 
-                  TextField(
-                    maxLength: 10,
-                    autofocus: true,
-                    enableSuggestions: true,
-                    controller: txtCustomerMobileNumberTextEditingController,
-                    keyboardType: TextInputType.phone,
-                    style: const TextStyle(
-                        fontFamily: "Poppins", fontSize: 16, color: Colors.black),
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(10),
-                    ],
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Customer Phone",
-                      counterText: "",
-                      hintStyle: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 18,
-                          color: Colors.grey),
-                    ),
-                  ),
-
-                  //Add commision
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      "Add Commission",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
+                      TextField(
+                        maxLength: 10,
+                        autofocus: true,
+                        enableSuggestions: true,
+                        controller:
+                            txtCustomerMobileNumberTextEditingController,
+                        keyboardType: TextInputType.phone,
+                        style: const TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 16,
+                            color: Colors.black),
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(10),
+                        ],
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Customer Phone",
+                          counterText: "",
+                          hintStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 18,
+                              color: Colors.grey),
+                        ),
                       ),
-                    ),
-                  ),
 
-                  TextField(
-                    maxLength: 4,
-                    autofocus: true,
-                    enableSuggestions: true,
-                    onChanged: (newVal) {
-                      double commission = double.parse(newVal);
-                      setState(() {
-                        priceInDouble += commission;
-                        price = CarTypeWidget.formatPrice(priceInDouble);
-                      });
-                    },
-                    controller: txtCommisionAmountTextEditingController,
-                    keyboardType: TextInputType.phone,
-                    style: const TextStyle(
-                        fontFamily: "Poppins", fontSize: 16, color: Colors.black),
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(10),
+                      //Add commision
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          "Add Commission",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                      ),
+
+                      TextField(
+                        maxLength: 4,
+                        autofocus: true,
+                        enableSuggestions: true,
+                        onChanged: (newVal) {
+                          double commission = double.parse(newVal);
+                          setState(() {
+                            priceInDouble += commission;
+                            price = CarTypeWidget.formatPrice(priceInDouble);
+                          });
+                        },
+                        controller: txtCommisionAmountTextEditingController,
+                        keyboardType: TextInputType.phone,
+                        style: const TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 16,
+                            color: Colors.black),
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(10),
+                        ],
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Commission Amount",
+                          counterText: "",
+                          hintStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 18,
+                              color: Colors.grey),
+                        ),
+                      ),
                     ],
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Commission Amount",
-                      counterText: "",
-                      hintStyle: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 18,
-                          color: Colors.grey),
-                    ),
-                  ),],),),
+                  ),
+                ),
 
                 //estimated fare text
                 Text.rich(

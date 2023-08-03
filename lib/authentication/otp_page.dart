@@ -1,5 +1,8 @@
 import 'dart:developer';
+
+import 'package:amo_cabs/authentication/login_screen.dart';
 import 'package:amo_cabs/authentication/registration_screen.dart';
+import 'package:amo_cabs/mainScreens/home_screen.dart';
 import 'package:amo_cabs/mainScreens/main_screen.dart';
 import 'package:amo_cabs/widgets/amo_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,18 +11,21 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../global/global.dart';
 import '../models/user_model.dart';
-import '../onboardingScreens/login_as_screen.dart';
 import '../widgets/progress_dialog.dart';
 
 // ignore: must_be_immutable
 class OtpPage extends StatefulWidget {
   String verificationId;
   String phoneNumber;
-  bool? isAgent;
 
-  OtpPage({super.key, required this.verificationId, required this.phoneNumber, required this.isAgent});
+  OtpPage({
+    super.key,
+    required this.verificationId,
+    required this.phoneNumber,
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -34,12 +40,6 @@ class _OtpPageState extends State<OtpPage> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-
-
-  saveUserTypeData() async{
-    final SharedPreferences perfs = await SharedPreferences.getInstance();
-    await perfs.setString("userType", widget.isAgent! ? "Agent" : "Customer" );
-  }
 
   // verify otp
   void verifyOtp(
@@ -61,8 +61,14 @@ class _OtpPageState extends State<OtpPage> {
       // box.write('id', firebaseUser);
       // print(box.read('id'));
       if (firebaseUser != null) {
+        // final snapshot = await _db
+        //     .collection("users")
+        //     .where("phoneNumber", isEqualTo: phoneNumber)
+        //     .get();
         final snapshot = await _db
-            .collection("users")
+            .collection("allUsers")
+            .doc('customer')
+            .collection('customers')
             .where("phoneNumber", isEqualTo: phoneNumber)
             .get();
 
@@ -82,51 +88,34 @@ class _OtpPageState extends State<OtpPage> {
             userModelCurrentInfo!.email!
           ]);
 
-          final String? userRole = widget.isAgent! ? "Agent" : "Customer";
+          if (userModelCurrentInfo!.active!) {
+            debugPrint("take to login page");
+            Fluttertoast.showToast(msg: 'Logging in..');
 
+            // ignore: use_build_context_synchronously
 
-          if (userModelCurrentInfo!.userRole == userRole) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => HomeScreen(),
+              ),
+              ModalRoute.withName('/'),
+            );
+          } else {
+            debugPrint("user is blocked");
+            Fluttertoast.showToast(
+                msg: 'Your Id is not active. Please contact support.');
 
-            if (userModelCurrentInfo!.active!) {
-              await saveUserTypeData();
-              debugPrint("take to login page");
-              Fluttertoast.showToast(msg: 'Logging in..');
-
-              // ignore: use_build_context_synchronously
-
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => MainScreen(),
-                ),
-                ModalRoute.withName('/'),
-              );
-            } else {
-              debugPrint("user is blocked");
-              Fluttertoast.showToast(
-                  msg: 'Your Id is not active. Please contact support.');
-
-              // ignore: use_build_context_synchronously
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => LogInAsScreen()),
-                  ModalRoute.withName('/'));
-            }
-          }
-          else{
-            debugPrint("Invalid user role. Aborting..");
-            Fluttertoast.showToast(msg: 'Invalid role. Already registered with a different role.');
+            // ignore: use_build_context_synchronously
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => LogInAsScreen()),
+                    builder: (BuildContext context) => LoginScreen()),
                 ModalRoute.withName('/'));
           }
         } catch (e) {
           debugPrint(e.toString());
           debugPrint("taking to registration page");
-          await saveUserTypeData();
           Fluttertoast.showToast(msg: 'Taking to registration page..');
 
           // ignore: use_build_context_synchronously

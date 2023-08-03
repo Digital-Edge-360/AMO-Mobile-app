@@ -1,11 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
+
+import 'package:amo_cabs/mainScreens/home_screen.dart';
 import 'package:amo_cabs/onboardingScreens/onboarding_screen1.dart';
 import 'package:flutter/material.dart';
+
 import '../assistants/assistant_methods.dart';
 import '../global/global.dart';
-import '../mainScreens/main_screen.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({Key? key}) : super(key: key);
@@ -26,7 +28,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (c) => const MainScreen(),
+            builder: (c) => HomeScreen(),
           ),
         );
       } else {
