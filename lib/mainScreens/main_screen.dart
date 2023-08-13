@@ -5,11 +5,15 @@ import 'package:amo_cabs/mainScreens/prices_page.dart';
 import 'package:amo_cabs/mainScreens/ride_by_km.dart';
 import 'package:amo_cabs/mainScreens/search_places_screen.dart';
 import 'package:amo_cabs/models/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart' as lottie;
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -301,7 +305,13 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     initialTask();
+
+    // todo - ads Section
+    addstwo();
+
   }
+
+  int?st;
 
   // PageController _controller = PageController();
 
@@ -986,4 +996,243 @@ class _MainScreenState extends State<MainScreen> {
       circlesSet.add(destinationCircle);
     });
   }
+
+  //add - pop up logic
+  setads()async{
+    DateTime now = DateTime.now();
+
+    String formattedDate = DateFormat('EEEE,MMM,d,yyyy').format(now);
+    //log("set log ads${now}");
+    // SharedPreferences
+    final SharedPreferences perfs = await SharedPreferences.getInstance();
+
+    //  perfs.setString("adsDate", now.toString());
+    // String? getAdsdate = perfs.getString("adsDate");
+
+    if (perfs.getString("adsDate") == null) {
+      //show ads
+      st=0;
+      perfs.setString("adsDate",formattedDate);
+      log("set log null ads$formattedDate");
+      setState((){});
+
+
+// todo --test firebase
+      QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection("allUsers")
+          .doc("customer")
+          .collection("customers")
+          .get();
+//sub-patch
+      for (int i = 0; i < querySnapshot.size; i++) {
+        var a = querySnapshot.docs[i];
+
+        String st="Rc5qR3t74kf02JwDICZD";
+
+        if ( st==a.id){
+
+          //log(st!);
+          log("firstName: ${a['image']}");
+        }
+      }
+
+//end test
+      Dialogs.materialDialog(
+          msg: 'Are you sure ? you can\'t undo this',
+          customView: Icon(Icons.icecream_rounded,opticalSize: 200),
+          context: context,
+          actions: [
+            IconsOutlineButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              text: 'Cancel',
+              iconData: Icons.cancel_outlined,
+              textStyle: TextStyle(color: Colors.grey),
+              iconColor: Colors.grey,
+            ),
+          ]);
+      // void setToast(BuildContext context){
+      //
+      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text("Sending Message"),
+      //   ));
+      // }
+      //  return st;
+    } else if (perfs.getString("adsDate")!= formattedDate) {
+
+      //show ads
+      // one time
+      perfs.setString("adsDate",formattedDate);
+      log("set log ads$formattedDate");
+      log(perfs.getString("adsDate").toString());
+      st=0;
+      setState(() {
+      });
+      Dialogs.materialDialog(
+          msg: 'Are you sure ? you can\'t undo this',
+          customView: Icon(Icons.icecream_rounded,opticalSize: 200),
+          context: context,
+          actions: [
+            IconsOutlineButton(
+              onPressed: () {},
+              text: 'Cancel',
+              iconData: Icons.cancel_outlined,
+              textStyle: TextStyle(color: Colors.grey),
+              iconColor: Colors.grey,
+            ),
+          ]);
+      //return st;
+
+    }else if(perfs.getString("adsDate")==formattedDate){
+      st=1;
+      log("set log not ads$formattedDate");
+      log(perfs.getString("adsDate").toString());
+      log("$st");
+
+      Dialogs.materialDialog(
+          msg: '50% Off',
+          customView: Image(image: AssetImage("images/img_6.png")),
+          context: context,
+          actions: [
+            IconsOutlineButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              text: 'Cancel',
+              iconData: Icons.cancel_outlined,
+              textStyle: TextStyle(color: Colors.grey),
+              iconColor: Colors.grey,
+            ),
+          ]);
+      setState(() {
+      });
+      // return st;
+    }
+
+  }
+  setads2()async{
+    DateTime now = DateTime.now();
+
+    String formattedDate = DateFormat('EEEE,MMM,d,yyyy').format(now);
+    //log("set log ads${now}");
+    // SharedPreferences
+    final SharedPreferences perfs = await SharedPreferences.getInstance();
+
+    //  perfs.setString("adsDate", now.toString());
+    // String? getAdsdate = perfs.getString("adsDate");
+
+    if (perfs.getString("adsDate2") == null) {
+      //show ads
+      st=0;
+      perfs.setString("adsDate2",formattedDate);
+      log("set log null ads$formattedDate");
+      setState((){});
+
+      Dialogs.materialDialog(
+          msg: 'Are you sure ? you can\'t undo this2',
+          customView: Icon(Icons.icecream_rounded,opticalSize: 200),
+          context: context,
+          actions: [
+            IconsOutlineButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+
+                perfs.setString("adsDate2","0");
+              },
+              text: 'Cancel',
+              iconData: Icons.cancel_outlined,
+              textStyle: TextStyle(color: Colors.grey),
+              iconColor: Colors.grey,
+            ),
+          ]);
+      // void setToast(BuildContext context){
+      //
+      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text("Sending Message"),
+      //   ));
+      // }
+      //  return st;
+    } else if (perfs.getString("adsDate2")!= formattedDate) {
+
+      //show ads
+      // one time
+      perfs.setString("adsDate2",formattedDate);
+      log("set log ads$formattedDate");
+      log(perfs.getString("adsDate2").toString());
+      st=0;
+      setState(() {
+      });
+      Dialogs.materialDialog(
+          msg: 'Are you sure ? you can\'t undo this2',
+          customView: Icon(Icons.icecream_rounded,opticalSize: 200),
+          context: context,
+          actions: [
+            IconsOutlineButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                perfs.setString("adsDate2","0");
+              },
+              text: 'Cancel2',
+              iconData: Icons.cancel_outlined,
+              textStyle: TextStyle(color: Colors.grey),
+              iconColor: Colors.grey,
+            ),
+          ]);
+      //return st;
+
+    }else if(perfs.getString("adsDate2")==formattedDate){
+      //not show
+
+      st=1;
+      log("set log not ads$formattedDate");
+      log(perfs.getString("adsDate2").toString());
+      log("$st");
+
+      Dialogs.materialDialog(
+          msg: '50% Off2',
+          customView: Image(image: AssetImage("images/img_6.png")),
+          context: context,
+          actions: [
+            IconsOutlineButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                perfs.setString("adsDate2","0");
+              },
+              text: 'Cancel',
+              iconData: Icons.cancel_outlined,
+              textStyle: TextStyle(color: Colors.grey),
+              iconColor: Colors.grey,
+            ),
+          ]);
+      setState(() {
+      });
+      // return st;
+    }
+
+  }
+
+  //two ads
+  addstwo() async {
+
+    final SharedPreferences perfs = await SharedPreferences.getInstance();
+
+    if (perfs.getString("TwoCount")==null){
+
+      perfs.setString("adsDate2","1");
+      setads();
+
+    }else if(perfs.getString("TwoCount")=="0"){
+
+      setads();
+
+
+    }else if (perfs.getString("TwoCount")=="1"){
+
+      setads2();
+
+    }
+
+  }
+
 }

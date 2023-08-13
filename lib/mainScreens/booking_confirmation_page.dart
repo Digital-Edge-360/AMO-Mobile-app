@@ -1102,9 +1102,6 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   // }
 
 
-
-
-
   //todo-- offer set shared-pref
 
   // data put--
