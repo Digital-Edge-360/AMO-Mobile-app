@@ -33,7 +33,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final Completer<GoogleMapController> _controllerGoogleMap =
-      Completer<GoogleMapController>();
+  Completer<GoogleMapController>();
 
   GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
   GoogleMapController? newGoogleMapController;
@@ -240,6 +240,10 @@ class _MainScreenState extends State<MainScreen> {
   int bagsCount = 1;
   bool isLoading = false;
 
+  // ads url
+  dynamic adurl ="";
+  dynamic adtitle = "";
+
   locateUserPosition() async {
     Position cPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -260,24 +264,24 @@ class _MainScreenState extends State<MainScreen> {
           firstName: userDetails[2],
           lastName: userDetails[3],
           email: userDetails[4],
-         offer: userDetails[4]);
+          offer: userDetails[4]);
       userModelCurrentInfo = userModel;
     }
 
     LatLng latLngPosition =
-        LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
+    LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
 
     CameraPosition cameraPosition =
-        CameraPosition(target: latLngPosition, zoom: 14);
+    CameraPosition(target: latLngPosition, zoom: 14);
     newGoogleMapController!.animateCamera(
       CameraUpdate.newCameraPosition(cameraPosition),
     );
 
     // ignore: use_build_context_synchronously
     String humanReadableAddress =
-        // ignore: use_build_context_synchronously
-        await AssistantMethods.searchAddressForGeographicCoOrdinates(
-            userCurrentPosition!, context);
+    // ignore: use_build_context_synchronously
+    await AssistantMethods.searchAddressForGeographicCoOrdinates(
+        userCurrentPosition!, context);
     log('This is your address $humanReadableAddress');
     userName = userModelCurrentInfo!.firstName!;
     userLastName = userModelCurrentInfo!.lastName!;
@@ -364,514 +368,514 @@ class _MainScreenState extends State<MainScreen> {
         ),
         body: isLoading
             ? Center(
-                child: Container(
-                  color: Colors.white,
-                  height: MediaQuery.sizeOf(context).height,
-                  child: lottie.Lottie.asset(
-                    "assets/lottie/cab_loading.json",
-                  ),
-                ),
-              )
+          child: Container(
+            color: Colors.white,
+            height: MediaQuery.sizeOf(context).height,
+            child: lottie.Lottie.asset(
+              "assets/lottie/cab_loading.json",
+            ),
+          ),
+        )
             : IndexedStack(
-                key: ValueKey<int>(_index),
-                sizing: StackFit.expand,
-                index: _index,
-                children: [
-                  Stack(
-                    children: [
-                      GoogleMap(
-                        mapType: MapType.normal,
-                        myLocationButtonEnabled: true,
-                        rotateGesturesEnabled: true,
-                        myLocationEnabled: true,
-                        zoomControlsEnabled: true,
-                        markers: markersSet,
-                        circles: circlesSet,
-                        padding: EdgeInsets.only(
-                          top: MediaQuery.sizeOf(context).height * 0.3,
-                          bottom: bottomPaddingOfMap,
+          key: ValueKey<int>(_index),
+          sizing: StackFit.expand,
+          index: _index,
+          children: [
+            Stack(
+              children: [
+                GoogleMap(
+                  mapType: MapType.normal,
+                  myLocationButtonEnabled: true,
+                  rotateGesturesEnabled: true,
+                  myLocationEnabled: true,
+                  zoomControlsEnabled: true,
+                  markers: markersSet,
+                  circles: circlesSet,
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.sizeOf(context).height * 0.3,
+                    bottom: bottomPaddingOfMap,
+                  ),
+                  zoomGesturesEnabled: true,
+                  initialCameraPosition: _kGooglePlex,
+                  polylines: polyLineSet,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controllerGoogleMap.complete(controller);
+                    newGoogleMapController = controller;
+                    // blackThemeGoogleMap();
+
+                    setState(() {
+                      bottomPaddingOfMap =
+                          MediaQuery.sizeOf(context).height * 0.32;
+                    });
+
+                    locateUserPosition();
+                  },
+                ),
+
+                //custom hamburger button for drawer
+                // Positioned(
+                //   top: 30,
+                //   left: 14,
+                //   child: GestureDetector(
+                //     onTap: () {
+                //       if (openNavigationDrawer) {
+                //         sKey.currentState!.openDrawer();
+                //       } else {
+                //         //restart- refresh- minimize app progamitacally
+                //         // SystemNavigator.pop();
+                //         setState(() {
+                //           openNavigationDrawer = true;
+                //           pLineCoordinatesList = [];
+                //           Provider.of<AppInfo>(context, listen: false)
+                //               .userDropOffLocation = null;
+                //
+                //           polyLineSet = {};
+                //
+                //           markersSet = {};
+                //           circlesSet = {};
+                //         });
+                //       }
+                //     },
+                //     child: Icon(
+                //       // Icons.menu,
+                //       openNavigationDrawer ? Icons.menu : Icons.close,
+                //       color: Colors.black54,
+                //     ),
+                //   ),
+                // ),
+                Positioned(
+                  top: 0,
+                  child: GestureDetector(
+                    onTap: () async {
+                      var responseFromSearchScreen = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (c) => SearchPlacesScreen(
+                            isSource: true,
+                          ),
                         ),
-                        zoomGesturesEnabled: true,
-                        initialCameraPosition: _kGooglePlex,
-                        polylines: polyLineSet,
-                        onMapCreated: (GoogleMapController controller) {
-                          _controllerGoogleMap.complete(controller);
-                          newGoogleMapController = controller;
-                          // blackThemeGoogleMap();
+                      );
 
-                          setState(() {
-                            bottomPaddingOfMap =
-                                MediaQuery.sizeOf(context).height * 0.32;
-                          });
-
-                          locateUserPosition();
-                        },
-                      ),
-
-                      //custom hamburger button for drawer
-                      // Positioned(
-                      //   top: 30,
-                      //   left: 14,
-                      //   child: GestureDetector(
-                      //     onTap: () {
-                      //       if (openNavigationDrawer) {
-                      //         sKey.currentState!.openDrawer();
-                      //       } else {
-                      //         //restart- refresh- minimize app progamitacally
-                      //         // SystemNavigator.pop();
-                      //         setState(() {
-                      //           openNavigationDrawer = true;
-                      //           pLineCoordinatesList = [];
-                      //           Provider.of<AppInfo>(context, listen: false)
-                      //               .userDropOffLocation = null;
-                      //
-                      //           polyLineSet = {};
-                      //
-                      //           markersSet = {};
-                      //           circlesSet = {};
-                      //         });
-                      //       }
-                      //     },
-                      //     child: Icon(
-                      //       // Icons.menu,
-                      //       openNavigationDrawer ? Icons.menu : Icons.close,
-                      //       color: Colors.black54,
-                      //     ),
-                      //   ),
-                      // ),
-                      Positioned(
-                        top: 0,
-                        child: GestureDetector(
-                          onTap: () async {
-                            var responseFromSearchScreen = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (c) => SearchPlacesScreen(
-                                  isSource: true,
-                                ),
+                      if (responseFromSearchScreen == "obtainedDropOff") {
+                        await drawPolyLineFromOriginToDestination();
+                      }
+                    },
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 6),
+                      child: Card(
+                        elevation: 5,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.add_location_alt_outlined,
+                                color: Colors.green,
                               ),
-                            );
-
-                            if (responseFromSearchScreen == "obtainedDropOff") {
-                              await drawPolyLineFromOriginToDestination();
-                            }
-                          },
-                          child: Container(
-                            width: MediaQuery.sizeOf(context).width,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 6),
-                            child: Card(
-                              elevation: 5,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
+                              const SizedBox(
+                                width: 12,
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.add_location_alt_outlined,
-                                      color: Colors.green,
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'From',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12,
                                     ),
-                                    const SizedBox(
-                                      width: 12,
+                                  ),
+                                  Text(
+                                    Provider.of<AppInfo>(context)
+                                        .userPickUpLocation !=
+                                        null
+                                        ? (Provider.of<AppInfo>(context)
+                                        .userPickUpLocation!
+                                        .locationName!)
+                                        .length >
+                                        20
+                                        ? '${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 20)}...'
+                                        : '${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}'
+                                        : 'Your current location',
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12,
                                     ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'From',
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        Text(
-                                          Provider.of<AppInfo>(context)
-                                                      .userPickUpLocation !=
-                                                  null
-                                              ? (Provider.of<AppInfo>(context)
-                                                              .userPickUpLocation!
-                                                              .locationName!)
-                                                          .length >
-                                                      20
-                                                  ? '${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 20)}...'
-                                                  : '${(Provider.of<AppInfo>(context).userPickUpLocation!.locationName!)}'
-                                              : 'Your current location',
-                                          style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
+                    ),
+                  ),
+                ),
 
-                      //ui for searching location
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: AnimatedSize(
-                          curve: Curves.easeIn,
-                          duration: const Duration(milliseconds: 120),
-                          child: Container(
-                            height: MediaQuery.sizeOf(context).height * 0.29,
-                            decoration: const BoxDecoration(
-                              color: Colors.white70,
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(30),
-                                topLeft: Radius.circular(30),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 18,
-                              ),
-                              child: Column(
-                                children: [
-                                  //ride by destination or ride by km
+                //ui for searching location
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: AnimatedSize(
+                    curve: Curves.easeIn,
+                    duration: const Duration(milliseconds: 120),
+                    child: Container(
+                      height: MediaQuery.sizeOf(context).height * 0.29,
+                      decoration: const BoxDecoration(
+                        color: Colors.white70,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30),
+                          topLeft: Radius.circular(30),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 18,
+                        ),
+                        child: Column(
+                          children: [
+                            //ride by destination or ride by km
 
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 10,
-                                    ),
-                                    child: Card(
-                                      elevation: 8.0,
-                                      color: Colors.white,
-                                      clipBehavior: Clip.hardEdge,
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            color: Color(0xffD0D0D0)),
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      child: Row(
-                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  //text1
-                                                  Row(
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 10,
+                              ),
+                              child: Card(
+                                elevation: 8.0,
+                                color: Colors.white,
+                                clipBehavior: Clip.hardEdge,
+                                shape: RoundedRectangleBorder(
+                                  side: const BorderSide(
+                                      color: Color(0xffD0D0D0)),
+                                  borderRadius:
+                                  BorderRadius.circular(10.0),
+                                ),
+                                child: Row(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            //text1
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  "Seats Count",
+                                                  style: TextStyle(
+                                                      color: Color(
+                                                          0xff019EE3)),
+                                                ),
+                                                Image.asset(
+                                                  'images/seats.png',
+                                                  height: 15,
+                                                )
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding:
+                                              const EdgeInsets.only(
+                                                  top: 5),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(3),
+                                                    color: const Color(
+                                                        0xff019EE3)),
+                                                // width: 80,
+                                                height: 20,
+                                                child:
+                                                DropdownButton<int>(
+                                                  elevation: 4,
+                                                  underline: Container(),
+                                                  icon: Row(
+                                                    // mainAxisAlignment: MainAxisAlignment.start,
                                                     children: [
-                                                      const Text(
-                                                        "Seats Count",
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xff019EE3)),
+                                                      Text(
+                                                        seatsCount
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            color: Colors
+                                                                .white),
                                                       ),
-                                                      Image.asset(
-                                                        'images/seats.png',
-                                                        height: 15,
-                                                      )
+                                                      const Icon(
+                                                        Icons
+                                                            .arrow_drop_down_sharp,
+                                                        color:
+                                                        Colors.white,
+                                                      ),
                                                     ],
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 5),
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(3),
-                                                          color: const Color(
-                                                              0xff019EE3)),
-                                                      // width: 80,
-                                                      height: 20,
-                                                      child:
-                                                          DropdownButton<int>(
-                                                        elevation: 4,
-                                                        underline: Container(),
-                                                        icon: Row(
-                                                          // mainAxisAlignment: MainAxisAlignment.start,
-                                                          children: [
-                                                            Text(
-                                                              seatsCount
-                                                                  .toString(),
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
-                                                            const Icon(
-                                                              Icons
-                                                                  .arrow_drop_down_sharp,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        items: <int>[
-                                                          1,
-                                                          2,
-                                                          3,
-                                                          4,
-                                                          5,
-                                                          6,
-                                                          7,
-                                                          8,
-                                                          9,
-                                                          10,
-                                                        ].map((int value) {
-                                                          return DropdownMenuItem<
-                                                              int>(
-                                                            value: value,
-                                                            child: Text(
-                                                              value.toString(),
-                                                            ),
-                                                          );
-                                                        }).toList(),
-                                                        onChanged: (newVal) {
-                                                          setState(() {
-                                                            seatsCount =
-                                                                newVal!;
-                                                          });
-                                                        },
+                                                  items: <int>[
+                                                    1,
+                                                    2,
+                                                    3,
+                                                    4,
+                                                    5,
+                                                    6,
+                                                    7,
+                                                    8,
+                                                    9,
+                                                    10,
+                                                  ].map((int value) {
+                                                    return DropdownMenuItem<
+                                                        int>(
+                                                      value: value,
+                                                      child: Text(
+                                                        value.toString(),
                                                       ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )),
-
-                                          //
-                                          // todo -- line
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 10, left: 80),
-                                            child: Container(
-                                              height: 70,
-                                              width: 1,
-                                              color: const Color(0xffD0D0D0),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (newVal) {
+                                                    setState(() {
+                                                      seatsCount =
+                                                      newVal!;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
                                             ),
+                                          ],
+                                        )),
+
+                                    //
+                                    // todo -- line
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 10, left: 80),
+                                      child: Container(
+                                        height: 70,
+                                        width: 1,
+                                        color: const Color(0xffD0D0D0),
+                                      ),
+                                    ),
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const Text(
+                                                "Bags Count",
+                                                style: TextStyle(
+                                                    color: Color(
+                                                        0xff019EE3)),
+                                              ),
+                                              Image.asset(
+                                                'images/bags.png',
+                                                height: 15,
+                                              )
+                                            ],
                                           ),
 
+                                          // todo -- dropdown2
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
+                                            padding:
+                                            const EdgeInsets.only(
+                                                top: 5),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(3),
+                                                  color: const Color(
+                                                      0xff019EE3)),
+                                              // width: 80,
+                                              height: 20,
+                                              child: DropdownButton<int>(
+                                                elevation: 4,
+                                                underline: Container(),
+                                                icon: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .center,
                                                   children: [
-                                                    const Text(
-                                                      "Bags Count",
-                                                      style: TextStyle(
-                                                          color: Color(
-                                                              0xff019EE3)),
+                                                    Text(
+                                                      bagsCount
+                                                          .toString(),
+                                                      style:
+                                                      const TextStyle(
+                                                          color: Colors
+                                                              .white),
                                                     ),
-                                                    Image.asset(
-                                                      'images/bags.png',
-                                                      height: 15,
-                                                    )
+                                                    const Icon(
+                                                      Icons
+                                                          .arrow_drop_down_sharp,
+                                                      color: Colors.white,
+                                                    ),
                                                   ],
                                                 ),
-
-                                                // todo -- dropdown2
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 5),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(3),
-                                                        color: const Color(
-                                                            0xff019EE3)),
-                                                    // width: 80,
-                                                    height: 20,
-                                                    child: DropdownButton<int>(
-                                                      elevation: 4,
-                                                      underline: Container(),
-                                                      icon: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            bagsCount
-                                                                .toString(),
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .white),
-                                                          ),
-                                                          const Icon(
-                                                            Icons
-                                                                .arrow_drop_down_sharp,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      items: <int>[
-                                                        1,
-                                                        2,
-                                                        3,
-                                                        4,
-                                                        5
-                                                      ].map((int value) {
-                                                        return DropdownMenuItem<
-                                                            int>(
-                                                          value: value,
-                                                          child: Text(
-                                                            value.toString(),
-                                                          ),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (newVal) {
-                                                        setState(() {
-                                                          bagsCount = newVal!;
-                                                        });
-                                                      },
+                                                items: <int>[
+                                                  1,
+                                                  2,
+                                                  3,
+                                                  4,
+                                                  5
+                                                ].map((int value) {
+                                                  return DropdownMenuItem<
+                                                      int>(
+                                                    value: value,
+                                                    child: Text(
+                                                      value.toString(),
                                                     ),
-                                                  ),
-                                                ),
-                                              ],
+                                                  );
+                                                }).toList(),
+                                                onChanged: (newVal) {
+                                                  setState(() {
+                                                    bagsCount = newVal!;
+                                                  });
+                                                },
+                                              ),
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
-
-                                  //to
-                                  GestureDetector(
-                                    onTap: () async {
-                                      //go to search places screen
-                                      var responseFromSearchScreen =
-                                          await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (c) => SearchPlacesScreen(
-                                            isSource: false,
-                                          ),
-                                        ),
-                                      );
-
-                                      if (responseFromSearchScreen ==
-                                          "obtainedDropOff") {
-                                        //draw poly line between pick up and drop off locations.
-                                        await drawPolyLineFromOriginToDestination();
-
-                                        // setState(() {
-                                        //   openNavigationDrawer = false;
-                                        // });
-                                      }
-                                    },
-                                    child: Card(
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                      ),
-                                      elevation: 4,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.add_location_alt_outlined,
-                                              color: Color(0xff009B4E),
-                                            ),
-                                            const SizedBox(
-                                              width: 12,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  'To',
-                                                  style: TextStyle(
-                                                    color: Colors.black54,
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  Provider.of<AppInfo>(context)
-                                                              .userDropOffLocation !=
-                                                          null
-                                                      ? Provider.of<AppInfo>(
-                                                              context)
-                                                          .userDropOffLocation!
-                                                          .locationName!
-                                                      : 'Where to go?',
-                                                  style: const TextStyle(
-                                                    color: Colors.black54,
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      log("Request a ride button on maps page got clicked..");
-                                      if (Provider.of<AppInfo>(context,
-                                                  listen: false)
-                                              .userDropOffLocation !=
-                                          null) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (c) => PricesPage(
-                                              seatsCount: seatsCount,
-                                              bagsCount: bagsCount,
-                                              distanceInMeters: distance,
-                                              rideByKm: false,
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        AmoToast.showAmoToast(
-                                            "Please select the destination..",
-                                            context);
-                                      }
-                                    },
-                                    child: Text('Request a Ride'),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xff009B4E),
-                                      textStyle: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
+
+                            //to
+                            GestureDetector(
+                              onTap: () async {
+                                //go to search places screen
+                                var responseFromSearchScreen =
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (c) => SearchPlacesScreen(
+                                      isSource: false,
+                                    ),
+                                  ),
+                                );
+
+                                if (responseFromSearchScreen ==
+                                    "obtainedDropOff") {
+                                  //draw poly line between pick up and drop off locations.
+                                  await drawPolyLineFromOriginToDestination();
+
+                                  // setState(() {
+                                  //   openNavigationDrawer = false;
+                                  // });
+                                }
+                              },
+                              child: Card(
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                elevation: 4,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.add_location_alt_outlined,
+                                        color: Color(0xff009B4E),
+                                      ),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            'To',
+                                            style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          Text(
+                                            Provider.of<AppInfo>(context)
+                                                .userDropOffLocation !=
+                                                null
+                                                ? Provider.of<AppInfo>(
+                                                context)
+                                                .userDropOffLocation!
+                                                .locationName!
+                                                : 'Where to go?',
+                                            style: const TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(
+                              height: 8,
+                            ),
+
+                            ElevatedButton(
+                              onPressed: () {
+                                log("Request a ride button on maps page got clicked..");
+                                if (Provider.of<AppInfo>(context,
+                                    listen: false)
+                                    .userDropOffLocation !=
+                                    null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (c) => PricesPage(
+                                        seatsCount: seatsCount,
+                                        bagsCount: bagsCount,
+                                        distanceInMeters: distance,
+                                        rideByKm: false,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  AmoToast.showAmoToast(
+                                      "Please select the destination..",
+                                      context);
+                                }
+                              },
+                              child: Text('Request a Ride'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xff009B4E),
+                                textStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  const RideByKm(),
-                ],
-              ));
+                ),
+              ],
+            ),
+            const RideByKm(),
+          ],
+        ));
   }
 
   int distance = 0;
@@ -894,8 +898,8 @@ class _MainScreenState extends State<MainScreen> {
     );
 
     var directionDetailsInfo =
-        await AssistantMethods.obtainOriginToDestinationDirectionDetails(
-            originLatLng, destinationLatLng);
+    await AssistantMethods.obtainOriginToDestinationDirectionDetails(
+        originLatLng, destinationLatLng);
 
     // ignore: use_build_context_synchronously
     Navigator.pop(context);
@@ -907,7 +911,7 @@ class _MainScreenState extends State<MainScreen> {
 
     PolylinePoints pPoints = PolylinePoints();
     List<PointLatLng> decodedPolylinePointsResultList =
-        pPoints.decodePolyline(directionDetailsInfo!.e_points!);
+    pPoints.decodePolyline(directionDetailsInfo!.e_points!);
 
     pLineCoordinatesList.clear();
     if (decodedPolylinePointsResultList.isNotEmpty) {
@@ -959,7 +963,7 @@ class _MainScreenState extends State<MainScreen> {
     Marker originMarker = Marker(
       markerId: const MarkerId("originId"),
       infoWindow:
-          InfoWindow(title: originPosition.locationName, snippet: 'Origin'),
+      InfoWindow(title: originPosition.locationName, snippet: 'Origin'),
       position: originLatLng,
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
     );
@@ -997,7 +1001,7 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  //add - pop up logic
+  //add - pop up logic-1
   setads()async{
     DateTime now = DateTime.now();
 
@@ -1006,8 +1010,7 @@ class _MainScreenState extends State<MainScreen> {
     // SharedPreferences
     final SharedPreferences perfs = await SharedPreferences.getInstance();
 
-    //  perfs.setString("adsDate", now.toString());
-    // String? getAdsdate = perfs.getString("adsDate");
+
 
     if (perfs.getString("adsDate") == null) {
       //show ads
@@ -1016,51 +1019,77 @@ class _MainScreenState extends State<MainScreen> {
       log("set log null ads$formattedDate");
       setState((){});
 
+      perfs.setString("TwoCount","1");
 
-// todo --test firebase
-      QuerySnapshot querySnapshot =
-      await FirebaseFirestore.instance.collection("allUsers")
-          .doc("customer")
-          .collection("customers")
-          .get();
+
+
+      // todo --test firebase
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("ads").get();
 //sub-patch
       for (int i = 0; i < querySnapshot.size; i++) {
         var a = querySnapshot.docs[i];
 
-        String st="Rc5qR3t74kf02JwDICZD";
-
-        if ( st==a.id){
-
+        String sts="855A1MOu8D4GvI56O5Vv";
+        //log("firstName: ${a['image']}");
+        log(a.id);
+        if ( sts==a.id){
           //log(st!);
+          setState((){});
+          adurl="${a['image']}";
+          adtitle = "${a['title']}";
+
+          //log(adurl);
           log("firstName: ${a['image']}");
         }
       }
-
 //end test
       Dialogs.materialDialog(
-          msg: 'Are you sure ? you can\'t undo this',
-          customView: Icon(Icons.icecream_rounded,opticalSize: 200),
+          msg: adurl,
+          customView: Image.network("${adurl}"),
           context: context,
           actions: [
             IconsOutlineButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              text: 'Cancel',
+              onPressed: () {},
+              text: 'Close',
               iconData: Icons.cancel_outlined,
               textStyle: TextStyle(color: Colors.grey),
               iconColor: Colors.grey,
             ),
           ]);
       // void setToast(BuildContext context){
-      //
       //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text("Sending Message"),
       //   ));
       // }
       //  return st;
-    } else if (perfs.getString("adsDate")!= formattedDate) {
+    } else if (perfs.getString("adsDate")!= formattedDate){
 
+      perfs.setString("TwoCount","1");
+
+
+      // todo --test firebase
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("ads").get();
+//sub-patch
+      for (int i = 0; i < querySnapshot.size; i++) {
+        var a = querySnapshot.docs[i];
+
+        String sts="855A1MOu8D4GvI56O5Vv";
+
+        //log("firstName: ${a['image']}");
+
+        log(a.id);
+
+        if ( sts==a.id){
+          //log(st!);
+
+          setState((){});
+          adurl="${a['image']}";
+          adtitle = "${a['title']}";
+          log(adurl);
+
+          log("firstName: ${a['image']}");
+        }
+      }
       //show ads
       // one time
       perfs.setString("adsDate",formattedDate);
@@ -1069,37 +1098,61 @@ class _MainScreenState extends State<MainScreen> {
       st=0;
       setState(() {
       });
+
       Dialogs.materialDialog(
-          msg: 'Are you sure ? you can\'t undo this',
-          customView: Icon(Icons.icecream_rounded,opticalSize: 200),
+          msg: adurl,
+          customView: Image.network("${adurl}"),
           context: context,
           actions: [
             IconsOutlineButton(
               onPressed: () {},
-              text: 'Cancel',
+              text: 'Close',
               iconData: Icons.cancel_outlined,
               textStyle: TextStyle(color: Colors.grey),
               iconColor: Colors.grey,
             ),
           ]);
+
       //return st;
 
     }else if(perfs.getString("adsDate")==formattedDate){
+
+      perfs.setString("TwoCount","1");
+
+      // todo --test firebase
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("ads").get();
+//sub-patch
+      for (int i = 0; i < querySnapshot.size; i++) {
+        var a = querySnapshot.docs[i];
+
+        String sts="855A1MOu8D4GvI56O5Vv";
+        //log("firstName: ${a['image']}");
+        log(a.id);
+        if ( sts==a.id){
+          //log(st!);
+          setState((){});
+          adurl="${a['image']}";
+          adtitle = "${a['title']}";
+          //log(adurl);
+          log("firstName: ${a['image']}");
+        }
+      }
+
       st=1;
       log("set log not ads$formattedDate");
       log(perfs.getString("adsDate").toString());
       log("$st");
 
       Dialogs.materialDialog(
-          msg: '50% Off',
-          customView: Image(image: AssetImage("images/img_6.png")),
+          msg: adtitle,
+          customView: Image.network("${adurl}"),
           context: context,
           actions: [
             IconsOutlineButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              text: 'Cancel',
+              text: 'close',
               iconData: Icons.cancel_outlined,
               textStyle: TextStyle(color: Colors.grey),
               iconColor: Colors.grey,
@@ -1119,8 +1172,7 @@ class _MainScreenState extends State<MainScreen> {
     // SharedPreferences
     final SharedPreferences perfs = await SharedPreferences.getInstance();
 
-    //  perfs.setString("adsDate", now.toString());
-    // String? getAdsdate = perfs.getString("adsDate");
+
 
     if (perfs.getString("adsDate2") == null) {
       //show ads
@@ -1129,31 +1181,74 @@ class _MainScreenState extends State<MainScreen> {
       log("set log null ads$formattedDate");
       setState((){});
 
+      perfs.setString("TwoCount","0");
+
+
+
+      // todo --test firebase
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("ads").get();
+//sub-patch
+      for (int i = 0; i < querySnapshot.size; i++) {
+        var a = querySnapshot.docs[i];
+
+        String sts="855A1MOu8D4GvI56O5Vv";
+        //log("firstName: ${a['image']}");
+        log(a.id);
+        if ( sts==a.id){
+          //log(st!);
+          setState((){});
+          adurl="${a['image']}";
+          adtitle = "${a['title']}";
+
+          //log(adurl);
+          log("firstName: ${a['image']}");
+        }
+      }
+//end test
       Dialogs.materialDialog(
-          msg: 'Are you sure ? you can\'t undo this2',
-          customView: Icon(Icons.icecream_rounded,opticalSize: 200),
+          msg: "add2:${adtitle}",
+          customView: Image.network("${adurl}"),
           context: context,
           actions: [
             IconsOutlineButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-
-                perfs.setString("adsDate2","0");
-              },
-              text: 'Cancel',
+              onPressed: () {},
+              text: 'Close',
               iconData: Icons.cancel_outlined,
               textStyle: TextStyle(color: Colors.grey),
               iconColor: Colors.grey,
             ),
           ]);
       // void setToast(BuildContext context){
-      //
       //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text("Sending Message"),
       //   ));
       // }
       //  return st;
-    } else if (perfs.getString("adsDate2")!= formattedDate) {
+    } else if (perfs.getString("adsDate2")!= formattedDate){
+
+      perfs.setString("TwoCount","0");
+
+
+      // todo --test firebase
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("ads").get();
+//sub-patch
+      for (int i = 0; i < querySnapshot.size; i++) {
+        var a = querySnapshot.docs[i];
+
+        String sts="855A1MOu8D4GvI56O5Vv";
+
+        perfs.setString("TwoCount","0");
+        //log("firstName: ${a['image']}");
+
+        log(a.id);
+
+        if ( sts==a.id){
+          //log(st!);
+          setState((){});
+          adurl="${a['image']}";
+          adtitle = "${a['title']}";
+        }
+      }
 
       //show ads
       // one time
@@ -1163,26 +1258,45 @@ class _MainScreenState extends State<MainScreen> {
       st=0;
       setState(() {
       });
+
       Dialogs.materialDialog(
-          msg: 'Are you sure ? you can\'t undo this2',
-          customView: Icon(Icons.icecream_rounded,opticalSize: 200),
+          msg: "add2:${adtitle}",
+          customView: Image.network("${adurl}"),
           context: context,
           actions: [
             IconsOutlineButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                perfs.setString("adsDate2","0");
-              },
-              text: 'Cancel2',
+              onPressed: () {},
+              text: 'Close',
               iconData: Icons.cancel_outlined,
               textStyle: TextStyle(color: Colors.grey),
               iconColor: Colors.grey,
             ),
           ]);
+
       //return st;
 
     }else if(perfs.getString("adsDate2")==formattedDate){
-      //not show
+
+      perfs.setString("TwoCount","0");
+
+      // todo --test firebase
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("ads").get();
+//sub-patch
+      for (int i = 0; i < querySnapshot.size; i++) {
+        var a = querySnapshot.docs[i];
+
+        String sts="855A1MOu8D4GvI56O5Vv";
+        //log("firstName: ${a['image']}");
+        log(a.id);
+        if ( sts==a.id){
+          //log(st!);
+          setState((){});
+          adurl="${a['image']}";
+          adtitle = "${a['title']}";
+          //log(adurl);
+          log("firstName: ${a['image']}");
+        }
+      }
 
       st=1;
       log("set log not ads$formattedDate");
@@ -1190,16 +1304,15 @@ class _MainScreenState extends State<MainScreen> {
       log("$st");
 
       Dialogs.materialDialog(
-          msg: '50% Off2',
-          customView: Image(image: AssetImage("images/img_6.png")),
+          msg: "add2:${adtitle}",
+          customView: Image.network("${adurl}"),
           context: context,
           actions: [
             IconsOutlineButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                perfs.setString("adsDate2","0");
               },
-              text: 'Cancel',
+              text: 'close',
               iconData: Icons.cancel_outlined,
               textStyle: TextStyle(color: Colors.grey),
               iconColor: Colors.grey,
@@ -1211,15 +1324,13 @@ class _MainScreenState extends State<MainScreen> {
     }
 
   }
-
-  //two ads
+  //two ads-- Show logic
   addstwo() async {
 
     final SharedPreferences perfs = await SharedPreferences.getInstance();
 
     if (perfs.getString("TwoCount")==null){
 
-      perfs.setString("adsDate2","1");
       setads();
 
     }else if(perfs.getString("TwoCount")=="0"){
