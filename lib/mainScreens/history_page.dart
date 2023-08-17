@@ -207,8 +207,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       itemBuilder: (context, index) {
                         log(docs?.elementAt(index).data()["status"]);
                         if (filter == "upcoming" &&
-                            docs?.elementAt(index).data()["status"] ==
-                                "upcoming") {
+                            docs?.elementAt(index).data()["status"] == "upcoming") {
                           log("inside upcoming");
 
                           return _RideDetailsTile(

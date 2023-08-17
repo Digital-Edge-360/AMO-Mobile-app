@@ -85,7 +85,8 @@ class _OtpPageState extends State<OtpPage> {
             userModelCurrentInfo!.firstName!,
             userModelCurrentInfo!.lastName!,
             userModelCurrentInfo!.email!,
-             userModelCurrentInfo!.offer!
+            userModelCurrentInfo!.offer!,
+
           ]);
              var shrper = await SharedPreferences.getInstance();
 

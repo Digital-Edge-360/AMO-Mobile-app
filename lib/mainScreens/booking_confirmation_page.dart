@@ -53,7 +53,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   final successSnackBar = const SnackBar(
     content: Text('Request sent sucessfully!'),
   );
-  String dropdownValue= "Payment";
+  String dropdownValue= "Cash";
 
 
   late String price;
@@ -65,9 +65,14 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   Directions? pickUp;
   Directions? dropOff;
 
+  //coupon one time run method
+
+  int Coupon_Run = 0;
+
+  //wrong coupon code
+  int WRong_Coupon=0;
+
   //offfer -500
-
-
 
   sendRideRequest() async{
 
@@ -115,17 +120,13 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
       },
       "distanceInMeters": widget.distanceInMeters,
       "customerName":
-      userDetails != null ? userDetails[2] + " " + userDetails[3] : "",
+      userDetails != null ? "${userDetails[2]} ${userDetails[3]}" : "",
       "pickUpDate": _selectedDatePickUp,
-      "pickUpTime": _selectedTimePickUp.hour.toString() +
-          ":" +
-          _selectedTimePickUp.minute.toString(),
+      "pickUpTime": "${_selectedTimePickUp.hour}:${_selectedTimePickUp.minute}",
       "returnPickUpDate": widget.isOneWay ? '' : _selectedDateReturnPickUp,
       "returnPickUpTime": widget.isOneWay
           ? ''
-          : _selectedTimeReturnPickUp.hour.toString() +
-          ":" +
-          _selectedTimeReturnPickUp.minute.toString(),
+          : "${_selectedTimeReturnPickUp.hour}:${_selectedTimeReturnPickUp.minute}",
       "waitingTime": widget.isOneWay ? 0 : 'Yet to implement',
       "noOfBagsRequest": widget.bagsCount,
       "noOfSeatsRequest": widget.seatsCount,
@@ -174,10 +175,10 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
         snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
     log("User Data : $userData");
 
-    log("user id is" + userData.id.toString());
+    log("user id is${userData.id}");
     List prevRideIds = userData.rideIds;
     log(prevRideIds.toString());
-    log("ride id is :" + addedRideId.toString());
+    log("ride id is :$addedRideId");
 
     prevRideIds.add(addedRideId);
     log(prevRideIds.toString());
@@ -491,6 +492,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
                 //Drop Location
                 !widget.rideByKm
+
                     ? Container(
                   alignment: Alignment.centerLeft,
                   child: const Text("Drop Location",
@@ -846,7 +848,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                     dropdownValue,
                                     style:
                                     const TextStyle(
-                                        color: Colors.white),
+                                        color: Colors.white,fontFamily:"Poppins"),
                                   ),
                                   const Icon(
                                     Icons
@@ -892,15 +894,22 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                               padding: const EdgeInsets.only(left: 5, right: 5),
                               child: TextField(
                                 controller: txtCouponTextEditingController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Enter Coupon code:',
+                                decoration:  InputDecoration(
+                                  labelText:WRong_Coupon ==2?'Enter Coupon code: ✔️':"Enter Coupon code:",
+                                    focusedBorder:  UnderlineInputBorder(
+                                      borderSide: WRong_Coupon==1? BorderSide( color: Colors.red): BorderSide( color: Colors.blueAccent), //<-- SEE HERE
+                                    )
                                 ),
                                 maxLines: 1,
+
                               ),
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              log ("coupon ${txtCouponTextEditingController.text}");
+                              couponset();
+                            },
                             child: Card(
                                 elevation: 6.0,
                                 color: const Color(0xff009B4E),
@@ -911,6 +920,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                 child: Container(
                                     width: 100,
                                     height: 40,
+
                                     color: const Color(0xff009B4E),
                                     child: const Center(
                                         child: Text(
@@ -923,6 +933,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                         ],
                       )),
                 ),
+
 
                 const SizedBox(
                   height: 15,
@@ -1112,6 +1123,45 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
     dynamic shared = await SharedPreferences.getInstance();
     shared.setString("offer","1");
+
+  }
+
+   couponset()async {
+
+     // todo --test firebase
+     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("coupon").get();
+//sub-patch
+     for (int i = 0; i < querySnapshot.size; i++) {
+       var a = querySnapshot.docs[i];
+
+       String sts=txtCouponTextEditingController.text;
+       //log("firstName: ${a['image']}");
+
+       log(a.id);
+       if ( sts==a["code"]&& Coupon_Run==0&&double.parse(a['upto'])<widget.price){
+         //log(st!);
+      //   setState((){});
+         log("firstCoupon: ${a['off']}");
+
+         double coupon_minus = widget.price * double.parse(a['off'])/100;
+
+
+         log ("copon=${widget.price * double.parse(a['off']) / 100}");
+
+       double  couponprice = widget.price-coupon_minus;
+
+         widget.price = couponprice;
+         setState(() {});
+         Coupon_Run = 1;
+         WRong_Coupon =2;
+         break;
+       }else{
+         log ("coupon dose not exist");
+         WRong_Coupon =1;
+         setState(() {});
+         // WRong_Coupon = 1;
+       }
+     }
 
   }
 

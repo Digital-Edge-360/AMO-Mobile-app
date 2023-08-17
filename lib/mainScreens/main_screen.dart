@@ -1022,7 +1022,6 @@ class _MainScreenState extends State<MainScreen> {
       perfs.setString("TwoCount","1");
 
 
-
       // todo --test firebase
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("ads").get();
 //sub-patch
@@ -1044,12 +1043,14 @@ class _MainScreenState extends State<MainScreen> {
       }
 //end test
       Dialogs.materialDialog(
-          msg: adurl,
+          msg: "add1:${adtitle}",
           customView: Image.network("${adurl}"),
           context: context,
           actions: [
             IconsOutlineButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               text: 'Close',
               iconData: Icons.cancel_outlined,
               textStyle: TextStyle(color: Colors.grey),
@@ -1100,12 +1101,12 @@ class _MainScreenState extends State<MainScreen> {
       });
 
       Dialogs.materialDialog(
-          msg: adurl,
+          msg: "add1:${adtitle}",
           customView: Image.network("${adurl}"),
           context: context,
           actions: [
             IconsOutlineButton(
-              onPressed: () {},
+              onPressed: () {Navigator.of(context).pop();},
               text: 'Close',
               iconData: Icons.cancel_outlined,
               textStyle: TextStyle(color: Colors.grey),
@@ -1143,21 +1144,22 @@ class _MainScreenState extends State<MainScreen> {
       log(perfs.getString("adsDate").toString());
       log("$st");
 
-      Dialogs.materialDialog(
-          msg: adtitle,
-          customView: Image.network("${adurl}"),
-          context: context,
-          actions: [
-            IconsOutlineButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              text: 'close',
-              iconData: Icons.cancel_outlined,
-              textStyle: TextStyle(color: Colors.grey),
-              iconColor: Colors.grey,
-            ),
-          ]);
+      // Dialogs.materialDialog(
+      //     msg: adtitle,
+      //     customView: Image.network("${adurl}"),
+      //     context: context,
+      //     actions: [
+      //       IconsOutlineButton(
+      //         onPressed: () {
+      //           Navigator.of(context).pop();
+      //         },
+      //         text: 'close',
+      //         iconData: Icons.cancel_outlined,
+      //         textStyle: TextStyle(color: Colors.grey),
+      //         iconColor: Colors.grey,
+      //       ),
+      //     ]);
+
       setState(() {
       });
       // return st;
@@ -1182,7 +1184,6 @@ class _MainScreenState extends State<MainScreen> {
       setState((){});
 
       perfs.setString("TwoCount","0");
-
 
 
       // todo --test firebase
@@ -1211,11 +1212,14 @@ class _MainScreenState extends State<MainScreen> {
           context: context,
           actions: [
             IconsOutlineButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               text: 'Close',
               iconData: Icons.cancel_outlined,
               textStyle: TextStyle(color: Colors.grey),
               iconColor: Colors.grey,
+
             ),
           ]);
       // void setToast(BuildContext context){
@@ -1265,7 +1269,9 @@ class _MainScreenState extends State<MainScreen> {
           context: context,
           actions: [
             IconsOutlineButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               text: 'Close',
               iconData: Icons.cancel_outlined,
               textStyle: TextStyle(color: Colors.grey),
@@ -1279,7 +1285,7 @@ class _MainScreenState extends State<MainScreen> {
 
       perfs.setString("TwoCount","0");
 
-      // todo --test firebase
+      //  firebase get
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("ads").get();
 //sub-patch
       for (int i = 0; i < querySnapshot.size; i++) {
@@ -1297,29 +1303,28 @@ class _MainScreenState extends State<MainScreen> {
           log("firstName: ${a['image']}");
         }
       }
-
       st=1;
       log("set log not ads$formattedDate");
       log(perfs.getString("adsDate2").toString());
       log("$st");
 
-      Dialogs.materialDialog(
-          msg: "add2:${adtitle}",
-          customView: Image.network("${adurl}"),
-          context: context,
-          actions: [
-            IconsOutlineButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              text: 'close',
-              iconData: Icons.cancel_outlined,
-              textStyle: TextStyle(color: Colors.grey),
-              iconColor: Colors.grey,
-            ),
-          ]);
-      setState(() {
-      });
+      // Dialogs.materialDialog(
+      //     msg: "add2:${adtitle}",
+      //     customView: Image.network("${adurl}"),
+      //     context: context,
+      //     actions: [
+      //       IconsOutlineButton(
+      //         onPressed: () {
+      //           Navigator.of(context).pop();
+      //         },
+      //         text: 'close',
+      //         iconData: Icons.cancel_outlined,
+      //         textStyle: TextStyle(color: Colors.grey,fontFamily: "Poppins"),
+      //         iconColor: Colors.grey,
+      //       ),
+      //     ]);
+       setState(() {
+       });
       // return st;
     }
 

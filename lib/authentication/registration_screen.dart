@@ -80,8 +80,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             userModelCurrentInfo!.phoneNumber!,
             userModelCurrentInfo!.firstName!,
             userModelCurrentInfo!.lastName!,
-            userModelCurrentInfo!.email!
+            userModelCurrentInfo!.email!,
+            userModelCurrentInfo!.offer!
+
           ]);
+          prefs.setString("offer",userModelCurrentInfo!.offer!);
 
           debugPrint("take to login page");
           // ignore: use_build_context_synchronously
