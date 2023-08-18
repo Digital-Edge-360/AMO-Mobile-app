@@ -66,8 +66,8 @@ class _OtpPageState extends State<OtpPage> {
         //     .get();
         final snapshot = await _db
             .collection("allUsers")
-            .doc('customer')
-            .collection('customers')
+            .doc('agent')
+            .collection('agents')
             .where("phoneNumber", isEqualTo: phoneNumber)
             .get();
 

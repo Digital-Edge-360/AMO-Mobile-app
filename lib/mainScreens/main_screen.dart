@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:amo_cabs/mainScreens/prices_page.dart';
 import 'package:amo_cabs/mainScreens/ride_by_km.dart';
 import 'package:amo_cabs/mainScreens/search_places_screen.dart';

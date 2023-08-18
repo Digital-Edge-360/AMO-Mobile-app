@@ -152,7 +152,6 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
       "paymentIs":dropdownValue,
 
     };
-
     // _firestore.collection("rideRequest").doc(userModelCurrentInfo!.id!).set(currentRideDetails, SetOptions(merge: true));
 
     // ignore: unused_local_variable
@@ -173,8 +172,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   void addRideId() async {
     final snapshot = await _firestore
         .collection("allUsers")
-        .doc("customer")
-        .collection("customers")
+        .doc("agent")
+        .collection("agents")
         .where("phoneNumber", isEqualTo: userModelCurrentInfo!.phoneNumber!)
         .get();
 
@@ -194,8 +193,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
     await _firestore
         .collection('allUsers')
-        .doc("customer")
-        .collection("customers")
+        .doc("agent")
+        .collection("agents")
         .doc(userData.id)
         .update({
       "rideIds": prevRideIds,
@@ -526,6 +525,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                     .locationName!
                                     .length >
                                     30
+
                                     ? "${(Provider.of<AppInfo>(context).userDropOffLocation!.locationName!).substring(0, 29)}..."
                                 // ignore: unnecessary_string_interpolations
                                     : "${(Provider.of<AppInfo>(context).userDropOffLocation!.locationName!)}",
@@ -874,8 +874,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
                                 //  log("$value");
                               },
-                            )
-                            ,
+                            ),
                             // <-- SEE HERE
                           ),
                         ],
@@ -901,7 +900,6 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                     )
                                 ),
                                 maxLines: 1,
-
                               ),
                             ),
                           ),
@@ -920,8 +918,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                 child: Container(
                                     width: 100,
                                     height: 40,
-
                                     color: const Color(0xff009B4E),
+
                                     child: const Center(
                                         child: Text(
                                           "Apply",
@@ -940,7 +938,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                 ),
 
                 Visibility(
-                  visible: userRole != "Customer",
+                  visible: userRole != "agent",
                   child: Column(
                     children: [
                       //customer mobile app
@@ -954,29 +952,31 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                         ),
                       ),
 
-                      TextField(
-                        maxLength: 10,
-                        autofocus: true,
-                        enableSuggestions: true,
-                        controller:
-                        txtCustomerMobileNumberTextEditingController,
-                        keyboardType: TextInputType.phone,
-                        style: const TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 16,
-                            color: Colors.black),
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(10),
-                        ],
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Customer Phone",
-                          counterText: "",
-                          hintStyle: TextStyle(
+                      Card(
+                        child: TextField(
+                          maxLength: 10,
+                          autofocus: true,
+                          enableSuggestions: true,
+                          controller:
+                          txtCustomerMobileNumberTextEditingController,
+                          keyboardType: TextInputType.phone,
+                          style: const TextStyle(
                               fontFamily: "Poppins",
-                              fontSize: 18,
-                              color: Colors.grey),
+                              fontSize: 16,
+                              color: Colors.black),
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(10),
+                          ],
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Customer Phone",
+                            counterText: "",
+                            hintStyle: TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 18,
+                                color: Colors.grey),
+                          ),
                         ),
                       ),
 
@@ -991,35 +991,37 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                         ),
                       ),
 
-                      TextField(
-                        maxLength: 4,
-                        autofocus: true,
-                        enableSuggestions: true,
-                        onChanged: (newVal) {
-                          double commission = double.parse(newVal);
-                          setState(() {
-                            priceInDouble += commission;
-                            price = CarTypeWidget.formatPrice(priceInDouble);
-                          });
-                        },
-                        controller: txtCommisionAmountTextEditingController,
-                        keyboardType: TextInputType.phone,
-                        style: const TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 16,
-                            color: Colors.black),
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(10),
-                        ],
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Commission Amount",
-                          counterText: "",
-                          hintStyle: TextStyle(
+                      Card(
+                        child: TextField(
+                          maxLength: 4,
+                          autofocus: true,
+                          enableSuggestions: true,
+                          onChanged: (newVal) {
+                            double commission = double.parse(newVal);
+                            setState(() {
+                              priceInDouble += commission;
+                              price = CarTypeWidget.formatPrice(priceInDouble);
+                            });
+                          },
+                          controller: txtCommisionAmountTextEditingController,
+                          keyboardType: TextInputType.phone,
+                          style: const TextStyle(
                               fontFamily: "Poppins",
-                              fontSize: 18,
-                              color: Colors.grey),
+                              fontSize: 16,
+                              color: Colors.black),
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(10),
+                          ],
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Commission Amount",
+                            counterText: "",
+                            hintStyle: TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 18,
+                                color: Colors.grey),
+                          ),
                         ),
                       ),
                     ],
@@ -1078,7 +1080,10 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                           sendRideRequest();
 
                           setOfferPref();
-                          //    Navigator.push(context,MaterialPageRoute(builder: (context) =>OtpScreen()),);
+
+                          // widget.price+double.parse(txtCommisionAmountTextEditingController.text);
+                          // log( "agent price ${widget.price+int.parse("${txtCommisionAmountTextEditingController.text}")}");//
+                          // Navigator.push(context,MaterialPageRoute(builder: (context) =>OtpScreen()),);
                         },
                         child: const Text("Confirm"),
                       ),
@@ -1122,14 +1127,11 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   // data put--
   void setOfferPref() async {
 
-    var data =  FirebaseFirestore.instance.collection('allUsers').doc('customer').collection('customers').doc(userModelCurrentInfo!.id!);
+    var data =  FirebaseFirestore.instance.collection('allUsers').doc('agent').collection('agents').doc(userModelCurrentInfo!.id!);
     data.update({'offer':'1'});
-
     dynamic shared = await SharedPreferences.getInstance();
     shared.setString("offer","1");
-
   }
-
    couponset()async {
 
      // todo --test firebase
