@@ -219,6 +219,7 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
                   index: widget.index,
                   isOneWay: widget.isOneWay!,
                   price:getoffer.toString()=="0"&& 1000<calculatePrices()?calculatePrices()-500:calculatePrices(),
+                  realPrice:getoffer.toString()=="0"&& 1000<calculatePrices()?calculatePrices()-500:calculatePrices(),
                   distanceInMeters: widget.distanceInMeters,
                   bagsCount: widget.bagsCount,
                   seatsCount: widget.seatsCount,

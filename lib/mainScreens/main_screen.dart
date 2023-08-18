@@ -974,7 +974,6 @@ class _MainScreenState extends State<MainScreen> {
       position: destinationLatLng,
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
-
     Circle originCircle = Circle(
       circleId: const CircleId('originId'),
       fillColor: Colors.lightGreenAccent,
@@ -1042,21 +1041,31 @@ class _MainScreenState extends State<MainScreen> {
         }
       }
 //end test
+
       Dialogs.materialDialog(
-          msg: "add1:${adtitle}",
-          customView: Image.network("${adurl}"),
+          customView: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(adurl),
+              ),
+            ),
+          ),
           context: context,
           actions: [
             IconsOutlineButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              text: 'Close',
+              text: 'close',
               iconData: Icons.cancel_outlined,
-              textStyle: TextStyle(color: Colors.grey),
+              textStyle: TextStyle(color: Colors.grey,fontFamily: "Poppins"),
               iconColor: Colors.grey,
             ),
           ]);
+
       // void setToast(BuildContext context){
       //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text("Sending Message"),
@@ -1101,15 +1110,25 @@ class _MainScreenState extends State<MainScreen> {
       });
 
       Dialogs.materialDialog(
-          msg: "add1:${adtitle}",
-          customView: Image.network("${adurl}"),
+          customView: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(adurl),
+              ),
+            ),
+          ),
           context: context,
           actions: [
             IconsOutlineButton(
-              onPressed: () {Navigator.of(context).pop();},
-              text: 'Close',
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              text: 'close',
               iconData: Icons.cancel_outlined,
-              textStyle: TextStyle(color: Colors.grey),
+              textStyle: TextStyle(color: Colors.grey,fontFamily: "Poppins"),
               iconColor: Colors.grey,
             ),
           ]);
@@ -1143,10 +1162,19 @@ class _MainScreenState extends State<MainScreen> {
       log("set log not ads$formattedDate");
       log(perfs.getString("adsDate").toString());
       log("$st");
+//don't use this
 
       // Dialogs.materialDialog(
-      //     msg: adtitle,
-      //     customView: Image.network("${adurl}"),
+      //     customView: Container(
+      //       width: MediaQuery.of(context).size.width,
+      //       height: 200,
+      //       decoration: BoxDecoration(
+      //         image: DecorationImage(
+      //           fit: BoxFit.fill,
+      //           image: NetworkImage(adurl),
+      //         ),
+      //       ),
+      //     ),
       //     context: context,
       //     actions: [
       //       IconsOutlineButton(
@@ -1155,10 +1183,11 @@ class _MainScreenState extends State<MainScreen> {
       //         },
       //         text: 'close',
       //         iconData: Icons.cancel_outlined,
-      //         textStyle: TextStyle(color: Colors.grey),
+      //         textStyle: TextStyle(color: Colors.grey,fontFamily: "Poppins"),
       //         iconColor: Colors.grey,
       //       ),
       //     ]);
+
 
       setState(() {
       });
@@ -1205,23 +1234,31 @@ class _MainScreenState extends State<MainScreen> {
           log("firstName: ${a['image']}");
         }
       }
-//end test
+//end test/>
       Dialogs.materialDialog(
-          msg: "add2:${adtitle}",
-          customView: Image.network("${adurl}"),
+          customView: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(adurl),
+              ),
+            ),
+          ),
           context: context,
           actions: [
             IconsOutlineButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              text: 'Close',
+              text: 'close',
               iconData: Icons.cancel_outlined,
-              textStyle: TextStyle(color: Colors.grey),
+              textStyle: TextStyle(color: Colors.grey,fontFamily: "Poppins"),
               iconColor: Colors.grey,
-
             ),
           ]);
+
       // void setToast(BuildContext context){
       //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text("Sending Message"),
@@ -1264,17 +1301,25 @@ class _MainScreenState extends State<MainScreen> {
       });
 
       Dialogs.materialDialog(
-          msg: "add2:${adtitle}",
-          customView: Image.network("${adurl}"),
+          customView: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(adurl),
+              ),
+            ),
+          ),
           context: context,
           actions: [
             IconsOutlineButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              text: 'Close',
+              text: 'close',
               iconData: Icons.cancel_outlined,
-              textStyle: TextStyle(color: Colors.grey),
+              textStyle: TextStyle(color: Colors.grey,fontFamily: "Poppins"),
               iconColor: Colors.grey,
             ),
           ]);
@@ -1307,22 +1352,30 @@ class _MainScreenState extends State<MainScreen> {
       log("set log not ads$formattedDate");
       log(perfs.getString("adsDate2").toString());
       log("$st");
-
-      // Dialogs.materialDialog(
-      //     msg: "add2:${adtitle}",
-      //     customView: Image.network("${adurl}"),
-      //     context: context,
-      //     actions: [
-      //       IconsOutlineButton(
-      //         onPressed: () {
-      //           Navigator.of(context).pop();
-      //         },
-      //         text: 'close',
-      //         iconData: Icons.cancel_outlined,
-      //         textStyle: TextStyle(color: Colors.grey,fontFamily: "Poppins"),
-      //         iconColor: Colors.grey,
-      //       ),
-      //     ]);
+//don't use this only test
+//       Dialogs.materialDialog(
+//           customView: Container(
+//             width: MediaQuery.of(context).size.width,
+//             height: 200,
+//             decoration: BoxDecoration(
+//               image: DecorationImage(
+//                 fit: BoxFit.fill,
+//                 image: NetworkImage(adurl),
+//               ),
+//             ),
+//           ),
+//           context: context,
+//           actions: [
+//             IconsOutlineButton(
+//               onPressed: () {
+//                 Navigator.of(context).pop();
+//               },
+//               text: 'close',
+//               iconData: Icons.cancel_outlined,
+//               textStyle: TextStyle(color: Colors.grey,fontFamily: "Poppins"),
+//               iconColor: Colors.grey,
+//             ),
+//           ]);
        setState(() {
        });
       // return st;

@@ -20,6 +20,8 @@ class BookingConfirmation extends StatefulWidget {
   int distanceInMeters, bagsCount, seatsCount, index;
   double price;
 
+  double realPrice;
+
 
   bool isOneWay, rideByKm, isEv;
 
@@ -29,6 +31,7 @@ class BookingConfirmation extends StatefulWidget {
   BookingConfirmation(
       {super.key,
         required this.price,
+        required this.realPrice,
         required this.isEv,
         required this.distanceInMeters,
         required this.bagsCount,
@@ -59,6 +62,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   late String price;
 
 
+
+
   double priceInDouble = 0;
   String? addedRideId;
 
@@ -72,7 +77,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   //wrong coupon code
   int WRong_Coupon=0;
 
+
   //offfer -500
+
 
   sendRideRequest() async{
 
@@ -300,14 +307,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
     super.initState();
 
-
   }
-
-
-
-
-
-
 
 
   //String st =  getOfferPref();
@@ -1040,6 +1040,10 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                         text:'₹${price}',
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
+                      ),TextSpan(
+                        text:WRong_Coupon ==2?"₹${widget.realPrice}":"",
+                        style: const TextStyle(decoration: TextDecoration.lineThrough,
+                            fontWeight: FontWeight.normal, fontSize: 12),
                       ),
                     ],
                   ),
