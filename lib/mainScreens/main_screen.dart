@@ -1229,9 +1229,9 @@ class _MainScreenState extends State<MainScreen> {
           setState((){});
           adurl="${a['image']}";
           adtitle = "${a['title']}";
-
           //log(adurl);
           log("firstName: ${a['image']}");
+
         }
       }
 //end test/>

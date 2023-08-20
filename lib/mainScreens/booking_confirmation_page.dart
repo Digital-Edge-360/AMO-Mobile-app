@@ -336,17 +336,6 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(children: [
-          Container(
-              width: double.infinity,
-              height: 200,
-              color: const Color(0xff2B2A2A),
-              child: SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: Image.asset(
-                    "images/img_31.png",
-                    height: 10,
-                  ))),
           Padding(
             padding: const EdgeInsets.all(18),
             child: Column(

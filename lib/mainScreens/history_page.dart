@@ -244,7 +244,18 @@ class _HistoryPageState extends State<HistoryPage> {
                             docs: docs,
                             index: index,
                           );
-                        } else {
+                        } else if (filter == "rejected" &&
+                            docs?.elementAt(index).data()["status"] == "rejected") {
+                          log("inside rejected ");
+
+                          return _RideDetailsTile(
+                            docs: docs,
+                            index: index,
+                          );
+
+                          //rejected
+                        }
+                        else{
                           log("inside nothing");
                           return Container();
                         }
@@ -360,7 +371,7 @@ class _RideDetailsTile extends StatelessWidget {
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              const EdgeInsets.symmetric(vertical: 8.0),
                               child: GestureDetector(
                                 onTap: () {
                                   showModalBottomSheet(
@@ -387,11 +398,11 @@ class _RideDetailsTile extends StatelessWidget {
                         SizedBox(height: windowSize.height * 0.029),
                         docs?.elementAt(index).data()["isOneWay"] == true
                             ? Text(
-                                "One Way Trip",
-                              )
+                          "One Way Trip",
+                        )
                             : Text(
-                                "Round Trip",
-                              ),
+                          "Round Trip",
+                        ),
                         Expanded(
                           child: Row(
                             children: [
@@ -410,49 +421,49 @@ class _RideDetailsTile extends StatelessWidget {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 14.0),
+                                const EdgeInsets.symmetric(vertical: 14.0),
                                 child: SizedBox(
                                   width: windowSize.width * 0.5,
                                   child: Column(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
 
                                     ///Ride by km or ride by destination
                                     ///one way or two way
                                     children: [
                                       docs
-                                                  ?.elementAt(index)
-                                                  .data()["pickUp"]
-                                                      ["pickUpName"]
-                                                  .length >
-                                              45
+                                          ?.elementAt(index)
+                                          .data()["pickUp"]
+                                      ["pickUpName"]
+                                          .length >
+                                          45
                                           ? Text(
-                                              "${"${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}".substring(0, 45)}...")
+                                          "${"${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}".substring(0, 45)}...")
                                           : Text(
-                                              "${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}"),
+                                          "${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}"),
                                       SizedBox(
                                           height: windowSize.height * 0.02),
                                       docs
-                                                  ?.elementAt(index)
-                                                  .data()["dropOff"]
-                                                      ["dropOffName"]
-                                                  .toString() !=
-                                              ""
+                                          ?.elementAt(index)
+                                          .data()["dropOff"]
+                                      ["dropOffName"]
+                                          .toString() !=
+                                          ""
                                           ? docs
-                                                      ?.elementAt(index)
-                                                      .data()["dropOff"]
-                                                          ["dropOffName"]
-                                                      .length >
-                                                  45
-                                              ? Text(
-                                                  "${"${docs?.elementAt(index).data()["dropOff"]["dropOffName"]}".substring(0, 45)}...")
-                                              : Text(
-                                                  "${docs?.elementAt(index).data()["dropOff"]["dropOffName"]}")
+                                          ?.elementAt(index)
+                                          .data()["dropOff"]
+                                      ["dropOffName"]
+                                          .length >
+                                          45
+                                          ? Text(
+                                          "${"${docs?.elementAt(index).data()["dropOff"]["dropOffName"]}".substring(0, 45)}...")
                                           : Text(
-                                              "${((int.tryParse(docs!.elementAt(index).data()["distanceInMeters"].toString()))! / 1000).toDouble()} kms",
-                                            ),
+                                          "${docs?.elementAt(index).data()["dropOff"]["dropOffName"]}")
+                                          : Text(
+                                        "${((int.tryParse(docs!.elementAt(index).data()["distanceInMeters"].toString()))! / 1000).toDouble()} kms",
+                                      ),
                                     ],
                                   ),
                                 ),
