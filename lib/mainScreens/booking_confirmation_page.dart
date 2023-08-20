@@ -28,6 +28,7 @@ class BookingConfirmation extends StatefulWidget {
   String getoffer;
 
 
+
   BookingConfirmation(
       {super.key,
         required this.price,
@@ -76,6 +77,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
   //wrong coupon code
   int WRong_Coupon=0;
+
 
 
   //offfer -500
@@ -138,6 +140,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
       "noOfBagsRequest": widget.bagsCount,
       "noOfSeatsRequest": widget.seatsCount,
       "price": widget.price,
+      "commission":txtCommisionAmountTextEditingController.text,
+      "customerNumber": txtCustomerMobileNumberTextEditingController.text,
       "carType": carTypes[widget.index],
       "rideByKm": widget.rideByKm ? "km" : "destination",
       "isOneWay": widget.isOneWay,
@@ -335,17 +339,17 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(children: [
-          Container(
-              width: double.infinity,
-              height: 200,
-              color: const Color(0xff2B2A2A),
-              child: SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: Image.asset(
-                    "images/img_31.png",
-                    height: 10,
-                  ))),
+          // Container(
+          //     width: double.infinity,
+          //     height: 200,
+          //     color: const Color(0xff2B2A2A),
+          //     child: SizedBox(
+          //         width: 50,
+          //         height: 50,
+          //         child: Image.asset(
+          //           "images/img_31.png",
+          //           height: 10,
+          //         ))),
           Padding(
             padding: const EdgeInsets.all(18),
             child: Column(
@@ -411,7 +415,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                   ),
                                 ),
                               ],
-                            ))),
+                            ))
+                    ),
                     // box-2
                     Card(
                       shape: RoundedRectangleBorder(
@@ -957,8 +962,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                           maxLength: 10,
                           autofocus: true,
                           enableSuggestions: true,
-                          controller:
-                          txtCustomerMobileNumberTextEditingController,
+                          controller: txtCustomerMobileNumberTextEditingController,
                           keyboardType: TextInputType.phone,
                           style: const TextStyle(
                               fontFamily: "Poppins",
@@ -997,11 +1001,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                           autofocus: true,
                           enableSuggestions: true,
                           onChanged: (newVal) {
-                            double commission = double.parse(newVal);
-                            setState(() {
-                              priceInDouble += commission;
-                              price = CarTypeWidget.formatPrice(priceInDouble);
-                            });
+                             // commission = double.parse(newVal);
                           },
                           controller: txtCommisionAmountTextEditingController,
                           keyboardType: TextInputType.phone,
@@ -1078,8 +1078,11 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                         ),
                         onPressed: () {
                           sendRideRequest();
+                          double commission = double.parse(txtCommisionAmountTextEditingController.text);
 
                           setOfferPref();
+                          comm(commission!);
+                          log("$commission");
 
                           // widget.price+double.parse(txtCommisionAmountTextEditingController.text);
                           // log( "agent price ${widget.price+int.parse("${txtCommisionAmountTextEditingController.text}")}");//
@@ -1138,6 +1141,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("coupon").get();
 //sub-patch
      for (int i = 0; i < querySnapshot.size; i++) {
+
        var a = querySnapshot.docs[i];
 
        String sts=txtCouponTextEditingController.text;
@@ -1170,5 +1174,23 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
      }
 
   }
+
+  void comm(double commission) {
+
+
+      setState(() {
+        priceInDouble += commission;
+        widget.price = priceInDouble;
+      });
+      log ("comm 1 ${commission}");
+      setState(() {
+        priceInDouble += commission;
+        log ("comm 2 ${priceInDouble.toString()}");
+      });
+      price = CarTypeWidget.formatPrice(priceInDouble);
+      log ("comm 3 ${price}");
+
+  }
+
 
 }
