@@ -8,12 +8,15 @@ User? currentFirebaseUser;
 UserModel? userModelCurrentInfo;
 
 List<CarCategory> evCarCategories = [];
-List<CarCategory> nonEvCarCategories = [];
+// List<CarCategory> nonEvCarCategories = [];
 
 var carTypes = [
   'SUV',
   'Sedan',
   'Hatchback',
+  'Sedan',
+  'Hatchback',
+  "Sedan"
 ];
 var perKmMultiplier = [
   0.018, //for suv, 18rs per km

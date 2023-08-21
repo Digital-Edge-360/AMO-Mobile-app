@@ -14,10 +14,11 @@ class
 CarTypeWidget extends StatefulWidget {
 
 
-  final int distanceInMeters, bagsCount, seatsCount, index;
+ final  int distanceInMeters, bagsCount, seatsCount, index;
   final bool rideByKm, isEv;
   final bool? isOneWay;
-  const CarTypeWidget(
+
+ const  CarTypeWidget(
       {super.key,
         required this.isEv,
         required this.distanceInMeters,
@@ -27,6 +28,7 @@ CarTypeWidget extends StatefulWidget {
         required this.isOneWay,
         required this.rideByKm});
 
+
   static String formatPrice(double price) {
     final formatter = NumberFormat('#,##0.00', 'en_US');
     return formatter.format(price);
@@ -34,68 +36,62 @@ CarTypeWidget extends StatefulWidget {
 
   static Future<int?> getCategoryDetails() async {
     log("inside getCategoryDetails");
+
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("isNotEv")
-          .orderBy("baseFare").get();
-      nonEvCarCategories = [];
-      for (int i = 0; i < querySnapshot.size; i++) {
-        dynamic a = querySnapshot.docs[i];
-        CarCategory tempCategory = CarCategory(
-          id:a.id,
-          baseFare:a['baseFare'].toString(),
-          //  // cars: a['cars'],
-          farePerKm: a['farePerKm'].toString(),
-          //
-          name: a['name'],
-          //  // waiting: a['waiting'],
-          description: a['description'],
-        );
+  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("isNotEv")
+  //         .orderBy("baseFare").get();
+  // //    nonEvCarCategories = [];
+  //     for (int i = 0; i < querySnapshot.size; i++) {
+  //       dynamic a = querySnapshot.docs[i];
+  //       CarCategory tempCategory = CarCategory(
+  //         id:a.id,
+  //         baseFare:a['baseFare'].toString(),
+  //         //  // cars: a['cars'],
+  //         farePerKm: a['farePerKm'].toString(),
+  //         //
+  //         name: a['name'],
+  //         //  // waiting: a['waiting'],
+  //         description: a['description'],
+  //       );
+  //
+  //       log("idss :" + a.id);
+  //       log("base"+a['baseFare'].toString());
+  //       log("name" + a['name']);
+  //       //  log("wait"+a['waiting']);
+  //       // log("baseFare: ${a['baseFare']}");
+  //       // log("cars: ${a['cars']}");
+  //       // log("fare per km: ${a['farePerKm']}");
+  //       // log("name: ${a['name']}");
+  //       // log("waiting: ${a['waiting']}");
+  //
+  //     //  nonEvCarCategories.add(tempCategory);
+  //     }
 
-        log("idss :" + a.id);
-        log("base"+a['baseFare'].toString());
-        log("name" + a['name']);
-        //  log("wait"+a['waiting']);
-        // log("baseFare: ${a['baseFare']}");
-        // log("cars: ${a['cars']}");
-        // log("fare per km: ${a['farePerKm']}");
-        // log("name: ${a['name']}");
-        // log("waiting: ${a['waiting']}");
-
-        nonEvCarCategories.add(tempCategory);
-      }
-
-      QuerySnapshot querySnapshotForEv = await FirebaseFirestore.instance.collection("isEv")
-          .orderBy("baseFare").get();
+//isEv section
+      QuerySnapshot querySnapshotForEv = await FirebaseFirestore.instance.collection("isEv").get();
       evCarCategories = [];
       for (int i = 0; i < querySnapshotForEv.size; i++) {
         dynamic b = querySnapshotForEv.docs[i];
-        CarCategory tempCategory = CarCategory(
-          id:b.id,
-          baseFare:b['baseFare'].toString(),
-          //  // cars: a['cars'],
-          farePerKm: b['farePerKm'].toString(),
-          //
-          name: b['name'],
-          //  // waiting: a['waiting'],
-          description: b['description'],
-        );
-        // CarCategory tempCategory = CarCategory(
-        //     id: b.id,
-        //     baseFare: b['baseFare'],
-        //     cars: b['cars'],
-        //     farePerKm: b['farePerKm'],
-        //     name: b['name'],
-        //     waiting: b['waiting'],
-        //     description: b['description']);
-        // log("======================");
-        // log("Ev id :" + a.id);
-        // log("Ev baseFare: ${a['baseFare']}");
-        // log("Ev cars: ${a['cars']}");
-        // log("Ev fare per km: ${a['farePerKm']}");
-        // log("Ev name: ${a['name']}");
-        // log("Ev waiting: ${a['waiting']}");
 
-        evCarCategories.add(tempCategory);
+        CarCategory ?tempCategory;
+
+
+           tempCategory = CarCategory(
+
+            id: b.id,
+            baseFare: b['baseFare'].toString(),
+            //  // cars: a['cars'],
+            farePerKm: b['farePerKm'].toString(),
+            //
+            name: b['name'],
+            //  // waiting: a['waiting'],
+            description: b['description'],
+          );
+
+
+
+
+        evCarCategories.add(tempCategory!);
       }
       log("======");
       log(evCarCategories.toString());
@@ -128,13 +124,11 @@ CarTypeWidget extends StatefulWidget {
 class _CarTypeWidgetState extends State<CarTypeWidget> {
   double calculatePrices() {
     log("ev farePerKm ${evCarCategories[widget.index].farePerKm!}");
-    log("non ev farePerKm ${nonEvCarCategories[widget.index].farePerKm!}");
-    var kmMultiplier = widget.isEv
-        ? evCarCategories[widget.index].farePerKm!
-        : nonEvCarCategories[widget.index].farePerKm!;
-    var baseFare = widget.isEv
-        ? evCarCategories[widget.index].baseFare!
-        : nonEvCarCategories[widget.index].baseFare!;
+   // log("non ev farePerKm ${nonEvCarCategories[widget.index].farePerKm!}");
+    var kmMultiplier =
+         evCarCategories[widget.index].farePerKm!;
+    var baseFare =
+        evCarCategories[widget.index].baseFare!;
     double price = (widget.distanceInMeters / 1000) * int.parse(kmMultiplier) * 2;
 
     price += int.parse(baseFare);

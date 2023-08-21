@@ -9,6 +9,8 @@ class CarCategory {
   String? name;
   String? description;
 
+
+
   CarCategory(
       {required this.id,
         required this.baseFare,

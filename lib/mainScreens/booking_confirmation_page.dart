@@ -64,6 +64,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
 
 
+
   double priceInDouble = 0;
   String? addedRideId;
 
@@ -344,9 +345,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                 Row(
                   children: [
                     Text(
-                      widget.isEv
-                          ? evCarCategories[index]!.name!.toUpperCase()
-                          : nonEvCarCategories[index]!.name!.toUpperCase(),
+                           evCarCategories[index]!.name!.toUpperCase(),
                       style:
                       const TextStyle(fontFamily: 'Poppins', fontSize: 25),
                     ),
