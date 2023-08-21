@@ -18,6 +18,7 @@ CarTypeWidget extends StatefulWidget {
   final bool rideByKm, isEv;
   final bool? isOneWay;
 
+
  const  CarTypeWidget(
       {super.key,
         required this.isEv,

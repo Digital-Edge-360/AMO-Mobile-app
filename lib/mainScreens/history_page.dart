@@ -85,6 +85,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 snapshot.hasData &&
                 snapshot.data != null) {
               var docs = snapshot.data?.docs;
+            //  var sff=docs!.length-1;
               log(docs.toString());
               return Column(
                 children: [
@@ -205,11 +206,12 @@ class _HistoryPageState extends State<HistoryPage> {
                       scrollDirection: Axis.vertical,
                       itemCount: docs?.length,
                       itemBuilder: (context, index) {
+                      //  int revIndex= docs!.length-1-index;
+                        log("set${docs!.length - 1 - index}");
                         log(docs?.elementAt(index).data()["status"]);
                         if (filter == "upcoming" &&
                             docs?.elementAt(index).data()["status"] == "upcoming") {
                           log("inside upcoming");
-
                           return _RideDetailsTile(
                             docs: docs,
                             index: index,

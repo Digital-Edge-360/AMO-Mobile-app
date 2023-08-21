@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../global/global.dart';
+import '../mainScreens/offer_page.dart';
 
 //MyDrawer
 class MyDrawer extends StatefulWidget {
@@ -158,6 +159,27 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
           ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const OfferPage()),
+              );
+            },
+            child: const ListTile(
+              leading: Icon(
+                Icons.local_offer_outlined,
+                color: Colors.white,
+              ),
+              title: Text(
+                "Offer",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+
 
           GestureDetector(
             onTap: () async {
