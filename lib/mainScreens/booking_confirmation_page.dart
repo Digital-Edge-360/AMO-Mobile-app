@@ -525,7 +525,6 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                     .locationName!
                                     .length >
                                     30
-
                                     ? "${(Provider.of<AppInfo>(context).userDropOffLocation!.locationName!).substring(0, 29)}..."
                                 // ignore: unnecessary_string_interpolations
                                     : "${(Provider.of<AppInfo>(context).userDropOffLocation!.locationName!)}",
