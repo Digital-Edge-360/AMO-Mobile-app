@@ -31,11 +31,12 @@ CarTypeWidget extends StatefulWidget {
 
 
   static String formatPrice(double price) {
+
     final formatter = NumberFormat('#,##0.00', 'en_US');
     return formatter.format(price);
   }
 
-  static Future<int?> getCategoryDetails() async {
+  static  Future<int?> getCategoryDetails() async {
     log("inside getCategoryDetails");
 
     try {
@@ -69,13 +70,13 @@ CarTypeWidget extends StatefulWidget {
   //     }
 
 //isEv section
+    //only isEv section work
       QuerySnapshot querySnapshotForEv = await FirebaseFirestore.instance.collection("isEv").get();
       evCarCategories = [];
       for (int i = 0; i < querySnapshotForEv.size; i++) {
         dynamic b = querySnapshotForEv.docs[i];
 
         CarCategory ?tempCategory;
-
 
            tempCategory = CarCategory(
 
@@ -88,9 +89,6 @@ CarTypeWidget extends StatefulWidget {
             //  // waiting: a['waiting'],
             description: b['description'],
           );
-
-
-
 
         evCarCategories.add(tempCategory!);
       }

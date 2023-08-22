@@ -23,6 +23,8 @@ class _RideByKmState extends State<RideByKm> {
   String? userLastName;
   String? userPhone;
 
+
+
   assignUserName() async {
     try {
       userName = userModelCurrentInfo!.firstName!;
@@ -252,6 +254,7 @@ class _RideByKmState extends State<RideByKm> {
 
             ElevatedButton(
               onPressed: () {
+                sett = seatsCount;
                 Navigator.push(
                   context,
                   MaterialPageRoute(

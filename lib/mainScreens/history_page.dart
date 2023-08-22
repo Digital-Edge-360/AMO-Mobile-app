@@ -224,7 +224,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             docs: docs,
                             index: index,
                           );
-                        } else if (filter == "Pending" &&
+                        } else if(filter == "Pending" &&
                             docs?.elementAt(index).data()["status"] ==
                                 "Pending") {
                           log("inside rejected");
@@ -351,12 +351,12 @@ class _RideDetailsTile extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(width: windowSize.width * 0.02),
-                                const Column(
+                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("4ABC123"),
-                                    Text('Audi Q7'),
-                                  ],
+                                    Text(docs?.elementAt(index).data()["carNumber"]!=null?"${docs?.elementAt(index).data()["carNumber"]}":"",style: TextStyle(fontSize:10)),
+
+                                    Text(docs?.elementAt(index).data()["carName"]!=null?"${docs?.elementAt(index).data()["carName"]}":"")],
                                 ),
                               ],
                             ),
@@ -537,7 +537,7 @@ class _SupportSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     Size windowSize = MediaQuery.sizeOf(context);
     return SizedBox(
-      height: windowSize.height * 0.4,
+      height: windowSize.height * 0.7,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0),
         child: Column(
@@ -584,6 +584,12 @@ class _SupportSheet extends StatelessWidget {
                           ),
                           Text(
                               "${docs?.elementAt(index).data()["dropOff"]["dropOffName"]}"),
+                          Row(
+                            children: [
+                              docs?.elementAt(index).data()["carName"]!=null? Icon(Icons.drive_eta):Text(""),
+                              Text(docs?.elementAt(index).data()["driverPhoneNumber"]!=null?"${docs?.elementAt(index).data()["driverPhoneNumber"]}":"",style: TextStyle(fontSize:15)),
+                            ],
+                          ),
                         ],
                       ),
                     ),

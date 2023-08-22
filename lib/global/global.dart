@@ -39,6 +39,8 @@ var noOfBagStorageAvailableByCarType = [2, 3, 4, 5,6,7];
 
 double basePrice = 100;
 
+late final int ?sett;
+
 var items = [
   'Item 1',
   'Item 2',
