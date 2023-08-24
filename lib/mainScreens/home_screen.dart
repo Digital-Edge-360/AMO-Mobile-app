@@ -1,6 +1,7 @@
 import 'package:amo_cabs/infoHandler/app_info.dart';
 import 'package:amo_cabs/mainScreens/history_page.dart';
 import 'package:amo_cabs/mainScreens/main_screen.dart';
+import 'package:amo_cabs/mainScreens/offer_page.dart';
 import 'package:amo_cabs/mainScreens/support_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,6 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
   String userName = "First Name";
   String userLastName = "Last name";
@@ -25,8 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
     MainScreen(),
     HistoryPage(),
     SupportPage(),
-  ];
+    OfferPage(),
 
+  ];
   getUserDetails() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -52,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
     getUserDetails();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

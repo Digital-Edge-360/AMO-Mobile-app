@@ -161,10 +161,14 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const OfferPage()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const OfferPage()),
+              //);
+              Provider.of<AppInfo>(context, listen: false)
+                  .changeCurrentIndex(3);
+              log("history page got clicked");
+              Navigator.pop(context);
             },
             child: const ListTile(
               leading: Icon(

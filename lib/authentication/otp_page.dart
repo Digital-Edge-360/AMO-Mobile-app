@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../global/global.dart';
 import '../models/user_model.dart';
 import '../widgets/progress_dialog.dart';

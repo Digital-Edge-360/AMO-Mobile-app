@@ -78,6 +78,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
   //wrong coupon code
   int WRong_Coupon=0;
 
+  int offCutText =0;
+
 
   //offfer -500
 
@@ -922,7 +924,6 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                       )),
                 ),
 
-
                 const SizedBox(
                   height: 15,
                 ),
@@ -933,6 +934,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                     children: [
                       //customer mobile app
                       Container(
+
                         alignment: Alignment.centerLeft,
                         child: const Text(
                           "Customer Mobile Number",
@@ -1029,7 +1031,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),TextSpan(
-                        text:WRong_Coupon ==2?"₹${widget.realPrice}":"",
+                        text:offCutText ==1?"₹${widget.realPrice}":"",
                         style: const TextStyle(decoration: TextDecoration.lineThrough,
                             fontWeight: FontWeight.normal, fontSize: 12),
                       ),
@@ -1146,6 +1148,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
          setState(() {});
          Coupon_Run = 1;
          WRong_Coupon =2;
+         offCutText=1;
          break;
        }else{
          log ("coupon dose not exist");

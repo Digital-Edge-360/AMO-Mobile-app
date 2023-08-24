@@ -12,10 +12,7 @@ class _OfferPageState extends State<OfferPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Center(child: Padding(
-        padding: EdgeInsets.only(right: 30),
-        child: Text("Offer",style: TextStyle(fontFamily:"Poppins"),),
-      ))),
+
       body: SizedBox(
         height: 200,
         width: 600,
