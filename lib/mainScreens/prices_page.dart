@@ -28,7 +28,6 @@ class PricesPage extends StatefulWidget {
 
 class _PricesPageState extends State<PricesPage> {
   bool? oneWay;
-
   double perKmMultiplierHatchBack = 0.01;
   double perKmMultiplierSedan = 0.012;
   double perKmMultiplierSuv = 0.015;

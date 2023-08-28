@@ -2,6 +2,7 @@ import 'package:amo_cabs/infoHandler/app_info.dart';
 import 'package:amo_cabs/mainScreens/history_page.dart';
 import 'package:amo_cabs/mainScreens/main_screen.dart';
 import 'package:amo_cabs/mainScreens/support_page.dart';
+import 'package:amo_cabs/mainScreens/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     MainScreen(),
     HistoryPage(),
     SupportPage(),
+    WallatPage(),
   ];
 
   getUserDetails() async {

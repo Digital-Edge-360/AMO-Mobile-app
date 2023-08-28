@@ -14,9 +14,10 @@ class HistoryPage extends StatefulWidget {
   @override
   State<HistoryPage> createState() => _HistoryPageState();
 }
-
 class _HistoryPageState extends State<HistoryPage> {
   bool _isLoading = false;
+
+
 
   Stream<QuerySnapshot<Map<String, dynamic>>>? _data;
 
@@ -68,6 +69,7 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     Size windowSize = MediaQuery.sizeOf(context);
+
 
     Widget child;
     if (_isLoading) {

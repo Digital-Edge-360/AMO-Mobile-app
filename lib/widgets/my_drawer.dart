@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:amo_cabs/authentication/login_screen.dart';
 import 'package:amo_cabs/infoHandler/app_info.dart';
+import 'package:amo_cabs/mainScreens/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -152,6 +153,26 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
               title: Text(
                 "Support",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Provider.of<AppInfo>(context, listen: false)
+                  .changeCurrentIndex(3);
+              log("wallet page got clicked");
+              Navigator.pop(context);
+            },
+            child: const ListTile(
+              leading: Icon(
+                Icons.account_balance_wallet_rounded,
+                color: Colors.white,
+              ),
+              title: Text(
+                "Wallet",
                 style: TextStyle(
                   color: Colors.white,
                 ),

@@ -27,11 +27,12 @@ dependencies:
   cloud_firestore: ^4.8.1
   shared_preferences: ^2.2.0
   intl: ^0.18.0
-  lottie: ^2.4.0
+  lottie: ^2.6.0
   im_stepper: ^1.0.1+1
   url_launcher: ^6.1.11
   material_dialogs: ^1.1.4
   flutter_beautiful_popup: ^1.7.0
+  wave: ^0.2.2
 
 
 dev_dependencies:
