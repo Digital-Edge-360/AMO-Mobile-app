@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../models/car_category.dart';
 import '../models/user_model.dart';
@@ -46,3 +47,15 @@ var items = [
   'Item 2',
 
 ];
+
+// test apk
+class NameProvider extends ChangeNotifier {
+  String _name = "";
+
+  String get getName => _name;
+
+  saveName(String name) {
+    _name = name;
+    notifyListeners();
+  }
+}

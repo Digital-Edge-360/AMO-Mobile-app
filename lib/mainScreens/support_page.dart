@@ -8,6 +8,7 @@ class SupportPage extends StatefulWidget {
   State<SupportPage> createState() => _SupportPageState();
 }
 
+
 class _SupportPageState extends State<SupportPage> {
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,6 @@ class _SupportPageState extends State<SupportPage> {
     );
   }
 }
-
 Future<void> makePhoneCall() async {
   final Uri launchUri = Uri(
     scheme: 'tel',
