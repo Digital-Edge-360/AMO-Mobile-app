@@ -21,8 +21,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         borderRadius: BorderRadius.circular(10),
 
       ));
-
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +28,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: SingleChildScrollView(
         child: Container(
           alignment: Alignment.center,
-
           child: Column(
             children: [
               const Padding(
@@ -76,12 +73,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       image: DecorationImage(
                         // fit: BoxFit.cover,
                         fit: BoxFit.fitWidth,
-
                         image: AssetImage('images/img_3.png'),
                       )),
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.only(left: 260,bottom: 60,),
                 child: Card(
@@ -109,11 +104,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   type: PageTransitionType.rightToLeft,
                                   duration: const Duration(milliseconds: 100),
                                   child:  OnboardingScreen2(),
-
                                 ),
                                 // MaterialPageRoute(builder: (context) =>OnboardingScreen2())
                               );
-
                             },
                             icon: const Icon(
                               Icons.arrow_back,size: 20,

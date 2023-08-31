@@ -532,7 +532,6 @@ class _SupportSheet extends StatelessWidget {
       throw 'Could not open the map.';
     }
   }
-
   @override
   Widget build(BuildContext context) {
     Size windowSize = MediaQuery.sizeOf(context);
@@ -587,7 +586,7 @@ class _SupportSheet extends StatelessWidget {
                           Row(
                             children: [
                               docs?.elementAt(index).data()["carName"]!=null? Icon(Icons.drive_eta):Text(""),
-                              Text(docs?.elementAt(index).data()["driverPhoneNumber"]!=null?"${docs?.elementAt(index).data()["driverPhoneNumber"]}":"",style: TextStyle(fontSize:15)),
+                              GestureDetector(onTap:(){driverCall(); },child: Text(docs?.elementAt(index).data()["driverPhoneNumber"]!=null?"${docs?.elementAt(index).data()["driverPhoneNumber"]}":"",style: TextStyle(fontSize:15))),
                             ],
                           ),
                         ],
@@ -645,7 +644,8 @@ class _SupportSheet extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        width: windowSize.width * 0.45,
+                        width: windowSize.width *
+                            0.45,
                         child: Row(
                           children: [
                             const Expanded(
@@ -678,13 +678,19 @@ class _SupportSheet extends StatelessWidget {
       ),
     );
   }
-}
+  void driverCall() async{
 
+      Uri launchUri = Uri(
+      scheme: 'tel',
+      path: docs?.elementAt(index).data()["driverPhoneNumber"]!=null?"${docs?.elementAt(index).data()["driverPhoneNumber"]}":"",
+    );
+    launchUrl(launchUri);
+  }
+}
 class ReportDialogBox extends StatefulWidget {
   ReportDialogBox({
     super.key,
   });
-
   @override
   State<ReportDialogBox> createState() => _ReportDialogBoxState();
 }
