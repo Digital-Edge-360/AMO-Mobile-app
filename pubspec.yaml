@@ -15,7 +15,7 @@ dependencies:
   firebase_core: ^2.14.0
   firebase_auth: ^4.6.3
   firebase_database: ^10.2.3
-  fluttertoast: ^8.1.2
+  fluttertoast: ^8.2.2
   google_maps_flutter: ^2.2.3
   geolocator: ^9.0.2
   http: ^0.13.1
@@ -49,7 +49,6 @@ flutter:
   assets:
     - images/
     - assets/lottie/
-
   fonts:
     - family: Poppins
       fonts:

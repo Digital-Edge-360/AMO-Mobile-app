@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amo_cabs/authentication/login_screen.dart';
 import 'package:amo_cabs/authentication/registration_screen.dart';
 import 'package:amo_cabs/mainScreens/home_screen.dart';
@@ -15,8 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../global/global.dart';
 import '../models/user_model.dart';
 import '../widgets/progress_dialog.dart';
-
 // ignore: must_be_immutable
+
 class OtpPage extends StatefulWidget {
   String verificationId;
   String phoneNumber;

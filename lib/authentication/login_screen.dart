@@ -4,7 +4,6 @@ import 'package:amo_cabs/authentication/otp_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../widgets/amo_toast.dart';
 import '../widgets/progress_dialog.dart';
 
@@ -12,7 +11,6 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-
 class _LoginScreenState extends State<LoginScreen> {
   //phone number Screen
   TextEditingController txtCountryCodeTextEditingController =
@@ -71,13 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
-
   @override
   void initState() {
     txtCountryCodeTextEditingController.text = "+91";
     super.initState();
   }
-
   bool checkNumber() {
     if (txtPhoneTextEditingController.text.isEmpty) {
       AmoToast.showAmoToast('Phone number can\'t be empty.', context);
@@ -90,7 +86,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     return false;
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -256,7 +251,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         signInWithPhoneNumber(
                             txtCountryCodeTextEditingController.text +
                                 txtPhoneTextEditingController.text);
-
                         // Navigator.push(
                         //   context,
                         //   PageTransition(

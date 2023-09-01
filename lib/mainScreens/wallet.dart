@@ -21,7 +21,6 @@ class _WallatPageState extends State<WallatPage> {
     super.initState();
     getride();
   }
-
   static const _backgroundColor = Colors.white;
   //static const _backgroundColor = Color(0xFFF15BB5);
 
