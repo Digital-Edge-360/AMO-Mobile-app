@@ -609,9 +609,9 @@ class _SupportSheet extends StatelessWidget {
                       },
                       child: Container(
                         width: windowSize.width * 0.45,
-                        child: Row(
+                        child: const Row(
                           children: [
-                            const Expanded(
+                            Expanded(
                               flex: 1,
                               child: Icon(
                                 Icons.call,
@@ -643,12 +643,12 @@ class _SupportSheet extends StatelessWidget {
                           builder: (ctx) => ReportDialogBox(),
                         );
                       },
-                      child: Container(
+                      child: SizedBox(
                         width: windowSize.width *
                             0.45,
-                        child: Row(
+                        child: const Row(
                           children: [
-                            const Expanded(
+                            Expanded(
                               flex: 1,
                               child: Icon(
                                 Icons.report,

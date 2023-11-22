@@ -40,9 +40,5 @@ class UserModel {
     email = data['email'];
     rideIds = data['rideIds'];
     offer = data['offer'];
-
-
-
-
   }
 }

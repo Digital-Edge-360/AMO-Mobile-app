@@ -61,13 +61,14 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  static CameraPosition _kGooglePlex = CameraPosition(
+  static CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(22.545468, 88.342013),
     zoom: 14.4746,
   );
 
   blackThemeGoogleMap() {
-    newGoogleMapController!.setMapStyle('''
+    newGoogleMapController!.setMapStyle(
+        '''
                     [
                       {
                         "elementType": "geometry",
@@ -231,14 +232,13 @@ class _MainScreenState extends State<MainScreen> {
                     ]
                 ''');
   }
-
   //0 for ride by destination
   //1 for ride by kilometer
-
   int _index = 0;
   int seatsCount = 1;
   int bagsCount = 1;
   bool isLoading = false;
+
   // ads url
   dynamic adurl ="";
   dynamic adtitle = "";
@@ -255,6 +255,7 @@ class _MainScreenState extends State<MainScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final List<String>? userDetails = prefs.getStringList('userCurrentInfo');
+
     if (userDetails != null) {
       UserModel userModel = UserModel(
           id: userDetails[0],
@@ -316,6 +317,7 @@ class _MainScreenState extends State<MainScreen> {
   int?st;
 
   // PageController _controller = PageController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

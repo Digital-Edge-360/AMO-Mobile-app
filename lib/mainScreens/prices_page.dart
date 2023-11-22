@@ -28,7 +28,6 @@ class PricesPage extends StatefulWidget {
 
 class _PricesPageState extends State<PricesPage> {
   bool? oneWay;
-
   double perKmMultiplierHatchBack = 0.01;
   double perKmMultiplierSedan = 0.012;
   double perKmMultiplierSuv = 0.015;
@@ -42,7 +41,7 @@ class _PricesPageState extends State<PricesPage> {
   ];
 
   late Directions userPickUpLocation, userDropOffLocation;
-  int _selectedIndex = 0;
+  //int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -56,7 +55,6 @@ class _PricesPageState extends State<PricesPage> {
     log("set offer 500$IsLogin");
 
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +145,6 @@ class _PricesPageState extends State<PricesPage> {
                         color: Colors.black)),
               )
                   : Container(),
-
               !widget.rideByKm
                   ? Padding(
                 padding:
@@ -428,14 +425,13 @@ class _PricesPageState extends State<PricesPage> {
                       log("length is ${evCarCategories.length}");
                       log("index $i");
                       // log("new"+userModelCurrentInfo!.offer!);
-                      log("new2"+userModelCurrentInfo!.lastName!);
+                      log("new2${userModelCurrentInfo!.lastName!}");
                       getOfferPref();
                       // log("expected = ${widget.seatsCount}| available =${noOfSeatsAvailableByCarType[i]}");
                       // log("expected = ${widget.bagsCount}| available =${noOfBagStorageAvailableByCarType[i]}");
                       // // if(widget.seatsCount <= noOfSeatsAvailableByCarType[i] && widget.bagsCount <= noOfBagStorageAvailableByCarType[i]){
                       //   return null;
                       // }
-
                       return CarTypeWidget(
                         isEv: true,
                         distanceInMeters: widget.distanceInMeters,
