@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amo_cabs/authentication/otp_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ));
-
   Future<void> signInWithPhoneNumber(String phoneNumber) async {
     showDialog(
       context: context,
@@ -35,9 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
         message: "Sending OTP, please wait..",
       ),
     );
-
     FirebaseAuth auth = FirebaseAuth.instance;
-
     await auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {

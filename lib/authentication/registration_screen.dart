@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../global/global.dart';
 import '../../widgets/amo_toast.dart';
 import '../models/user_model.dart';
-
 // ignore: must_be_immutable
 class RegistrationScreen extends StatefulWidget {
   String phoneNumber;

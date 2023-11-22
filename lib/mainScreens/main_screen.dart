@@ -410,7 +410,6 @@ class _MainScreenState extends State<MainScreen> {
                     locateUserPosition();
                   },
                 ),
-
                 //custom hamburger button for drawer
                 // Positioned(
                 //   top: 30,

@@ -25,7 +25,6 @@ void main() async {
     ),
   );
 }
-
 class MyApp extends StatefulWidget {
   final Widget? child;
   const MyApp({super.key, this.child});

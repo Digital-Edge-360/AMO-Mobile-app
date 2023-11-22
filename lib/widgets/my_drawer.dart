@@ -19,8 +19,12 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
+
+
   @override
   Widget build(BuildContext context) {
+    Size windowSize = MediaQuery.sizeOf(context);
+
     return Drawer(
       backgroundColor: const Color(0xff029EE2),
       child: ListView(
@@ -56,7 +60,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                   backgroundColor: Colors.blue,
                                   foregroundColor: Colors.black54,
                                   child: Text(
-                                    '${widget.name!.substring(0, 1)}${widget.lastName!.substring(0, 1)}',
+                                    '${widget.name!.substring(0, 1).toUpperCase()}${widget.lastName!.substring(0, 1).toUpperCase()}',
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 44,
@@ -73,7 +77,7 @@ class _MyDrawerState extends State<MyDrawer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${userModelCurrentInfo!.firstName} ${userModelCurrentInfo!.lastName}',
+                              '${userModelCurrentInfo!.firstName?[0].toUpperCase()}${userModelCurrentInfo!.firstName?.substring(1)} ${userModelCurrentInfo!.lastName?[0].toUpperCase()}${userModelCurrentInfo!.lastName?.substring(1)}',
                               style: const TextStyle(
                                   fontSize: 20, fontFamily: ("Poppins")),
                             ),
@@ -116,8 +120,8 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
           ),
-
           //history
+
           GestureDetector(
             onTap: () {
               Provider.of<AppInfo>(context, listen: false)
@@ -132,27 +136,6 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
               title: Text(
                 "History",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-
-          GestureDetector(
-            onTap: () {
-              Provider.of<AppInfo>(context, listen: false)
-                  .changeCurrentIndex(2);
-              log("history page got clicked");
-              Navigator.pop(context);
-            },
-            child: const ListTile(
-              leading: Icon(
-                Icons.info,
-                color: Colors.white,
-              ),
-              title: Text(
-                "Support",
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -181,29 +164,53 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
 
           GestureDetector(
-            onTap: () async {
-              await fAuth.signOut();
-              final SharedPreferences prefs =
-              await SharedPreferences.getInstance();
-              await prefs.remove("userCurrentInfo");
-              await prefs.remove('userType');
-              await prefs.remove("offer");
-              // ignore: use_build_context_synchronously
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => LoginScreen()),
-                  ModalRoute.withName('/'));
+            onTap: (){
+              Provider.of<AppInfo>(context, listen: false)
+                  .changeCurrentIndex(2);
+              log("history page got clicked");
+              Navigator.pop(context);
             },
             child: const ListTile(
               leading: Icon(
-                Icons.logout,
+                Icons.info,
                 color: Colors.white,
               ),
               title: Text(
-                "Logout",
+                "Support",
                 style: TextStyle(
                   color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+
+          Padding(
+            padding:  EdgeInsets.only(top:windowSize.height*0.3),
+            child: GestureDetector(
+              onTap: () async {
+                await fAuth.signOut();
+                final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+                await prefs.remove("userCurrentInfo");
+                await prefs.remove('userType');
+                await prefs.remove("offer");
+                // ignore: use_build_context_synchronously
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => LoginScreen()),
+                    ModalRoute.withName('/'));
+              },
+              child: const ListTile(
+                leading: Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Logout",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -212,4 +219,5 @@ class _MyDrawerState extends State<MyDrawer> {
       ),
     );
   }
+
 }

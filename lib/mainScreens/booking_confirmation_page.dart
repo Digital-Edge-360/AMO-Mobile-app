@@ -865,6 +865,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                 "Cash",
                                 "Online"
 
+
                               ].map((String value) {
                                 return DropdownMenuItem<String>(
                                   value:value,
@@ -882,7 +883,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                             // <-- SEE HERE
                           ),
                         ],
-                      )),
+                      )
+                  ),
                 ),
 
                 //coupon code textfield

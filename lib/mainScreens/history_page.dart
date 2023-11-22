@@ -93,7 +93,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   SizedBox(
                     height: MediaQuery
                         .sizeOf(context)
-                        .height * 0.05,
+                        .height * 0.06,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       physics: const BouncingScrollPhysics(
@@ -133,7 +133,7 @@ class _HistoryPageState extends State<HistoryPage> {
                               color: filterIndex == 1
                                   ? Color(0xff009B4E)
                                   : Colors.white,
-                              elevation: 4,
+                              elevation: 2,
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 10),
@@ -506,7 +506,7 @@ class _RideDetailsTile extends StatelessWidget {
                               ),
                               Text(
                                 "Commission: ₹${double.tryParse(
-                                    docs!.elementAt(index).data()["commission"].toString())?.toStringAsFixed(2)}",
+                                    docs!.elementAt(index).data()["commission"].toString())?.toStringAsFixed(2) ?? "0"}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
