@@ -7,6 +7,112 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:907307276923:android:262a432881e41cdb0520de",
+        "android_client_info": {
+          "package_name": "com.amo.app.agent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHmQujVyUD7fJQiuqhrMuqzy78ly1Sf4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907307276923:android:28af524afd8a24340520de",
+        "android_client_info": {
+          "package_name": "com.amo.app.partner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907307276923-13jtjutgtnv5v8hl2eujoiem9pkp9not.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo.app.partner",
+            "certificate_hash": "75d9a68414aa1fec498c7ce613b122b2e879172f"
+          }
+        },
+        {
+          "client_id": "907307276923-5e1u7rgdi49ps8gu8cg0gdm65uolclr3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo.app.partner",
+            "certificate_hash": "e558022d3efbcbd2e3f8b50884cd3759d707fc00"
+          }
+        },
+        {
+          "client_id": "907307276923-bj6011s7apncc5j1k3idmfqqel5riukr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo.app.partner",
+            "certificate_hash": "33f23cf4d99acc655b095484a76718549070f5e6"
+          }
+        },
+        {
+          "client_id": "907307276923-mb447js1cjq38roun9irnmg2nk7h2v2k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo.app.partner",
+            "certificate_hash": "d7c1f39021a61d0f64adfdd6d94b8126c115353f"
+          }
+        },
+        {
+          "client_id": "907307276923-q9g1uvv8d32g6su3vm2tih6cov9jg6h6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo.app.partner",
+            "certificate_hash": "d71863c114e6b9af707aad3eabab818ca5164040"
+          }
+        },
+        {
+          "client_id": "907307276923-tn2cbhb38s81l7d956kf7airpir7n6bb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo.app.partner",
+            "certificate_hash": "e7d571ffa11a3b47295d5a9a5e9911a53c4fb915"
+          }
+        },
+        {
+          "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHmQujVyUD7fJQiuqhrMuqzy78ly1Sf4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907307276923-kuesnftnsaf6gij6ihbvei0foqtomqhf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:907307276923:android:b44c73eb84f79d250520de",
         "android_client_info": {
           "package_name": "com.amo.local"
@@ -51,11 +157,51 @@
       },
       "oauth_client": [
         {
+          "client_id": "907307276923-2v90hurbo1t4n1fk0bj58rhfbkimrt7f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo_cabs.local.customer",
+            "certificate_hash": "62c3d6e8107f8de2612728cc2ba94aab2095151a"
+          }
+        },
+        {
           "client_id": "907307276923-a6qd64s9j23982rbhtv8t7hta7b61u4q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.amo_cabs.local.customer",
             "certificate_hash": "3ea111b90e796ca4772b9e5c69881a3e6bc37785"
+          }
+        },
+        {
+          "client_id": "907307276923-fo3unlpedd0mfsis7ut9ot7cki4mqhue.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo_cabs.local.customer",
+            "certificate_hash": "75d9a68414aa1fec498c7ce613b122b2e879172f"
+          }
+        },
+        {
+          "client_id": "907307276923-g8hvr6e12ueppt05fo8aekhreofkm8cp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo_cabs.local.customer",
+            "certificate_hash": "33f23cf4d99acc655b095484a76718549070f5e6"
+          }
+        },
+        {
+          "client_id": "907307276923-o8o7v6kmeq91knjb6pqooruf7bp3qi11.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo_cabs.local.customer",
+            "certificate_hash": "d71863c114e6b9af707aad3eabab818ca5164040"
+          }
+        },
+        {
+          "client_id": "907307276923-uktbufeldido0j8m7skpq1k6nc04fakb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amo_cabs.local.customer",
+            "certificate_hash": "e558022d3efbcbd2e3f8b50884cd3759d707fc00"
           }
         },
         {
