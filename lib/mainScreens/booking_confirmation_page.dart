@@ -553,7 +553,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                       style: TextStyle(
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.bold,
-                          fontSize: 20)),
+                          fontSize: 18)),
                 ),
 
                 const SizedBox(
@@ -684,11 +684,15 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                             style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20)),
+                                fontSize: 18)),
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(
+                  height: 16,
+                ),
+
 
                 Visibility(
                   visible: !(widget.isOneWay),
@@ -775,9 +779,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                       // Text(_selectedTimeReturnPickUp.minute<10? "0${_selectedTimeReturnPickUp.minute}":"${_selectedTimeReturnPickUp.minute}", style: TextStyle(color: Colors.white),),
                                       //
                                       Text(
-                                        _selectedTimePickUp.hour < 10
-                                            ? "0${_selectedTimePickUp.hour}"
-                                            : "${_selectedTimePickUp.hour}",
+                                        _selectedTimeReturnPickUp.hour < 10
+                                            ? "0${_selectedTimeReturnPickUp.hour}"
+                                            : "${_selectedTimeReturnPickUp.hour}",
                                         style: const TextStyle(
                                             color: Colors.white),
                                       ),
@@ -786,9 +790,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       Text(
-                                        _selectedTimePickUp.minute < 10
-                                            ? "0${_selectedTimePickUp.minute}"
-                                            : "${_selectedTimePickUp.minute}",
+                                        _selectedTimeReturnPickUp.minute < 10
+                                            ? "0${_selectedTimeReturnPickUp.minute}"
+                                            : "${_selectedTimeReturnPickUp.minute}",
                                         style: const TextStyle(
                                             color: Colors.white),
                                       ),
@@ -976,10 +980,12 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: "Customer Phone",
+
                             counterText: "",
                             hintStyle: TextStyle(
                                 fontFamily: "Poppins",
-                                fontSize: 18,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w100,
                                 color: Colors.grey),
                           ),
                         ),
@@ -1020,7 +1026,8 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                             counterText: "",
                             hintStyle: TextStyle(
                                 fontFamily: "Poppins",
-                                fontSize: 18,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w100,
                                 color: Colors.grey),
                           ),
                         ),

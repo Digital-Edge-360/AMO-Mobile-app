@@ -19,7 +19,8 @@ class _WallatPageState extends State<WallatPage> {
   @override
   void initState() {
     super.initState();
-    getride();
+   getride();
+
   }
   static const _backgroundColor = Colors.white;
   //static const _backgroundColor = Color(0xFFF15BB5);
@@ -104,12 +105,18 @@ class _WallatPageState extends State<WallatPage> {
       String? uid = userModelCurrentInfo!.id;
       log(a.id);
       String cutomerId = a["customerId"];
+      String commission = a["commission"];
       log(cutomerId);
+      log(commission);
 
-      if (uid == cutomerId) {
+      log(" dddd${userModelCurrentInfo!.id}");
+
+      if (uid == cutomerId && a['commission']==null ) {
         int addnum = int.parse(a['commission']);
-        walletAdd += addnum;
-        log("wallet: ${a['commission']}");
+
+        log("$addnum");
+        // walletAdd += addnum;
+        // log("wallet: ${a['commission']}");
 
         setState(() {});
       } else {

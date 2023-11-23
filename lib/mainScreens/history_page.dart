@@ -14,10 +14,9 @@ class HistoryPage extends StatefulWidget {
   @override
   State<HistoryPage> createState() => _HistoryPageState();
 }
+
 class _HistoryPageState extends State<HistoryPage> {
   bool _isLoading = false;
-
-
 
   Stream<QuerySnapshot<Map<String, dynamic>>>? _data;
 
@@ -70,7 +69,6 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     Size windowSize = MediaQuery.sizeOf(context);
 
-
     Widget child;
     if (_isLoading) {
       child = Center(
@@ -87,13 +85,12 @@ class _HistoryPageState extends State<HistoryPage> {
                 snapshot.hasData &&
                 snapshot.data != null) {
               var docs = snapshot.data?.docs;
+              //  var sff=docs!.length-1;
               log(docs.toString());
               return Column(
                 children: [
                   SizedBox(
-                    height: MediaQuery
-                        .sizeOf(context)
-                        .height * 0.06,
+                    height: MediaQuery.sizeOf(context).height * 0.05,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       physics: const BouncingScrollPhysics(
@@ -133,7 +130,7 @@ class _HistoryPageState extends State<HistoryPage> {
                               color: filterIndex == 1
                                   ? Color(0xff009B4E)
                                   : Colors.white,
-                              elevation: 2,
+                              elevation: 4,
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 10),
@@ -203,20 +200,18 @@ class _HistoryPageState extends State<HistoryPage> {
                     ),
                   ),
                   SizedBox(
-                    height: MediaQuery
-                        .sizeOf(context)
-                        .height * 0.83,
+                    height: MediaQuery.sizeOf(context).height * 0.83,
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: docs?.length,
                       itemBuilder: (context, index) {
+                        //  int revIndex= docs!.length-1-index;
+                        log("set${docs!.length - 1 - index}");
                         log(docs?.elementAt(index).data()["status"]);
                         if (filter == "upcoming" &&
-                            docs?.elementAt(index).data()["status"] ==
-                                "upcoming") {
+                            docs?.elementAt(index).data()["status"] == "upcoming") {
                           log("inside upcoming");
-
                           return _RideDetailsTile(
                             docs: docs,
                             index: index,
@@ -229,7 +224,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             docs: docs,
                             index: index,
                           );
-                        } else if (filter == "Pending" &&
+                        } else if(filter == "Pending" &&
                             docs?.elementAt(index).data()["status"] ==
                                 "Pending") {
                           log("inside rejected");
@@ -252,9 +247,8 @@ class _HistoryPageState extends State<HistoryPage> {
                             index: index,
                           );
                         } else if (filter == "rejected" &&
-                            docs?.elementAt(index).data()["status"] ==
-                                "rejected") {
-                          log("inside ");
+                            docs?.elementAt(index).data()["status"] == "rejected") {
+                          log("inside rejected ");
 
                           return _RideDetailsTile(
                             docs: docs,
@@ -263,7 +257,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
                           //rejected
                         }
-                        else {
+                        else{
                           log("inside nothing");
                           return Container();
                         }
@@ -297,7 +291,6 @@ class _HistoryPageState extends State<HistoryPage> {
 class _RideDetailsTile extends StatelessWidget {
   final List<QueryDocumentSnapshot<Map<String, dynamic>>>? docs;
   final int index;
-
   const _RideDetailsTile({
     Key? key,
     required this.docs,
@@ -316,9 +309,7 @@ class _RideDetailsTile extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Text(
-              "On ${DateFormat.yMMMd().add_jm().format(
-                  (docs?.elementAt(index).data()["pickUpDate"] as Timestamp)
-                      .toDate())}",
+              "On ${DateFormat.yMMMd().add_jm().format((docs?.elementAt(index).data()["pickUpDate"] as Timestamp).toDate())}",
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -360,12 +351,12 @@ class _RideDetailsTile extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(width: windowSize.width * 0.02),
-                                const Column(
+                                Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("4ABC123"),
-                                    Text('Audi Q7'),
-                                  ],
+                                    Text(docs?.elementAt(index).data()["carNumber"]!=null?"${docs?.elementAt(index).data()["carNumber"]}":"",style: TextStyle(fontSize:10)),
+
+                                    Text(docs?.elementAt(index).data()["carName"]!=null?"${docs?.elementAt(index).data()["carName"]}":"")],
                                 ),
                               ],
                             ),
@@ -393,11 +384,10 @@ class _RideDetailsTile extends StatelessWidget {
                                       ),
                                     ),
                                     context: context,
-                                    builder: (context) =>
-                                        _SupportSheet(
-                                          docs: docs,
-                                          index: index,
-                                        ),
+                                    builder: (context) => _SupportSheet(
+                                      docs: docs,
+                                      index: index,
+                                    ),
                                   );
                                 },
                                 child: const Icon(
@@ -409,10 +399,10 @@ class _RideDetailsTile extends StatelessWidget {
                         ),
                         SizedBox(height: windowSize.height * 0.029),
                         docs?.elementAt(index).data()["isOneWay"] == true
-                            ? Text(
+                            ? const Text(
                           "One Way Trip",
                         )
-                            : Text(
+                            : const Text(
                           "Round Trip",
                         ),
                         Expanded(
@@ -452,12 +442,9 @@ class _RideDetailsTile extends StatelessWidget {
                                           .length >
                                           45
                                           ? Text(
-                                          "${"${docs?.elementAt(index)
-                                              .data()["pickUp"]["pickUpName"]}"
-                                              .substring(0, 45)}...")
+                                          "${"${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}".substring(0, 45)}...")
                                           : Text(
-                                          "${docs?.elementAt(index)
-                                              .data()["pickUp"]["pickUpName"]}"),
+                                          "${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}"),
                                       SizedBox(
                                           height: windowSize.height * 0.02),
                                       docs
@@ -473,17 +460,11 @@ class _RideDetailsTile extends StatelessWidget {
                                           .length >
                                           45
                                           ? Text(
-                                          "${"${docs?.elementAt(index)
-                                              .data()["dropOff"]["dropOffName"]}"
-                                              .substring(0, 45)}...")
+                                          "${"${docs?.elementAt(index).data()["dropOff"]["dropOffName"]}".substring(0, 45)}...")
                                           : Text(
-                                          "${docs?.elementAt(index)
-                                              .data()["dropOff"]["dropOffName"]}")
+                                          "${docs?.elementAt(index).data()["dropOff"]["dropOffName"]}")
                                           : Text(
-                                        "${((int.tryParse(docs!.elementAt(index)
-                                            .data()["distanceInMeters"]
-                                            .toString()))! / 1000)
-                                            .toDouble()} kms",
+                                        "${((int.tryParse(docs!.elementAt(index).data()["distanceInMeters"].toString()))! / 1000).toDouble()} kms",
                                       ),
                                     ],
                                   ),
@@ -497,9 +478,7 @@ class _RideDetailsTile extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                "Total Fare: ₹${double.tryParse(
-                                    docs!.elementAt(index).data()["price"]
-                                        .toString())?.toStringAsFixed(2)}",
+                                "Total Fare: ₹${double.tryParse(docs!.elementAt(index).data()["price"].toString())?.toStringAsFixed(2)}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -511,7 +490,6 @@ class _RideDetailsTile extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-
                             ],
                           ),
                         )
@@ -531,20 +509,17 @@ class _RideDetailsTile extends StatelessWidget {
 class _SupportSheet extends StatelessWidget {
   final List<QueryDocumentSnapshot<Map<String, dynamic>>>? docs;
   final int index;
-
   const _SupportSheet({
     Key? key,
     required this.docs,
     required this.index,
   }) : super(key: key);
 
-
   static Future<void> makePhoneCall() async {
     final Uri launchUri = Uri(
       scheme: 'tel',
       path: "7811822499",
     );
-
     await launchUrl(launchUri);
   }
 
@@ -568,12 +543,11 @@ class _SupportSheet extends StatelessWidget {
       throw 'Could not open the map.';
     }
   }
-
   @override
   Widget build(BuildContext context) {
     Size windowSize = MediaQuery.sizeOf(context);
     return SizedBox(
-      height: windowSize.height * 0.4,
+      height: windowSize.height * 0.7,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0),
         child: Column(
@@ -614,16 +588,18 @@ class _SupportSheet extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              "${docs?.elementAt(index)
-                                  .data()["pickUp"]["pickUpName"]}"),
+                              "${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}"),
                           Text(
-                            "${((int.tryParse(docs!.elementAt(index)
-                                .data()["distanceInMeters"].toString()))! /
-                                1000).toDouble()} kms",
+                            "${((int.tryParse(docs!.elementAt(index).data()["distanceInMeters"].toString()))! / 1000).toDouble()} kms",
                           ),
                           Text(
-                              "${docs?.elementAt(index)
-                                  .data()["dropOff"]["dropOffName"]}"),
+                              "${docs?.elementAt(index).data()["dropOff"]["dropOffName"]}"),
+                          Row(
+                            children: [
+                              docs?.elementAt(index).data()["carName"]!=null? Icon(Icons.drive_eta):Text(""),
+                              GestureDetector(onTap:(){driverCall(); },child: Text(docs?.elementAt(index).data()["driverPhoneNumber"]!=null?"${docs?.elementAt(index).data()["driverPhoneNumber"]}":"",style: TextStyle(fontSize:15))),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -679,7 +655,8 @@ class _SupportSheet extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        width: windowSize.width * 0.45,
+                        width: windowSize.width *
+                            0.45,
                         child: Row(
                           children: [
                             const Expanded(
@@ -712,13 +689,19 @@ class _SupportSheet extends StatelessWidget {
       ),
     );
   }
-}
+  void driverCall() async{
 
+    Uri launchUri = Uri(
+      scheme: 'tel',
+      path: docs?.elementAt(index).data()["driverPhoneNumber"]!=null?"${docs?.elementAt(index).data()["driverPhoneNumber"]}":"",
+    );
+    launchUrl(launchUri);
+  }
+}
 class ReportDialogBox extends StatefulWidget {
   ReportDialogBox({
     super.key,
   });
-
   @override
   State<ReportDialogBox> createState() => _ReportDialogBoxState();
 }
