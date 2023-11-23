@@ -19,9 +19,9 @@ class _WallatPageState extends State<WallatPage> {
   @override
   void initState() {
     super.initState();
-   getride();
-
+    getride();
   }
+
   static const _backgroundColor = Colors.white;
   //static const _backgroundColor = Color(0xFFF15BB5);
 
@@ -98,25 +98,19 @@ class _WallatPageState extends State<WallatPage> {
     //userModelCurrentInfo
     log("Ride Requests");
     QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection("rideRequests").get();
+    await FirebaseFirestore.instance.collection("rideRequests").get();
 //sub-patch
     for (int i = 0; i < querySnapshot.size; i++) {
       var a = querySnapshot.docs[i];
       String? uid = userModelCurrentInfo!.id;
       log(a.id);
       String cutomerId = a["customerId"];
-      String commission = a["commission"];
       log(cutomerId);
-      log(commission);
 
-      log(" dddd${userModelCurrentInfo!.id}");
-
-      if (uid == cutomerId && a['commission']==null ) {
+      if (uid == cutomerId) {
         int addnum = int.parse(a['commission']);
-
-        log("$addnum");
-        // walletAdd += addnum;
-        // log("wallet: ${a['commission']}");
+        walletAdd += addnum;
+        log("wallet: ${a['commission']}");
 
         setState(() {});
       } else {
