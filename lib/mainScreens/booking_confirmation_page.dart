@@ -141,6 +141,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
       "noOfBagsRequest": widget.bagsCount,
       "noOfSeatsRequest": widget.seatsCount,
       "price": widget.price,
+      "commission": txtCommisionAmountTextEditingController.text.isNotEmpty?txtCommisionAmountTextEditingController.text:"0",
       "carType": carTypes[widget.index],
       "rideByKm": widget.rideByKm ? "km" : "destination",
       "isOneWay": widget.isOneWay,

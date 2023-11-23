@@ -90,7 +90,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                 )),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 72, bottom: 5.0, left: 50),
+                padding:  EdgeInsets.only(top: MediaQuery.of(context).size.width*0.075, left: 50),
                 child: Image.asset(
                   "images/img_1.png",
                 ),

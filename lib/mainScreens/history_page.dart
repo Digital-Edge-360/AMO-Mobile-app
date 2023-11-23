@@ -109,9 +109,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                   ? Color(0xff009B4E)
                                   : Colors.white,
                               elevation: 4,
-                              child: const Padding(
+                              child:  Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
+                                    horizontal: 16, vertical: windowSize.height * 0.01),
                                 child: Text(
                                   'All',
                                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -131,9 +131,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                   ? Color(0xff009B4E)
                                   : Colors.white,
                               elevation: 4,
-                              child: const Padding(
+                              child:  Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
+                                    horizontal: 16, vertical: windowSize.height * 0.01),
                                 child: Text('Upcoming'),
                               ),
                             ),
@@ -150,9 +150,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                   ? Color(0xff009B4E)
                                   : Colors.white,
                               elevation: 4,
-                              child: const Padding(
+                              child:  Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
+                                    horizontal: 16, vertical: windowSize.height * 0.01),
                                 child: Text('Completed'),
                               ),
                             ),
@@ -169,9 +169,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                   ? Color(0xff009B4E)
                                   : Colors.white,
                               elevation: 4,
-                              child: const Padding(
+                              child:  Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
+                                    horizontal: 16, vertical: windowSize.height * 0.01),
                                 child: Text('Pending'),
                               ),
                             ),
@@ -381,6 +381,7 @@ class _RideDetailsTile extends StatelessWidget {
                                       borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(25.0),
                                         topRight: Radius.circular(25.0),
+
                                       ),
                                     ),
                                     context: context,
