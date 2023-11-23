@@ -761,9 +761,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                       // Text(_selectedTimeReturnPickUp.minute<10? "0${_selectedTimeReturnPickUp.minute}":"${_selectedTimeReturnPickUp.minute}", style: TextStyle(color: Colors.white),),
                                       //
                                       Text(
-                                        _selectedTimePickUp.hour < 10
-                                            ? "0${_selectedTimePickUp.hour}"
-                                            : "${_selectedTimePickUp.hour}",
+                                        _selectedTimeReturnPickUp.hour < 10
+                                            ? "0${_selectedTimeReturnPickUp.hour}"
+                                            : "${_selectedTimeReturnPickUp.hour}",
                                         style: const TextStyle(
                                             color: Colors.white),
                                       ),
@@ -772,9 +772,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       Text(
-                                        _selectedTimePickUp.minute < 10
-                                            ? "0${_selectedTimePickUp.minute}"
-                                            : "${_selectedTimePickUp.minute}",
+                                        _selectedTimeReturnPickUp.minute < 10
+                                            ? "0${_selectedTimeReturnPickUp.minute}"
+                                            : "${_selectedTimeReturnPickUp.minute}",
                                         style: const TextStyle(
                                             color: Colors.white),
                                       ),
