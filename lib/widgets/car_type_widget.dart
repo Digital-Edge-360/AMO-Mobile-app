@@ -88,8 +88,9 @@ CarTypeWidget extends StatefulWidget {
             name: b['name'],
             //  // waiting: a['waiting'],
             description: b['description'],
+             seats: b['sets'].toString(),
           );
-
+          log("nxt ${b['sets'].toString()}");
         evCarCategories.add(tempCategory!);
       }
       log("======");
@@ -248,7 +249,7 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
                     height: 12,
                   ),
                   Text(
-                    '${noOfSeatsAvailableByCarType[widget.index]}',
+                    '${evCarCategories[widget.index].seats}',
                     style: const TextStyle(
                         fontFamily: "Poppins",
                         fontSize: 12,
