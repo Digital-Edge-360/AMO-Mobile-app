@@ -112,7 +112,7 @@ class _HistoryPageState extends State<HistoryPage> {
                               child:  Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16, vertical: windowSize.height * 0.01),
-                                child: Text(
+                                child: const Text(
                                   'All',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -128,13 +128,13 @@ class _HistoryPageState extends State<HistoryPage> {
                             },
                             child: Card(
                               color: filterIndex == 1
-                                  ? Color(0xff009B4E)
+                                  ? const Color(0xff009B4E)
                                   : Colors.white,
                               elevation: 4,
                               child:  Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16, vertical: windowSize.height * 0.01),
-                                child: Text('Upcoming'),
+                                child: const Text('Upcoming'),
                               ),
                             ),
                           ),
@@ -400,10 +400,10 @@ class _RideDetailsTile extends StatelessWidget {
                         ),
                         SizedBox(height: windowSize.height * 0.029),
                         docs?.elementAt(index).data()["isOneWay"] == true
-                            ? Text(
+                            ? const Text(
                           "One Way Trip",
                         )
-                            : Text(
+                            : const Text(
                           "Round Trip",
                         ),
                         Expanded(
@@ -644,12 +644,12 @@ class _SupportSheet extends StatelessWidget {
                           builder: (ctx) => ReportDialogBox(),
                         );
                       },
-                      child: Container(
+                      child: SizedBox(
                         width: windowSize.width *
                             0.45,
-                        child: Row(
+                        child: const Row(
                           children: [
-                            const Expanded(
+                            Expanded(
                               flex: 1,
                               child: Icon(
                                 Icons.report,

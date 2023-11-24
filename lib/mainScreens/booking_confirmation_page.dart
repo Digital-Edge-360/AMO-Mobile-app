@@ -61,10 +61,6 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
   late String price;
 
-
-
-
-
   double priceInDouble = 0;
   String? addedRideId;
 
@@ -73,10 +69,10 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
   //coupon one time run method
 
-  int Coupon_Run = 0;
+  int couponRun = 0;
 
   //wrong coupon code
-  int WRong_Coupon=0;
+  int wrongCoupon=0;
 
   int offCutText =0;
 
@@ -886,9 +882,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                               child: TextField(
                                 controller: txtCouponTextEditingController,
                                 decoration:  InputDecoration(
-                                  labelText:WRong_Coupon ==2?'Enter Coupon code: ✔️':"Enter Coupon code:",
+                                  labelText:wrongCoupon ==2?'Enter Coupon code: ✔️':"Enter Coupon code:",
                                     focusedBorder:  UnderlineInputBorder(
-                                      borderSide: WRong_Coupon==1? BorderSide( color: Colors.red): BorderSide( color: Colors.blueAccent), //<-- SEE HERE
+                                      borderSide: wrongCoupon==1? BorderSide( color: Colors.red): BorderSide( color: Colors.blueAccent), //<-- SEE HERE
                                     )
                                 ),
                                 maxLines: 1,
@@ -899,7 +895,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                           GestureDetector(
                             onTap: () {
                               log ("coupon ${txtCouponTextEditingController.text}");
-                              couponset();
+                              couponSet();
                             },
                             child: Card(
                                 elevation: 6.0,
@@ -1121,7 +1117,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
   }
 
-   couponset()async {
+   couponSet()async {
 
      // todo --test firebase
      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("coupon").get();
@@ -1133,7 +1129,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
        //log("firstName: ${a['image']}");
 
        log(a.id);
-       if ( sts==a["code"]&& Coupon_Run==0&&double.parse(a['upto'])<widget.price){
+       if ( sts==a["code"]&& couponRun==0&&double.parse(a['upto'])<widget.price){
          //log(st!);
       //   setState((){});
          log("firstCoupon: ${a['off']}");
@@ -1147,13 +1143,13 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
          widget.price = couponprice;
          setState(() {});
-         Coupon_Run = 1;
-         WRong_Coupon =2;
+         couponRun = 1;
+         wrongCoupon =2;
          offCutText=1;
          break;
        }else{
          log ("coupon dose not exist");
-         WRong_Coupon =1;
+         wrongCoupon =1;
          setState(() {});
          // WRong_Coupon = 1;
        }

@@ -23,7 +23,7 @@ class ThankYouScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                   context,
@@ -76,7 +76,7 @@ class ThankYouScreen extends StatelessWidget {
                       TextSpan(
                         text:
                             " for ${pickUpDate.day}-${pickUpDate.month}-${pickUpDate.year} from ${origin?.locationName}.",
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontFamily: "Poppins",
                             color: Colors.black26,
                             fontSize: 16),
@@ -87,11 +87,11 @@ class ThankYouScreen extends StatelessWidget {
               ),
 
               Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -129,14 +129,14 @@ class ThankYouScreen extends StatelessWidget {
                       children: [
                         Text(
                           "${pickUpDate.day}-${pickUpDate.month}-${pickUpDate.year}",
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: "Poppins",
                               color: Colors.black26,
                               fontSize: 16),
                         ),
                         Text(
                           "${pickUpDate.hour}:${pickUpDate.minute}",
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: "Poppins",
                               color: Colors.black26,
                               fontSize: 16),
@@ -145,7 +145,7 @@ class ThankYouScreen extends StatelessWidget {
                           origin!.locationName!.length <= 20
                               ? "${origin?.locationName.toString()}"
                               : "${origin?.locationName.toString().substring(0, 20)}",
-                          style: TextStyle(
+                          style: const TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontFamily: "Poppins",
                               color: Colors.black26,

@@ -51,8 +51,8 @@ class _PricesPageState extends State<PricesPage> {
   void getOfferPref() async {
 
     dynamic shared = await SharedPreferences.getInstance();
-    dynamic IsLogin =  shared.getString("offer");
-    log("set offer 500$IsLogin");
+    dynamic isLogin =  shared.getString("offer");
+    log("set offer 500$isLogin");
 
   }
 
