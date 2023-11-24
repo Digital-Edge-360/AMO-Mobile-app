@@ -9,7 +9,7 @@ class CarCategory {
   String? name;
   String? description;
   String? seats;
-
+  String? bags;
 
 
   CarCategory(
@@ -20,7 +20,8 @@ class CarCategory {
         //required this.waiting,
         required this.name,
         required this.description,
-       required this.seats
+       required this.seats,
+        required this.bags,
       });
 
   CarCategory.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
@@ -33,5 +34,7 @@ class CarCategory {
     name = data['name'];
     description = data['description'];
     seats = data['sets'];
+    bags = data['bags'];
+
   }
 }

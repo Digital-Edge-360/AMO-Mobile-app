@@ -79,7 +79,6 @@ CarTypeWidget extends StatefulWidget {
         CarCategory ?tempCategory;
 
            tempCategory = CarCategory(
-
             id: b.id,
             baseFare: b['baseFare'].toString(),
             //  // cars: a['cars'],
@@ -89,7 +88,9 @@ CarTypeWidget extends StatefulWidget {
             //  // waiting: a['waiting'],
             description: b['description'],
              seats: b['sets'].toString(),
+               bags: b['bags'].toString()
           );
+
           log("nxt ${b['sets'].toString()}");
         evCarCategories.add(tempCategory!);
       }
@@ -195,14 +196,9 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
             final SharedPreferences perfs = await SharedPreferences.getInstance();
             final List<String>? userDetails = perfs.getStringList('userCurrentInfo');
 
-
-
             getOfferPref();
 
             // double setprice= calculatePrices();
-
-
-
             log("Getoffer+$getoffer");
 
             Navigator.push(
@@ -268,7 +264,7 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
                     height: 12,
                   ),
                   Text(
-                    '${noOfBagStorageAvailableByCarType[widget.index]}',
+                    '${evCarCategories[widget.index].bags}',
                     style: const TextStyle(
                         fontFamily: "Poppins",
                         fontSize: 12,
@@ -279,6 +275,8 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
             ),
           ],
         ),
+
+
         trailing: Text(
           '₹${CarTypeWidget.formatPrice(calculatePrices())}',
           style: const TextStyle(
