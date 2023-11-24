@@ -23,6 +23,8 @@ class _RideByKmState extends State<RideByKm> {
   String? userLastName;
   String? userPhone;
 
+
+
   assignUserName() async {
     try {
       userName = userModelCurrentInfo!.firstName!;
