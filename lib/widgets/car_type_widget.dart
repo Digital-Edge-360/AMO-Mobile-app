@@ -193,8 +193,7 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
           } else {
             // final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-            final SharedPreferences perfs = await SharedPreferences.getInstance();
-            final List<String>? userDetails = perfs.getStringList('userCurrentInfo');
+           // final List<String>? userDetails = perfs.getStringList('userCurrentInfo');
 
 
 
@@ -219,7 +218,9 @@ class _CarTypeWidgetState extends State<CarTypeWidget> {
                   bagsCount: widget.bagsCount,
                   seatsCount: widget.seatsCount,
                   rideByKm: widget.rideByKm,
-                  getoffer: getoffer.toString(),
+                  getOffer: getoffer.toString(),
+                    seats: '${evCarCategories[widget.index].seats}',
+                  bagsSet: '${evCarCategories[widget.index].bags}',
                 ),
               ),
             );

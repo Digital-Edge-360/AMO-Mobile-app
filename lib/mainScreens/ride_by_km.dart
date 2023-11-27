@@ -250,7 +250,7 @@ class _RideByKmState extends State<RideByKm> {
               ),
             ),
 
-            Spacer(),
+            const Spacer(),
 
             ElevatedButton(
               onPressed: () {
@@ -276,7 +276,7 @@ class _RideByKmState extends State<RideByKm> {
               child: const Text('Request a Ride'),
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 40,
             )
           ],

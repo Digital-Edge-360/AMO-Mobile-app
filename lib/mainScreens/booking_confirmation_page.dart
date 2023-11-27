@@ -20,12 +20,15 @@ class BookingConfirmation extends StatefulWidget {
   int distanceInMeters, bagsCount, seatsCount, index;
   double price;
 
+  String seats;
+
   double realPrice;
 
 
   bool isOneWay, rideByKm, isEv;
 
-  String getoffer;
+  String getOffer;
+  String bagsSet;
 
 
 
@@ -40,7 +43,9 @@ class BookingConfirmation extends StatefulWidget {
         required this.index,
         required this.isOneWay,
         required this.rideByKm,
-        required this.getoffer});
+        required this.getOffer,
+        required this.seats,
+        required this.bagsSet});
 
   @override
   State<BookingConfirmation> createState() => _BookingConfirmationState();
@@ -73,10 +78,10 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
   //coupon one time run method
 
-  int Coupon_Run = 0;
+  int couponRun = 0;
 
   //wrong coupon code
-  int WRong_Coupon=0;
+  int wrongCoupon=0;
 
 
 
@@ -214,7 +219,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
         MaterialPageRoute(
           builder: (c) => ThankYouScreen(
             commission: txtCommisionAmountTextEditingController.text.toString(),
-            price:widget.getoffer==0&&1000<widget.price?"not show":price,
+            price:widget.getOffer==0&&1000<widget.price?"not show":price,
             index: widget.index,
             pickUpDate: _selectedDatePickUp!,
             dropOff: widget.rideByKm ? null : dropOff!,
@@ -410,7 +415,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                     child: Image.asset("images/img_32.png")),
                                 Expanded(
                                   child: Text(
-                                    noOfSeatsAvailableByCarType[index]
+                                    widget.seatsCount
                                         .toString(),
                                   ),
                                 ),
@@ -433,7 +438,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                             Expanded(child: Image.asset("images/img_33.png")),
                             Expanded(
                                 child: Text(
-                                    noOfBagStorageAvailableByCarType[index]
+                                     widget.bagsCount
                                         .toString()))
                           ],
                         ),
@@ -844,7 +849,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                       width: double.infinity,
                       child: Row(
                         children: <Widget>[
-                          Icon(Icons.mobile_friendly_rounded,color: Colors.white,),
+                          const Icon(Icons.mobile_friendly_rounded,color: Colors.white,),
                           Expanded(
                             child:   DropdownButton<String>(
                               elevation: 4,
@@ -904,9 +909,9 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                               child: TextField(
                                 controller: txtCouponTextEditingController,
                                 decoration:  InputDecoration(
-                                  labelText:WRong_Coupon ==2?'Enter Coupon code: ✔️':"Enter Coupon code:",
+                                  labelText:wrongCoupon ==2?'Enter Coupon code: ✔️':"Enter Coupon code:",
                                     focusedBorder:  UnderlineInputBorder(
-                                      borderSide: WRong_Coupon==1? BorderSide( color: Colors.red): BorderSide( color: Colors.blueAccent), //<-- SEE HERE
+                                      borderSide: wrongCoupon==1? BorderSide( color: Colors.red): BorderSide( color: Colors.blueAccent), //<-- SEE HERE
                                     )
                                 ),
                                 maxLines: 1,
@@ -1051,11 +1056,12 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),TextSpan(
-                        text:WRong_Coupon ==2?"₹${widget.realPrice}":"",
+                        text:wrongCoupon ==2?"₹${widget.realPrice}":"",
                         style: const TextStyle(decoration: TextDecoration.lineThrough,
                             fontWeight: FontWeight.normal, fontSize: 12),
                       ),
                     ],
+
                   ),
                 ),
                 //confirm button
@@ -1156,7 +1162,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
        //log("firstName: ${a['image']}");
 
        log(a.id);
-       if ( sts==a["code"]&& Coupon_Run==0&&double.parse(a['upto'])<widget.price){
+       if ( sts==a["code"]&& couponRun==0&&double.parse(a['upto'])<widget.price){
          //log(st!);
       //   setState((){});
          log("firstCoupon: ${a['off']}");
@@ -1170,12 +1176,12 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
 
          widget.price = couponprice;
          setState(() {});
-         Coupon_Run = 1;
-         WRong_Coupon =2;
+         couponRun = 1;
+         wrongCoupon =2;
          break;
        }else{
          log ("coupon dose not exist");
-         WRong_Coupon =1;
+         wrongCoupon =1;
          setState(() {});
          // WRong_Coupon = 1;
        }

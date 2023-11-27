@@ -47,10 +47,10 @@ class _WallatPageState extends State<WallatPage> {
     return Material(
       child: Scaffold(
         body: Padding(
-          padding:  EdgeInsets.only(top: 60, left: 20, right: 20),
+          padding:  const EdgeInsets.only(top: 60, left: 20, right: 20),
           child: Card(
             elevation: 6.0,
-            color: Color(0xFF00BBF9),
+            color: const Color(0xFF00BBF9),
             clipBehavior: Clip.hardEdge,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),

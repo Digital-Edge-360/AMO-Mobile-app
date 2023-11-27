@@ -60,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  static CameraPosition _kGooglePlex = CameraPosition(
+  static CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(22.545468, 88.342013),
     zoom: 14.4746,
   );

@@ -7,6 +7,7 @@ import 'package:im_stepper/stepper.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HistoryPage extends StatefulWidget {
   HistoryPage({super.key});
@@ -106,7 +107,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             },
                             child: Card(
                               color: filterIndex == 0
-                                  ? Color(0xff009B4E)
+                                  ? const Color(0xff009B4E)
                                   : Colors.white,
                               elevation: 4,
                               child: const Padding(
@@ -588,7 +589,7 @@ class _SupportSheet extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              "${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}"),
+                              "${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}",style: GoogleFonts.poppins(color: Colors.black)),
                           Text(
                             "${((int.tryParse(docs!.elementAt(index).data()["distanceInMeters"].toString()))! / 1000).toDouble()} kms",
                           ),
@@ -618,7 +619,7 @@ class _SupportSheet extends StatelessWidget {
                       onTap: () {
                         makePhoneCall();
                       },
-                      child: Container(
+                      child: SizedBox(
                         width: windowSize.width * 0.45,
                         child: const Row(
                           children: [
@@ -654,12 +655,12 @@ class _SupportSheet extends StatelessWidget {
                           builder: (ctx) => ReportDialogBox(),
                         );
                       },
-                      child: Container(
+                      child: SizedBox(
                         width: windowSize.width *
                             0.45,
-                        child: Row(
+                        child: const Row(
                           children: [
-                            const Expanded(
+                            Expanded(
                               flex: 1,
                               child: Icon(
                                 Icons.report,
@@ -699,7 +700,7 @@ class _SupportSheet extends StatelessWidget {
   }
 }
 class ReportDialogBox extends StatefulWidget {
-  ReportDialogBox({
+  const ReportDialogBox({
     super.key,
   });
   @override
@@ -721,7 +722,7 @@ class _ReportDialogBoxState extends State<ReportDialogBox> {
 
     return AlertDialog(
       title: const Text("Please select a reason to report"),
-      titleTextStyle: TextStyle(
+      titleTextStyle: const TextStyle(
         color: Colors.black,
       ),
       content: SizedBox(
