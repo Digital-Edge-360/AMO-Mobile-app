@@ -394,7 +394,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                                     child: Image.asset("images/img_32.png")),
                                 Expanded(
                                   child: Text(
-                                    noOfSeatsAvailableByCarType[index]
+                                    widget.seatsCount
                                         .toString(),
                                   ),
                                 ),
@@ -416,7 +416,7 @@ class _BookingConfirmationState extends State<BookingConfirmation> {
                             Expanded(child: Image.asset("images/img_33.png")),
                             Expanded(
                                 child: Text(
-                                    noOfBagStorageAvailableByCarType[index]
+                                    widget.bagsCount
                                         .toString()))
                           ],
                         ),

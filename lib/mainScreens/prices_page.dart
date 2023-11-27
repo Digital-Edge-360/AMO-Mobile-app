@@ -436,7 +436,7 @@ class _PricesPageState extends State<PricesPage> {
                         isEv: true,
                         distanceInMeters: widget.distanceInMeters,
                         seatsCount: widget.seatsCount,
-                        bagsCount: widget.seatsCount,
+                        bagsCount: widget.bagsCount,
                         index: i,
                         isOneWay: oneWay,
                         rideByKm: widget.rideByKm,

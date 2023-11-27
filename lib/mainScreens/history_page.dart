@@ -7,6 +7,8 @@ import 'package:im_stepper/stepper.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 
 class HistoryPage extends StatefulWidget {
   HistoryPage({super.key});
@@ -147,13 +149,13 @@ class _HistoryPageState extends State<HistoryPage> {
                             },
                             child: Card(
                               color: filterIndex == 2
-                                  ? Color(0xff009B4E)
+                                  ? const Color(0xff009B4E)
                                   : Colors.white,
                               elevation: 4,
                               child:  Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16, vertical: windowSize.height * 0.01),
-                                child: Text('Completed'),
+                                child: const Text('Completed'),
                               ),
                             ),
                           ),
@@ -578,7 +580,7 @@ class _SupportSheet extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              "${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}"),
+                              "${docs?.elementAt(index).data()["pickUp"]["pickUpName"]}",style: GoogleFonts.poppins(color: Colors.black)),
                           Text(
                             "${((int.tryParse(docs!.elementAt(index).data()["distanceInMeters"].toString()))! / 1000).toDouble()} kms",
                           ),
@@ -586,7 +588,7 @@ class _SupportSheet extends StatelessWidget {
                               "${docs?.elementAt(index).data()["dropOff"]["dropOffName"]}"),
                           Row(
                             children: [
-                              docs?.elementAt(index).data()["carName"]!=null? Icon(Icons.drive_eta):Text(""),
+                              docs?.elementAt(index).data()["carName"]!=null? const Icon(Icons.drive_eta):Text(""),
                               GestureDetector(onTap:(){driverCall(); },child: Text(docs?.elementAt(index).data()["driverPhoneNumber"]!=null?"${docs?.elementAt(index).data()["driverPhoneNumber"]}":"",style: TextStyle(fontSize:15))),
                             ],
                           ),

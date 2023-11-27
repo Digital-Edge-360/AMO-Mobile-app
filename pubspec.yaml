@@ -32,6 +32,7 @@ dependencies:
   url_launcher: ^6.1.11
   material_dialogs: ^1.1.4
   flutter_beautiful_popup: ^1.7.0
+  google_fonts: ^4.0.4
 
 
 dev_dependencies:
